@@ -2,16 +2,17 @@
 
 This repo is at <https://github.com/feiphoon/inm713-coursework>.
 
-This is the individual submission part of the INM713 coursework.
-
+This is an individual submission of the INM713 coursework.
 
 See my [file tree documentation](TREE.md) for a quick repo overview.
 
 Relevant files are in the `src/` folder [here](src/):
-- Task OWL (Ontology Modelling)
+- [Exploratory analysis (not marked)](src/0-exploration)
+- [Task OWL (Ontology Modelling)](src/1-OWL)
 - Task RDF (Tabular Data to Knowledge Graph)
 - Task SPARQL (SPARQL & Reasoning)
 - Task OA (Ontology Alignment)
+- Task Vector (Ontology Embeddings)
 
 
 ## Setup
