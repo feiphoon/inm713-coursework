@@ -38,9 +38,22 @@ class TabToGraph:
         self.string_to_uri = {}
 
     def convert_csv_to_rdf(self) -> None:
-        if "currency" in self.data_df:
+        """
+        Subtask RDF.2
+        """
+        if "country" in self.data_df:
+            self.mapping_to_create_type_triple(
+                subject_col="country", class_type=self.namespace.Country
+            )
 
-            # We give subject column and target type
+            self.mapping_to_create_literal_triple(
+                subject_col="country",
+                object_col="country",
+                predicate=self.namespace.name,
+                datatype=RDF.PlainLiteral,
+            )
+
+        if "currency" in self.data_df:
             self.mapping_to_create_type_triple(
                 subject_col="currency", class_type=self.namespace.Currency
             )
@@ -49,29 +62,142 @@ class TabToGraph:
                 subject_col="currency",
                 object_col="currency",
                 predicate=self.namespace.name,
-                datatype=XSD.string,
+                datatype=RDF.PlainLiteral,
             )
 
-        if "currency" in self.data_df:
+            self.mapping_to_create_object_triple(
+                subject_col="currency",
+                object_col="country",
+                predicate=self.namespace.isCurrencyOf,
+            )
 
-            # We give subject column and target type
+        if "city" in self.data_df:
+
             self.mapping_to_create_type_triple(
-                subject_col="currency", class_type=self.namespace.Currency
+                subject_col="city", class_type=self.namespace.City
             )
 
             self.mapping_to_create_literal_triple(
-                subject_col="currency",
-                object_col="currency",
+                subject_col="city",
+                object_col="city",
                 predicate=self.namespace.name,
-                datatype=XSD.string,
+                datatype=RDF.PlainLiteral,
+            )
+
+        if "name" in self.data_df:
+
+            # We give subject column and target type
+            self.mapping_to_create_type_triple(
+                subject_col="name", class_type=self.namespace.Restaurant
+            )
+
+            self.mapping_to_create_literal_triple(
+                subject_col="name",
+                object_col="name",
+                predicate=self.namespace.name,
+                datatype=RDF.PlainLiteral,
+            )
+
+            # TODO: Check if using RDF.PlainLiteral here is correct
+            # Instead of XSD: primitive datatypes
+            if "address" in self.data_df:
+                self.mapping_to_create_literal_triple(
+                    subject_col="name",
+                    object_col="address",
+                    predicate=self.namespace.address,
+                    datatype=RDF.PlainLiteral,
+                )
+
+            if "postcode" in self.data_df:
+                self.mapping_to_create_literal_triple(
+                    subject_col="name",
+                    object_col="postcode",
+                    predicate=self.namespace.postcode,
+                    datatype=XSD.string,
+                )
+
+            if "state" in self.data_df:
+                self.mapping_to_create_literal_triple(
+                    subject_col="name",
+                    object_col="state",
+                    predicate=self.namespace.state,
+                    datatype=XSD.string,
+                )
+
+            if "categories" in self.data_df:
+                self.mapping_to_create_literal_triple(
+                    subject_col="name",
+                    object_col="categories",
+                    predicate=self.namespace.categories,
+                    datatype=RDF.PlainLiteral,
+                )
+
+            self.mapping_to_create_object_triple(
+                subject_col="name",
+                object_col="city",
+                predicate=self.namespace.isPlaceInCity,
+            )
+
+            self.mapping_to_create_object_triple(
+                subject_col="city",
+                object_col="country",
+                predicate=self.namespace.isPlaceInCountry,
+            )
+
+        if "name" in self.data_df and "menu item" in self.data_df:
+
+            # Make each item unique to the restaurant
+            self.data_df["restaurant_name_menu_item"] = self.data_df["name"].str.cat(
+                self.data_df["menu item"], " "
+            )
+
+            # Create the menu item
+            self.mapping_to_create_type_triple(
+                subject_col="restaurant_name_menu_item",
+                class_type=self.namespace.MenuItem,
+            )
+
+            self.mapping_to_create_object_triple(
+                subject_col="restaurant_name_menu_item",
+                object_col="name",
+                predicate=self.namespace.isMenuItemAt,
+            )
+
+            self.mapping_to_create_literal_triple(
+                subject_col="restaurant_name_menu_item",
+                object_col="menu item",
+                predicate=self.namespace.name,
+                datatype=RDF.PlainLiteral,
+            )
+
+            self.mapping_to_create_literal_triple(
+                subject_col="restaurant_name_menu_item",
+                object_col="item value",
+                predicate=self.namespace.menu_item_price,
+                datatype=XSD.decimal,
+            )
+
+            self.mapping_to_create_literal_triple(
+                subject_col="restaurant_name_menu_item",
+                object_col="currency",
+                predicate=self.namespace.menu_item_price_currency,
+                datatype=RDF.PlainLiteral,
+            )
+
+            self.mapping_to_create_literal_triple(
+                subject_col="restaurant_name_menu_item",
+                object_col="item description",
+                predicate=self.namespace.menu_item_description,
+                datatype=RDF.PlainLiteral,
             )
 
     @staticmethod
-    def is_nan(x) -> bool:
-        """Check for NaN when the subject value
+    def is_object_missing(value: str):
+        """
+        First is a check for NaN when the subject value
         could be a string (so can't use math.isnan())
         """
-        return x != x
+        return (value != value) or (value is None) or (value == "")
 
     def createURIForEntity(self, entity_name: str) -> Dict[str, str]:
         # We create fresh URI (default option)
@@ -90,10 +216,10 @@ class TabToGraph:
         self, subject_col: str, class_type: rdflib.term.URIRef
     ) -> None:
         """
-        Mapping to create triples like lab6:London rdf:type lab6:City
+        TODO: Mapping to create triples like lab6:London rdf:type lab6:City
         A mapping may create more than one triple
         column: columns where the entity information is stored
-        useExternalURI: if URI is fresh or from external KG
+        TODO: useExternalURI: if URI is fresh or from external KG
         """
         for subject in self.data_df[subject_col]:
             entity_uri = None
@@ -113,11 +239,43 @@ class TabToGraph:
             # Alternatively one could use URIRef(self.lab6_ns_str+"City") for example
             self.graph.add((URIRef(entity_uri), RDF.type, class_type))
 
+    # def mapping_to_create_menu_item_type_triple(
+    #     self, restaurant_name_col: str, menu_item_col: str
+    # ) -> None:
+    #     """
+    #     TODO: Mapping to create triples like lab6:London rdf:type lab6:City
+    #     A mapping may create more than one triple
+    #     column: columns where the entity information is stored
+    #     TODO: useExternalURI: if URI is fresh or from external KG
+    #     """
+    #     for _restaurant_name, _menu_item in zip(
+    #         self.data_df[restaurant_name_col], self.data_df[menu_item_col]
+    #     ):
+
+    #         _menu_item_at_name = f"{_restaurant_name.lower()} {_menu_item.lower()}"
+    #         entity_menu_item_uri = None
+    #         subject = _menu_item_at_name.lower()
+
+    #         if subject in self.string_to_uri:
+    #             entity_menu_item_uri = self.string_to_uri[subject]
+    #         else:
+    #             entity_menu_item_uri = self.createURIForEntity(subject)
+    #         # else:
+    #         #     entity_uri = self.createURIForEntity(subject.lower(), useExternalURI)
+
+    #         self.graph.add(
+    #             (URIRef(entity_menu_item_uri), RDF.type, self.namespace.MenuItem)
+    #         )
+
     def mapping_to_create_literal_triple(
-        self, subject_col: str, object_col: str, predicate: str, datatype: str
+        self,
+        subject_col: str,
+        object_col: str,
+        predicate: rdflib.term.URIRef,
+        datatype: str,
     ) -> None:
         """
-        Mappings to create triples of the form lab6:london lab6:name "London"
+        TODO: Mappings to create triples of the form lab6:london lab6:name "London"
         """
 
         for subject, lit_value in zip(
@@ -125,7 +283,7 @@ class TabToGraph:
         ):
 
             # Make sure this does nothing when the object is missing
-            if self.is_nan(lit_value) or lit_value is None or lit_value == "":
+            if self.is_object_missing(value=lit_value):
                 return
 
             else:
@@ -139,8 +297,60 @@ class TabToGraph:
                 # Add new literal triple to graph
                 self.graph.add((URIRef(entity_uri), predicate, literal))
 
+    def mapping_to_create_object_triple(
+        self, subject_col: str, object_col: str, predicate: rdflib.term.URIRef
+    ) -> None:
+        """
+        Mappings to create triples of the form fp:Bend fp:isLocatedInCountry fp:USA
+        """
+        for subject, object in zip(self.data_df[subject_col], self.data_df[object_col]):
+            print("subject", subject)
+            print("predicate", predicate)
+            print("object", object)
+
+            # Make sure this does nothing when the object is missing
+            if self.is_object_missing(value=object.lower()):
+                return
+
+            else:
+                # Use already created URI
+                subject_uri = self.string_to_uri[subject.lower()]
+                object_uri = self.string_to_uri[object.lower()]
+
+                # New triple
+                self.graph.add((URIRef(subject_uri), predicate, URIRef(object_uri)))
+
+    # def mapping_to_create_place_triple(self, subject_col: str, object_col: str, value_col: str) -> None:
+
+    #     for subject, object, value in zip(self.data_df[subject_col], self.data_df[object_col], self.data_df[value_col]):
+
+    #         # Access already created URIs
+    #         subject_uri = self.string_to_uri[subject.lower()]
+    #         object_uri = self.string_to_uri[object.lower()]
+
+    #         self.
+
+    #         isPlaceIn
+    #         isPlaceInCity
+    #         isPlaceInCountry
+
+    # def mapping_to_create_menu_item_triple(self, subject_col: str, object_col: str, value_col: str) -> None:
+
+    #     for subject, object, value in zip(self.data_df[subject_col], self.data_df[object_col], self.data_df[value_col]):
+
+    #         # Access already created URIs
+    #         subject_uri = self.string_to_uri[subject.lower()]
+    #         object_uri = self.string_to_uri[object.lower()]
+
     def debug(self):
         pprint(vars(self))
+
+    def print(self):
+        counter = 0
+        for s, p, o in self.graph:
+            print((s.n3(), p.n3(), o.n3()))
+            counter += 1
+        print(f"There are {counter} triples.")
 
 
 if __name__ == "__main__":
@@ -154,5 +364,23 @@ if __name__ == "__main__":
     )
 
     tab_to_graph.convert_csv_to_rdf()
-    for s, p, o in tab_to_graph.graph:
-        print((s.n3(), p.n3(), o.n3()))
+
+    tab_to_graph.debug()
+
+    tab_to_graph.print()
+
+    # # Graph with only data
+    # solution.saveGraph(file.replace(".csv", "-" + task) + ".ttl")
+
+    # # OWL 2 RL reasoning
+    # solution.performReasoning("ontology_lab6.ttl")  ##ttl format
+    # # solution.performReasoning("ontology_lab6.owl") ##owl (rdf/xml) format
+
+    # # Graph with ontology triples and entailed triples
+    # solution.saveGraph(file.replace(".csv", "-" + task) + "-reasoning.ttl")
+
+    # # SPARQL results into CSV
+    # solution.performSPARQLQuery(file.replace(".csv", "-" + task) + "-query-results.csv")
+
+    # # SPARQL for Lab 7
+    # solution.performSPARQLQueryLab7()
