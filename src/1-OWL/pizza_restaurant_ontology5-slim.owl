@@ -250,7 +250,7 @@
     <owl:DatatypeProperty rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#menu_item_price_currency">
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
         <rdfs:domain rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#MenuItem"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:range rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral"/>
         <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
     </owl:DatatypeProperty>
     

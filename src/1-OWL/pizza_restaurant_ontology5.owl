@@ -7,7 +7,7 @@
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
      ontologyIRI="http://www.city.ac.uk/ds/inm713/feiphoon"
      versionIRI="http://www.city.ac.uk/ds/inm713/feiphoon/1.0.0">
-    <Prefix name="" IRI="http://www.city.ac.uk/ds/inm713/feiphoon#"/>
+    <Prefix name="" IRI="http://www.city.ac.uk/ds/inm713/feiphoon"/>
     <Prefix name="dc" IRI="http://purl.org/dc/elements/1.1/"/>
     <Prefix name="fp" IRI="http://www.city.ac.uk/ds/inm713/feiphoon#"/>
     <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
@@ -795,7 +795,7 @@
     </DataPropertyRange>
     <DataPropertyRange>
         <DataProperty IRI="#menu_item_price_currency"/>
-        <Datatype abbreviatedIRI="xsd:string"/>
+        <Datatype abbreviatedIRI="rdf:PlainLiteral"/>
     </DataPropertyRange>
     <DataPropertyRange>
         <DataProperty IRI="#name"/>
