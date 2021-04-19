@@ -95,14 +95,15 @@ class TabToGraph:
         column: columns where the entity information is stored
         useExternalURI: if URI is fresh or from external KG
         """
-        for subject in self.data_df[subject_column]:
+        for subject in self.data_df[subject_col]:
             entity_uri = None
+            subject = subject.lower()
 
             # We use the ascii name to create the fresh URI for a city in the dataset
-            if subject.lower() in self.string_to_uri:
-                entity_uri = self.string_to_uri[subject.lower()]
+            if subject in self.string_to_uri:
+                entity_uri = self.string_to_uri[subject]
             else:
-                entity_uri = self.createURIForEntity(subject.lower())
+                entity_uri = self.createURIForEntity(subject)
             # else:
             #     entity_uri = self.createURIForEntity(subject.lower(), useExternalURI)
 
