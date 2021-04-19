@@ -1,0 +1,1152 @@
+<?xml version="1.0"?>
+<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+     xml:base="http://www.city.ac.uk/ds/inm713/feiphoon"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     ontologyIRI="http://www.city.ac.uk/ds/inm713/feiphoon"
+     versionIRI="http://www.city.ac.uk/ds/inm713/feiphoon/1.0.0">
+    <Prefix name="" IRI="http://www.city.ac.uk/ds/inm713/feiphoon#"/>
+    <Prefix name="dc" IRI="http://purl.org/dc/elements/1.1/"/>
+    <Prefix name="fp" IRI="http://www.city.ac.uk/ds/inm713/feiphoon#"/>
+    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
+    <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace"/>
+    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+    <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+    <Prefix name="dcterms" IRI="http://purl.org/dc/terms/"/>
+    <Annotation>
+        <AnnotationProperty abbreviatedIRI="dc:creator"/>
+        <Literal>Fei Phoon</Literal>
+    </Annotation>
+    <Annotation>
+        <AnnotationProperty abbreviatedIRI="dc:title"/>
+        <Literal xml:lang="en">Pizza restaurants</Literal>
+    </Annotation>
+    <Annotation>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <Literal xml:lang="en">An ontology with a focus on restaurants serving pizza menu items.</Literal>
+    </Annotation>
+    <Annotation>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <Literal xml:lang="en">Pizza restaurants</Literal>
+    </Annotation>
+    <Declaration>
+        <Class IRI="#Anchovies"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Artichoke"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Bacon"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Basil"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Bianca"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Burger"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Cheese"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#City"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Country"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Currency"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Dish"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ExpensiveBurger"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ExpensivePizza"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Fish"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Fruit"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Garlic"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Ham"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Herbs"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Ingredient"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#KnownPizza"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Location"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Margherita"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Meat"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MenuItem"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Mozzarella"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Mushroom"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Oil"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#OliveOil"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Olives"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Pineapple"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Pizza"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Place"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Restaurant"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Tomato"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Tuna"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Vegetable"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#VegetarianPizza"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#cityHasPlace"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#countryHasPlace"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasCurrency"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasIngredient"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasIngredientAsTopping"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasMenuItem"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasPlace"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#isCurrencyOf"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#isIngredientAsToppingOf"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#isIngredientOf"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#isMenuItemAt"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#isPlaceIn"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#isPlaceInCity"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#isPlaceInCountry"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#address"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#categories"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#menu_item_description"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#menu_item_price"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#menu_item_price_currency"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#name"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#postcode"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#state"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#Bend"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#Hamburger"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#Little_Pizza_Paradise"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#Truffle_Pizza"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#US"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#USD"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#Veggie_Heaven"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#buffalo_mozzarella"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#canadian_bacon"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#margherita_pizza"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#tomato"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#truffle"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#yellowtail_tuna"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty abbreviatedIRI="dc:creator"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty abbreviatedIRI="dc:title"/>
+    </Declaration>
+    <EquivalentClasses>
+        <Class IRI="#VegetarianPizza"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Pizza"/>
+            <ObjectIntersectionOf>
+                <ObjectComplementOf>
+                    <ObjectSomeValuesFrom>
+                        <ObjectProperty IRI="#hasIngredientAsTopping"/>
+                        <Class IRI="#Fish"/>
+                    </ObjectSomeValuesFrom>
+                </ObjectComplementOf>
+                <ObjectComplementOf>
+                    <ObjectSomeValuesFrom>
+                        <ObjectProperty IRI="#hasIngredientAsTopping"/>
+                        <Class IRI="#Meat"/>
+                    </ObjectSomeValuesFrom>
+                </ObjectComplementOf>
+            </ObjectIntersectionOf>
+            <ObjectComplementOf>
+                <ObjectSomeValuesFrom>
+                    <ObjectProperty IRI="#hasIngredientAsTopping"/>
+                    <Class IRI="#Meat"/>
+                </ObjectSomeValuesFrom>
+            </ObjectComplementOf>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <SubClassOf>
+        <Class IRI="#Anchovies"/>
+        <Class IRI="#Fish"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Artichoke"/>
+        <Class IRI="#Vegetable"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Bacon"/>
+        <Class IRI="#Meat"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Basil"/>
+        <Class IRI="#Herbs"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Bianca"/>
+        <Class IRI="#KnownPizza"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Bianca"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Pizza"/>
+            <ObjectComplementOf>
+                <ObjectSomeValuesFrom>
+                    <ObjectProperty IRI="#hasIngredientAsTopping"/>
+                    <Class IRI="#Tomato"/>
+                </ObjectSomeValuesFrom>
+            </ObjectComplementOf>
+        </ObjectIntersectionOf>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Burger"/>
+        <Class IRI="#Dish"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Cheese"/>
+        <Class IRI="#Ingredient"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#City"/>
+        <Class IRI="#Place"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Country"/>
+        <Class IRI="#Place"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ExpensiveBurger"/>
+        <Class IRI="#Burger"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ExpensiveBurger"/>
+        <Class IRI="#MenuItem"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ExpensivePizza"/>
+        <Class IRI="#MenuItem"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ExpensivePizza"/>
+        <Class IRI="#Pizza"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Fish"/>
+        <Class IRI="#Ingredient"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Fruit"/>
+        <Class IRI="#Ingredient"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Garlic"/>
+        <Class IRI="#Vegetable"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Ham"/>
+        <Class IRI="#Meat"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Herbs"/>
+        <Class IRI="#Vegetable"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#KnownPizza"/>
+        <Class IRI="#Pizza"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Location"/>
+        <Class IRI="#Place"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Margherita"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#KnownPizza"/>
+            <ObjectAllValuesFrom>
+                <ObjectProperty IRI="#hasIngredientAsTopping"/>
+                <ObjectIntersectionOf>
+                    <Class IRI="#Mozzarella"/>
+                    <Class IRI="#Tomato"/>
+                </ObjectIntersectionOf>
+            </ObjectAllValuesFrom>
+        </ObjectIntersectionOf>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Meat"/>
+        <Class IRI="#Ingredient"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Mozzarella"/>
+        <Class IRI="#Cheese"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Mushroom"/>
+        <Class IRI="#Vegetable"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Oil"/>
+        <Class IRI="#Ingredient"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#OliveOil"/>
+        <Class IRI="#Oil"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Olives"/>
+        <Class IRI="#Vegetable"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Pineapple"/>
+        <Class IRI="#Fruit"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Pizza"/>
+        <Class IRI="#Dish"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Restaurant"/>
+        <Class IRI="#Location"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Tomato"/>
+        <Class IRI="#Vegetable"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Tuna"/>
+        <Class IRI="#Fish"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Vegetable"/>
+        <Class IRI="#Ingredient"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#VegetarianPizza"/>
+        <Class IRI="#MenuItem"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#VegetarianPizza"/>
+        <Class IRI="#Pizza"/>
+    </SubClassOf>
+    <DisjointClasses>
+        <Class IRI="#Burger"/>
+        <Class IRI="#Pizza"/>
+    </DisjointClasses>
+    <ClassAssertion>
+        <Class IRI="#City"/>
+        <NamedIndividual IRI="#Bend"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Burger"/>
+        <NamedIndividual IRI="#Hamburger"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#MenuItem"/>
+        <NamedIndividual IRI="#Hamburger"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Restaurant"/>
+        <NamedIndividual IRI="#Little_Pizza_Paradise"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#MenuItem"/>
+        <NamedIndividual IRI="#Truffle_Pizza"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Pizza"/>
+        <NamedIndividual IRI="#Truffle_Pizza"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Country"/>
+        <NamedIndividual IRI="#US"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Currency"/>
+        <NamedIndividual IRI="#USD"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Restaurant"/>
+        <NamedIndividual IRI="#Veggie_Heaven"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Mozzarella"/>
+        <NamedIndividual IRI="#buffalo_mozzarella"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Bacon"/>
+        <NamedIndividual IRI="#canadian_bacon"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Margherita"/>
+        <NamedIndividual IRI="#margherita_pizza"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#MenuItem"/>
+        <NamedIndividual IRI="#margherita_pizza"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Pizza"/>
+        <NamedIndividual IRI="#margherita_pizza"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Tomato"/>
+        <NamedIndividual IRI="#tomato"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Mushroom"/>
+        <NamedIndividual IRI="#truffle"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Tuna"/>
+        <NamedIndividual IRI="#yellowtail_tuna"/>
+    </ClassAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#isPlaceIn"/>
+        <NamedIndividual IRI="#Bend"/>
+        <NamedIndividual IRI="#US"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#isMenuItemAt"/>
+        <NamedIndividual IRI="#Hamburger"/>
+        <NamedIndividual IRI="#Little_Pizza_Paradise"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#isPlaceIn"/>
+        <NamedIndividual IRI="#Little_Pizza_Paradise"/>
+        <NamedIndividual IRI="#Bend"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasIngredientAsTopping"/>
+        <NamedIndividual IRI="#Truffle_Pizza"/>
+        <NamedIndividual IRI="#truffle"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#isMenuItemAt"/>
+        <NamedIndividual IRI="#Truffle_Pizza"/>
+        <NamedIndividual IRI="#Little_Pizza_Paradise"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasCurrency"/>
+        <NamedIndividual IRI="#US"/>
+        <NamedIndividual IRI="#USD"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasPlace"/>
+        <NamedIndividual IRI="#US"/>
+        <NamedIndividual IRI="#Bend"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#isCurrencyOf"/>
+        <NamedIndividual IRI="#USD"/>
+        <NamedIndividual IRI="#US"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasIngredientAsTopping"/>
+        <NamedIndividual IRI="#margherita_pizza"/>
+        <NamedIndividual IRI="#buffalo_mozzarella"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasIngredientAsTopping"/>
+        <NamedIndividual IRI="#margherita_pizza"/>
+        <NamedIndividual IRI="#tomato"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#isMenuItemAt"/>
+        <NamedIndividual IRI="#margherita_pizza"/>
+        <NamedIndividual IRI="#Veggie_Heaven"/>
+    </ObjectPropertyAssertion>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#cityHasPlace"/>
+        <ObjectProperty IRI="#hasPlace"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#countryHasPlace"/>
+        <ObjectProperty IRI="#hasPlace"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#hasIngredientAsTopping"/>
+        <ObjectProperty IRI="#hasIngredient"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#isIngredientAsToppingOf"/>
+        <ObjectProperty IRI="#isIngredientOf"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#isPlaceInCity"/>
+        <ObjectProperty IRI="#isPlaceIn"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#isPlaceInCountry"/>
+        <ObjectProperty IRI="#isPlaceIn"/>
+    </SubObjectPropertyOf>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#cityHasPlace"/>
+        <ObjectProperty IRI="#isPlaceInCity"/>
+    </InverseObjectProperties>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#countryHasPlace"/>
+        <ObjectProperty IRI="#isPlaceInCountry"/>
+    </InverseObjectProperties>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#hasCurrency"/>
+        <ObjectProperty IRI="#isCurrencyOf"/>
+    </InverseObjectProperties>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#hasIngredient"/>
+        <ObjectProperty IRI="#isIngredientOf"/>
+    </InverseObjectProperties>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#hasMenuItem"/>
+        <ObjectProperty IRI="#isMenuItemAt"/>
+    </InverseObjectProperties>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#hasPlace"/>
+        <ObjectProperty IRI="#isPlaceIn"/>
+    </InverseObjectProperties>
+    <FunctionalObjectProperty>
+        <ObjectProperty IRI="#hasCurrency"/>
+    </FunctionalObjectProperty>
+    <FunctionalObjectProperty>
+        <ObjectProperty IRI="#isIngredientAsToppingOf"/>
+    </FunctionalObjectProperty>
+    <FunctionalObjectProperty>
+        <ObjectProperty IRI="#isIngredientOf"/>
+    </FunctionalObjectProperty>
+    <FunctionalObjectProperty>
+        <ObjectProperty IRI="#isMenuItemAt"/>
+    </FunctionalObjectProperty>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#cityHasPlace"/>
+        <Class IRI="#City"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#countryHasPlace"/>
+        <Class IRI="#Country"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#hasCurrency"/>
+        <Class IRI="#Country"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#hasIngredient"/>
+        <Class IRI="#Dish"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#hasIngredientAsTopping"/>
+        <Class IRI="#Pizza"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#hasMenuItem"/>
+        <Class IRI="#Restaurant"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#isCurrencyOf"/>
+        <Class IRI="#Currency"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#isIngredientAsToppingOf"/>
+        <Class IRI="#Ingredient"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#isIngredientOf"/>
+        <Class IRI="#Ingredient"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#isMenuItemAt"/>
+        <Class IRI="#Dish"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#isPlaceInCity"/>
+        <Class IRI="#Location"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#isPlaceInCountry"/>
+        <Class IRI="#City"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#cityHasPlace"/>
+        <Class IRI="#Location"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#countryHasPlace"/>
+        <Class IRI="#City"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#hasCurrency"/>
+        <Class IRI="#Currency"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#hasIngredient"/>
+        <Class IRI="#Ingredient"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#hasIngredientAsTopping"/>
+        <Class IRI="#Ingredient"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#hasMenuItem"/>
+        <Class IRI="#Dish"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#isCurrencyOf"/>
+        <Class IRI="#Country"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#isIngredientAsToppingOf"/>
+        <Class IRI="#Pizza"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#isIngredientOf"/>
+        <Class IRI="#Dish"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#isMenuItemAt"/>
+        <Class IRI="#Restaurant"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#isPlaceInCity"/>
+        <Class IRI="#City"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#isPlaceInCountry"/>
+        <Class IRI="#Country"/>
+    </ObjectPropertyRange>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#address"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#categories"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#menu_item_description"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#menu_item_price"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#menu_item_price_currency"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#name"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#postcode"/>
+    </FunctionalDataProperty>
+    <DataPropertyDomain>
+        <DataProperty IRI="#address"/>
+        <Class IRI="#Location"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#categories"/>
+        <Class IRI="#Location"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#menu_item_description"/>
+        <Class IRI="#MenuItem"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#menu_item_price"/>
+        <Class IRI="#MenuItem"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#menu_item_price_currency"/>
+        <Class IRI="#MenuItem"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#name"/>
+        <Class abbreviatedIRI="owl:Thing"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#postcode"/>
+        <Class IRI="#Location"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#state"/>
+        <Class IRI="#Location"/>
+    </DataPropertyDomain>
+    <DataPropertyRange>
+        <DataProperty IRI="#address"/>
+        <Datatype abbreviatedIRI="rdf:PlainLiteral"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#categories"/>
+        <Datatype abbreviatedIRI="rdf:PlainLiteral"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#menu_item_description"/>
+        <Datatype abbreviatedIRI="rdf:PlainLiteral"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#menu_item_price"/>
+        <Datatype abbreviatedIRI="xsd:decimal"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#menu_item_price_currency"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#name"/>
+        <Datatype abbreviatedIRI="rdf:PlainLiteral"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#postcode"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#state"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:creator"/>
+        <IRI>#Anchovies</IRI>
+        <Literal>fei</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Anchovies</IRI>
+        <Literal xml:lang="en">Anchovies</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:creator"/>
+        <IRI>#Artichoke</IRI>
+        <Literal>fei</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Artichoke</IRI>
+        <Literal xml:lang="en">Artichoke</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Bacon</IRI>
+        <Literal xml:lang="en">Bacon</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Basil</IRI>
+        <Literal xml:lang="en">Basil</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:creator"/>
+        <IRI>#Bianca</IRI>
+        <Literal>fei</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Bianca</IRI>
+        <Literal xml:lang="en">Bianca</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Bianca</IRI>
+        <Literal xml:lang="en">White</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:creator"/>
+        <IRI>#Burger</IRI>
+        <Literal>fei</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Burger</IRI>
+        <Literal xml:lang="en">Burger</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Cheese</IRI>
+        <Literal xml:lang="en">Cheese</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#City</IRI>
+        <Literal xml:lang="en">City</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Country</IRI>
+        <Literal xml:lang="en">Countru</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Currency</IRI>
+        <Literal xml:lang="en">Currency</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Dish</IRI>
+        <Literal xml:lang="en">Dish</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#ExpensiveBurger</IRI>
+        <Literal xml:lang="en">A Burger that is a MenuItem that has a MenuItemPrice of above 50.00</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#ExpensiveBurger</IRI>
+        <Literal xml:lang="en">ExpensiveBurger</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#ExpensivePizza</IRI>
+        <Literal xml:lang="en">A Pizza that is a MenuItem that has a MenuItemPrice of above 50.00</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#ExpensivePizza</IRI>
+        <Literal xml:lang="en">ExpensivePizza</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:creator"/>
+        <IRI>#Fish</IRI>
+        <Literal>fei</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Fish</IRI>
+        <Literal xml:lang="en">Fish</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Fruit</IRI>
+        <Literal xml:lang="en">Fruit</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Garlic</IRI>
+        <Literal xml:lang="en">Garlic</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Ham</IRI>
+        <Literal xml:lang="en">Ham</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:creator"/>
+        <IRI>#Hamburger</IRI>
+        <Literal>fei</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Herbs</IRI>
+        <Literal xml:lang="en">Herbs</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Ingredient</IRI>
+        <Literal xml:lang="en">Ingredient</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:creator"/>
+        <IRI>#KnownPizza</IRI>
+        <Literal>fei</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Location</IRI>
+        <Literal xml:lang="en">Location</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Margherita</IRI>
+        <Literal xml:lang="en">Margherita</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Meat</IRI>
+        <Literal xml:lang="en">Meat</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#MenuItem</IRI>
+        <Literal xml:lang="en">An item on the menu of a restaurant</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#MenuItem</IRI>
+        <Literal xml:lang="en">MenuItem</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Mozzarella</IRI>
+        <Literal xml:lang="en">Mozzarella</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:creator"/>
+        <IRI>#Mushroom</IRI>
+        <Literal>fei</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Mushroom</IRI>
+        <Literal xml:lang="en">Mushroom</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Oil</IRI>
+        <Literal xml:lang="en">Oil</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#OliveOil</IRI>
+        <Literal xml:lang="en">OliveOil</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:creator"/>
+        <IRI>#Olives</IRI>
+        <Literal>fei</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Olives</IRI>
+        <Literal xml:lang="en">Olives</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Pineapple</IRI>
+        <Literal xml:lang="en">Pineapple</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Pizza</IRI>
+        <Literal xml:lang="en">Pizza</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Place</IRI>
+        <Literal xml:lang="en">Place</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Restaurant</IRI>
+        <Literal xml:lang="en">Restaurant</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Tomato</IRI>
+        <Literal xml:lang="en">Tomato</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:creator"/>
+        <IRI>#Truffle_Pizza</IRI>
+        <Literal>fei</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:creator"/>
+        <IRI>#Tuna</IRI>
+        <Literal>fei</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Tuna</IRI>
+        <Literal xml:lang="en">Tuna</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Vegetable</IRI>
+        <Literal xml:lang="en">Vegetable</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#VegetarianPizza</IRI>
+        <Literal xml:lang="en">A Pizza that has no Meat or Fish toppings.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#VegetarianPizza</IRI>
+        <Literal xml:lang="en">VegetarianPizza</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:creator"/>
+        <IRI>#Veggie_Heaven</IRI>
+        <Literal>fei</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:creator"/>
+        <IRI>#address</IRI>
+        <Literal>fei</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:creator"/>
+        <IRI>#buffalo_mozzarella</IRI>
+        <Literal>fei</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:creator"/>
+        <IRI>#canadian_bacon</IRI>
+        <Literal>fei</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:creator"/>
+        <IRI>#categories</IRI>
+        <Literal>fei</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:creator"/>
+        <IRI>#margherita_pizza</IRI>
+        <Literal>fei</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:creator"/>
+        <IRI>#menu_item_description</IRI>
+        <Literal>fei</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:creator"/>
+        <IRI>#menu_item_price</IRI>
+        <Literal>fei</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:creator"/>
+        <IRI>#menu_item_price_currency</IRI>
+        <Literal>fei</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:creator"/>
+        <IRI>#name</IRI>
+        <Literal>fei</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:creator"/>
+        <IRI>#postcode</IRI>
+        <Literal>fei</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:creator"/>
+        <IRI>#state</IRI>
+        <Literal>fei</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:creator"/>
+        <IRI>#tomato</IRI>
+        <Literal>fei</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:creator"/>
+        <IRI>#truffle</IRI>
+        <Literal>fei</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:creator"/>
+        <IRI>#yellowtail_tuna</IRI>
+        <Literal>fei</Literal>
+    </AnnotationAssertion>
+</Ontology>
+
+
+
+<!-- Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi -->
+

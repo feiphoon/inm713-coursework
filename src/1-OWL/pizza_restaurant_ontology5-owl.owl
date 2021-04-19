@@ -1,0 +1,524 @@
+Prefix(:=<http://www.city.ac.uk/ds/inm713/feiphoon#>)
+Prefix(dc:=<http://purl.org/dc/elements/1.1/>)
+Prefix(fp:=<http://www.city.ac.uk/ds/inm713/feiphoon#>)
+Prefix(owl:=<http://www.w3.org/2002/07/owl#>)
+Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)
+Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)
+Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)
+Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)
+Prefix(dcterms:=<http://purl.org/dc/terms/>)
+
+
+Ontology(<http://www.city.ac.uk/ds/inm713/feiphoon>
+<http://www.city.ac.uk/ds/inm713/feiphoon/1.0.0>
+Annotation(dc:creator "Fei Phoon")
+Annotation(dc:title "Pizza restaurants"@en)
+Annotation(rdfs:comment "An ontology with a focus on restaurants serving pizza menu items."@en)
+Annotation(rdfs:label "Pizza restaurants"@en)
+
+Declaration(Class(fp:Anchovies))
+Declaration(Class(fp:Artichoke))
+Declaration(Class(fp:Bacon))
+Declaration(Class(fp:Basil))
+Declaration(Class(fp:Bianca))
+Declaration(Class(fp:Burger))
+Declaration(Class(fp:Cheese))
+Declaration(Class(fp:City))
+Declaration(Class(fp:Country))
+Declaration(Class(fp:Currency))
+Declaration(Class(fp:Dish))
+Declaration(Class(fp:ExpensiveBurger))
+Declaration(Class(fp:ExpensivePizza))
+Declaration(Class(fp:Fish))
+Declaration(Class(fp:Fruit))
+Declaration(Class(fp:Garlic))
+Declaration(Class(fp:Ham))
+Declaration(Class(fp:Herbs))
+Declaration(Class(fp:Ingredient))
+Declaration(Class(fp:KnownPizza))
+Declaration(Class(fp:Location))
+Declaration(Class(fp:Margherita))
+Declaration(Class(fp:Meat))
+Declaration(Class(fp:MenuItem))
+Declaration(Class(fp:Mozzarella))
+Declaration(Class(fp:Mushroom))
+Declaration(Class(fp:Oil))
+Declaration(Class(fp:OliveOil))
+Declaration(Class(fp:Olives))
+Declaration(Class(fp:Pineapple))
+Declaration(Class(fp:Pizza))
+Declaration(Class(fp:Place))
+Declaration(Class(fp:Restaurant))
+Declaration(Class(fp:Tomato))
+Declaration(Class(fp:Tuna))
+Declaration(Class(fp:Vegetable))
+Declaration(Class(fp:VegetarianPizza))
+Declaration(ObjectProperty(fp:cityHasPlace))
+Declaration(ObjectProperty(fp:countryHasPlace))
+Declaration(ObjectProperty(fp:hasCurrency))
+Declaration(ObjectProperty(fp:hasIngredient))
+Declaration(ObjectProperty(fp:hasIngredientAsTopping))
+Declaration(ObjectProperty(fp:hasMenuItem))
+Declaration(ObjectProperty(fp:hasPlace))
+Declaration(ObjectProperty(fp:isCurrencyOf))
+Declaration(ObjectProperty(fp:isIngredientAsToppingOf))
+Declaration(ObjectProperty(fp:isIngredientOf))
+Declaration(ObjectProperty(fp:isMenuItemAt))
+Declaration(ObjectProperty(fp:isPlaceIn))
+Declaration(ObjectProperty(fp:isPlaceInCity))
+Declaration(ObjectProperty(fp:isPlaceInCountry))
+Declaration(DataProperty(fp:address))
+Declaration(DataProperty(fp:categories))
+Declaration(DataProperty(fp:menu_item_description))
+Declaration(DataProperty(fp:menu_item_price))
+Declaration(DataProperty(fp:menu_item_price_currency))
+Declaration(DataProperty(fp:name))
+Declaration(DataProperty(fp:postcode))
+Declaration(DataProperty(fp:state))
+Declaration(NamedIndividual(fp:Bend))
+Declaration(NamedIndividual(fp:Hamburger))
+Declaration(NamedIndividual(fp:Little_Pizza_Paradise))
+Declaration(NamedIndividual(fp:Truffle_Pizza))
+Declaration(NamedIndividual(fp:US))
+Declaration(NamedIndividual(fp:USD))
+Declaration(NamedIndividual(fp:Veggie_Heaven))
+Declaration(NamedIndividual(fp:buffalo_mozzarella))
+Declaration(NamedIndividual(fp:canadian_bacon))
+Declaration(NamedIndividual(fp:margherita_pizza))
+Declaration(NamedIndividual(fp:tomato))
+Declaration(NamedIndividual(fp:truffle))
+Declaration(NamedIndividual(fp:yellowtail_tuna))
+Declaration(AnnotationProperty(dc:creator))
+Declaration(AnnotationProperty(dc:title))
+
+############################
+#   Object Properties
+############################
+
+# Object Property: fp:cityHasPlace (fp:cityHasPlace)
+
+SubObjectPropertyOf(fp:cityHasPlace fp:hasPlace)
+InverseObjectProperties(fp:cityHasPlace fp:isPlaceInCity)
+ObjectPropertyDomain(fp:cityHasPlace fp:City)
+ObjectPropertyRange(fp:cityHasPlace fp:Location)
+
+# Object Property: fp:countryHasPlace (fp:countryHasPlace)
+
+SubObjectPropertyOf(fp:countryHasPlace fp:hasPlace)
+InverseObjectProperties(fp:countryHasPlace fp:isPlaceInCountry)
+ObjectPropertyDomain(fp:countryHasPlace fp:Country)
+ObjectPropertyRange(fp:countryHasPlace fp:City)
+
+# Object Property: fp:hasCurrency (fp:hasCurrency)
+
+InverseObjectProperties(fp:hasCurrency fp:isCurrencyOf)
+FunctionalObjectProperty(fp:hasCurrency)
+ObjectPropertyDomain(fp:hasCurrency fp:Country)
+ObjectPropertyRange(fp:hasCurrency fp:Currency)
+
+# Object Property: fp:hasIngredient (fp:hasIngredient)
+
+InverseObjectProperties(fp:hasIngredient fp:isIngredientOf)
+ObjectPropertyDomain(fp:hasIngredient fp:Dish)
+ObjectPropertyRange(fp:hasIngredient fp:Ingredient)
+
+# Object Property: fp:hasIngredientAsTopping (fp:hasIngredientAsTopping)
+
+SubObjectPropertyOf(fp:hasIngredientAsTopping fp:hasIngredient)
+ObjectPropertyDomain(fp:hasIngredientAsTopping fp:Pizza)
+ObjectPropertyRange(fp:hasIngredientAsTopping fp:Ingredient)
+
+# Object Property: fp:hasMenuItem (fp:hasMenuItem)
+
+InverseObjectProperties(fp:hasMenuItem fp:isMenuItemAt)
+ObjectPropertyDomain(fp:hasMenuItem fp:Restaurant)
+ObjectPropertyRange(fp:hasMenuItem fp:Dish)
+
+# Object Property: fp:hasPlace (fp:hasPlace)
+
+InverseObjectProperties(fp:hasPlace fp:isPlaceIn)
+
+# Object Property: fp:isCurrencyOf (fp:isCurrencyOf)
+
+ObjectPropertyDomain(fp:isCurrencyOf fp:Currency)
+ObjectPropertyRange(fp:isCurrencyOf fp:Country)
+
+# Object Property: fp:isIngredientAsToppingOf (fp:isIngredientAsToppingOf)
+
+SubObjectPropertyOf(fp:isIngredientAsToppingOf fp:isIngredientOf)
+FunctionalObjectProperty(fp:isIngredientAsToppingOf)
+ObjectPropertyDomain(fp:isIngredientAsToppingOf fp:Ingredient)
+ObjectPropertyRange(fp:isIngredientAsToppingOf fp:Pizza)
+
+# Object Property: fp:isIngredientOf (fp:isIngredientOf)
+
+FunctionalObjectProperty(fp:isIngredientOf)
+ObjectPropertyDomain(fp:isIngredientOf fp:Ingredient)
+ObjectPropertyRange(fp:isIngredientOf fp:Dish)
+
+# Object Property: fp:isMenuItemAt (fp:isMenuItemAt)
+
+FunctionalObjectProperty(fp:isMenuItemAt)
+ObjectPropertyDomain(fp:isMenuItemAt fp:Dish)
+ObjectPropertyRange(fp:isMenuItemAt fp:Restaurant)
+
+# Object Property: fp:isPlaceInCity (fp:isPlaceInCity)
+
+SubObjectPropertyOf(fp:isPlaceInCity fp:isPlaceIn)
+ObjectPropertyDomain(fp:isPlaceInCity fp:Location)
+ObjectPropertyRange(fp:isPlaceInCity fp:City)
+
+# Object Property: fp:isPlaceInCountry (fp:isPlaceInCountry)
+
+SubObjectPropertyOf(fp:isPlaceInCountry fp:isPlaceIn)
+ObjectPropertyDomain(fp:isPlaceInCountry fp:City)
+ObjectPropertyRange(fp:isPlaceInCountry fp:Country)
+
+
+############################
+#   Data Properties
+############################
+
+# Data Property: fp:address (fp:address)
+
+AnnotationAssertion(dc:creator fp:address "fei"^^xsd:string)
+FunctionalDataProperty(fp:address)
+DataPropertyDomain(fp:address fp:Location)
+DataPropertyRange(fp:address rdf:PlainLiteral)
+
+# Data Property: fp:categories (fp:categories)
+
+AnnotationAssertion(dc:creator fp:categories "fei"^^xsd:string)
+FunctionalDataProperty(fp:categories)
+DataPropertyDomain(fp:categories fp:Location)
+DataPropertyRange(fp:categories rdf:PlainLiteral)
+
+# Data Property: fp:menu_item_description (fp:menu_item_description)
+
+AnnotationAssertion(dc:creator fp:menu_item_description "fei"^^xsd:string)
+FunctionalDataProperty(fp:menu_item_description)
+DataPropertyDomain(fp:menu_item_description fp:MenuItem)
+DataPropertyRange(fp:menu_item_description rdf:PlainLiteral)
+
+# Data Property: fp:menu_item_price (fp:menu_item_price)
+
+AnnotationAssertion(dc:creator fp:menu_item_price "fei"^^xsd:string)
+FunctionalDataProperty(fp:menu_item_price)
+DataPropertyDomain(fp:menu_item_price fp:MenuItem)
+DataPropertyRange(fp:menu_item_price xsd:decimal)
+
+# Data Property: fp:menu_item_price_currency (fp:menu_item_price_currency)
+
+AnnotationAssertion(dc:creator fp:menu_item_price_currency "fei"^^xsd:string)
+FunctionalDataProperty(fp:menu_item_price_currency)
+DataPropertyDomain(fp:menu_item_price_currency fp:MenuItem)
+DataPropertyRange(fp:menu_item_price_currency xsd:string)
+
+# Data Property: fp:name (fp:name)
+
+AnnotationAssertion(dc:creator fp:name "fei"^^xsd:string)
+FunctionalDataProperty(fp:name)
+DataPropertyDomain(fp:name owl:Thing)
+DataPropertyRange(fp:name rdf:PlainLiteral)
+
+# Data Property: fp:postcode (fp:postcode)
+
+AnnotationAssertion(dc:creator fp:postcode "fei"^^xsd:string)
+FunctionalDataProperty(fp:postcode)
+DataPropertyDomain(fp:postcode fp:Location)
+DataPropertyRange(fp:postcode xsd:string)
+
+# Data Property: fp:state (fp:state)
+
+AnnotationAssertion(dc:creator fp:state "fei"^^xsd:string)
+DataPropertyDomain(fp:state fp:Location)
+DataPropertyRange(fp:state xsd:string)
+
+
+
+############################
+#   Classes
+############################
+
+# Class: fp:Anchovies (Anchovies)
+
+AnnotationAssertion(dc:creator fp:Anchovies "fei"^^xsd:string)
+AnnotationAssertion(rdfs:label fp:Anchovies "Anchovies"@en)
+SubClassOf(fp:Anchovies fp:Fish)
+
+# Class: fp:Artichoke (Artichoke)
+
+AnnotationAssertion(dc:creator fp:Artichoke "fei"^^xsd:string)
+AnnotationAssertion(rdfs:label fp:Artichoke "Artichoke"@en)
+SubClassOf(fp:Artichoke fp:Vegetable)
+
+# Class: fp:Bacon (Bacon)
+
+AnnotationAssertion(rdfs:label fp:Bacon "Bacon"@en)
+SubClassOf(fp:Bacon fp:Meat)
+
+# Class: fp:Basil (Basil)
+
+AnnotationAssertion(rdfs:label fp:Basil "Basil"@en)
+SubClassOf(fp:Basil fp:Herbs)
+
+# Class: fp:Bianca (White)
+
+AnnotationAssertion(dc:creator fp:Bianca "fei"^^xsd:string)
+AnnotationAssertion(rdfs:label fp:Bianca "Bianca"@en)
+AnnotationAssertion(rdfs:label fp:Bianca "White"@en)
+SubClassOf(fp:Bianca fp:KnownPizza)
+SubClassOf(fp:Bianca ObjectIntersectionOf(fp:Pizza ObjectComplementOf(ObjectSomeValuesFrom(fp:hasIngredientAsTopping fp:Tomato))))
+
+# Class: fp:Burger (Burger)
+
+AnnotationAssertion(dc:creator fp:Burger "fei"^^xsd:string)
+AnnotationAssertion(rdfs:label fp:Burger "Burger"@en)
+SubClassOf(fp:Burger fp:Dish)
+DisjointClasses(fp:Burger fp:Pizza)
+
+# Class: fp:Cheese (Cheese)
+
+AnnotationAssertion(rdfs:label fp:Cheese "Cheese"@en)
+SubClassOf(fp:Cheese fp:Ingredient)
+
+# Class: fp:City (City)
+
+AnnotationAssertion(rdfs:label fp:City "City"@en)
+SubClassOf(fp:City fp:Place)
+
+# Class: fp:Country (Countru)
+
+AnnotationAssertion(rdfs:label fp:Country "Countru"@en)
+SubClassOf(fp:Country fp:Place)
+
+# Class: fp:Currency (Currency)
+
+AnnotationAssertion(rdfs:label fp:Currency "Currency"@en)
+
+# Class: fp:Dish (Dish)
+
+AnnotationAssertion(rdfs:label fp:Dish "Dish"@en)
+
+# Class: fp:ExpensiveBurger (ExpensiveBurger)
+
+AnnotationAssertion(rdfs:comment fp:ExpensiveBurger "A Burger that is a MenuItem that has a MenuItemPrice of above 50.00"@en)
+AnnotationAssertion(rdfs:label fp:ExpensiveBurger "ExpensiveBurger"@en)
+SubClassOf(fp:ExpensiveBurger fp:Burger)
+SubClassOf(fp:ExpensiveBurger fp:MenuItem)
+
+# Class: fp:ExpensivePizza (ExpensivePizza)
+
+AnnotationAssertion(rdfs:comment fp:ExpensivePizza "A Pizza that is a MenuItem that has a MenuItemPrice of above 50.00"@en)
+AnnotationAssertion(rdfs:label fp:ExpensivePizza "ExpensivePizza"@en)
+SubClassOf(fp:ExpensivePizza fp:MenuItem)
+SubClassOf(fp:ExpensivePizza fp:Pizza)
+
+# Class: fp:Fish (Fish)
+
+AnnotationAssertion(dc:creator fp:Fish "fei"^^xsd:string)
+AnnotationAssertion(rdfs:label fp:Fish "Fish"@en)
+SubClassOf(fp:Fish fp:Ingredient)
+
+# Class: fp:Fruit (Fruit)
+
+AnnotationAssertion(rdfs:label fp:Fruit "Fruit"@en)
+SubClassOf(fp:Fruit fp:Ingredient)
+
+# Class: fp:Garlic (Garlic)
+
+AnnotationAssertion(rdfs:label fp:Garlic "Garlic"@en)
+SubClassOf(fp:Garlic fp:Vegetable)
+
+# Class: fp:Ham (Ham)
+
+AnnotationAssertion(rdfs:label fp:Ham "Ham"@en)
+SubClassOf(fp:Ham fp:Meat)
+
+# Class: fp:Herbs (Herbs)
+
+AnnotationAssertion(rdfs:label fp:Herbs "Herbs"@en)
+SubClassOf(fp:Herbs fp:Vegetable)
+
+# Class: fp:Ingredient (Ingredient)
+
+AnnotationAssertion(rdfs:label fp:Ingredient "Ingredient"@en)
+
+# Class: fp:KnownPizza (fp:KnownPizza)
+
+AnnotationAssertion(dc:creator fp:KnownPizza "fei"^^xsd:string)
+SubClassOf(fp:KnownPizza fp:Pizza)
+
+# Class: fp:Location (Location)
+
+AnnotationAssertion(rdfs:label fp:Location "Location"@en)
+SubClassOf(fp:Location fp:Place)
+
+# Class: fp:Margherita (Margherita)
+
+AnnotationAssertion(rdfs:label fp:Margherita "Margherita"@en)
+SubClassOf(fp:Margherita ObjectIntersectionOf(fp:KnownPizza ObjectAllValuesFrom(fp:hasIngredientAsTopping ObjectIntersectionOf(fp:Mozzarella fp:Tomato))))
+
+# Class: fp:Meat (Meat)
+
+AnnotationAssertion(rdfs:label fp:Meat "Meat"@en)
+SubClassOf(fp:Meat fp:Ingredient)
+
+# Class: fp:MenuItem (MenuItem)
+
+AnnotationAssertion(rdfs:comment fp:MenuItem "An item on the menu of a restaurant"@en)
+AnnotationAssertion(rdfs:label fp:MenuItem "MenuItem"@en)
+
+# Class: fp:Mozzarella (Mozzarella)
+
+AnnotationAssertion(rdfs:label fp:Mozzarella "Mozzarella"@en)
+SubClassOf(fp:Mozzarella fp:Cheese)
+
+# Class: fp:Mushroom (Mushroom)
+
+AnnotationAssertion(dc:creator fp:Mushroom "fei"^^xsd:string)
+AnnotationAssertion(rdfs:label fp:Mushroom "Mushroom"@en)
+SubClassOf(fp:Mushroom fp:Vegetable)
+
+# Class: fp:Oil (Oil)
+
+AnnotationAssertion(rdfs:label fp:Oil "Oil"@en)
+SubClassOf(fp:Oil fp:Ingredient)
+
+# Class: fp:OliveOil (OliveOil)
+
+AnnotationAssertion(rdfs:label fp:OliveOil "OliveOil"@en)
+SubClassOf(fp:OliveOil fp:Oil)
+
+# Class: fp:Olives (Olives)
+
+AnnotationAssertion(dc:creator fp:Olives "fei"^^xsd:string)
+AnnotationAssertion(rdfs:label fp:Olives "Olives"@en)
+SubClassOf(fp:Olives fp:Vegetable)
+
+# Class: fp:Pineapple (Pineapple)
+
+AnnotationAssertion(rdfs:label fp:Pineapple "Pineapple"@en)
+SubClassOf(fp:Pineapple fp:Fruit)
+
+# Class: fp:Pizza (Pizza)
+
+AnnotationAssertion(rdfs:label fp:Pizza "Pizza"@en)
+SubClassOf(fp:Pizza fp:Dish)
+
+# Class: fp:Place (Place)
+
+AnnotationAssertion(rdfs:label fp:Place "Place"@en)
+
+# Class: fp:Restaurant (Restaurant)
+
+AnnotationAssertion(rdfs:label fp:Restaurant "Restaurant"@en)
+SubClassOf(fp:Restaurant fp:Location)
+
+# Class: fp:Tomato (Tomato)
+
+AnnotationAssertion(rdfs:label fp:Tomato "Tomato"@en)
+SubClassOf(fp:Tomato fp:Vegetable)
+
+# Class: fp:Tuna (Tuna)
+
+AnnotationAssertion(dc:creator fp:Tuna "fei"^^xsd:string)
+AnnotationAssertion(rdfs:label fp:Tuna "Tuna"@en)
+SubClassOf(fp:Tuna fp:Fish)
+
+# Class: fp:Vegetable (Vegetable)
+
+AnnotationAssertion(rdfs:label fp:Vegetable "Vegetable"@en)
+SubClassOf(fp:Vegetable fp:Ingredient)
+
+# Class: fp:VegetarianPizza (VegetarianPizza)
+
+AnnotationAssertion(rdfs:comment fp:VegetarianPizza "A Pizza that has no Meat or Fish toppings."@en)
+AnnotationAssertion(rdfs:label fp:VegetarianPizza "VegetarianPizza"@en)
+EquivalentClasses(fp:VegetarianPizza ObjectIntersectionOf(fp:Pizza ObjectIntersectionOf(ObjectComplementOf(ObjectSomeValuesFrom(fp:hasIngredientAsTopping fp:Fish)) ObjectComplementOf(ObjectSomeValuesFrom(fp:hasIngredientAsTopping fp:Meat))) ObjectComplementOf(ObjectSomeValuesFrom(fp:hasIngredientAsTopping fp:Meat))))
+SubClassOf(fp:VegetarianPizza fp:MenuItem)
+SubClassOf(fp:VegetarianPizza fp:Pizza)
+
+
+############################
+#   Named Individuals
+############################
+
+# Individual: fp:Bend (fp:Bend)
+
+ClassAssertion(fp:City fp:Bend)
+ObjectPropertyAssertion(fp:isPlaceIn fp:Bend fp:US)
+
+# Individual: fp:Hamburger (fp:Hamburger)
+
+AnnotationAssertion(dc:creator fp:Hamburger "fei"^^xsd:string)
+ClassAssertion(fp:Burger fp:Hamburger)
+ClassAssertion(fp:MenuItem fp:Hamburger)
+ObjectPropertyAssertion(fp:isMenuItemAt fp:Hamburger fp:Little_Pizza_Paradise)
+
+# Individual: fp:Little_Pizza_Paradise (fp:Little_Pizza_Paradise)
+
+ClassAssertion(fp:Restaurant fp:Little_Pizza_Paradise)
+ObjectPropertyAssertion(fp:isPlaceIn fp:Little_Pizza_Paradise fp:Bend)
+
+# Individual: fp:Truffle_Pizza (fp:Truffle_Pizza)
+
+AnnotationAssertion(dc:creator fp:Truffle_Pizza "fei"^^xsd:string)
+ClassAssertion(fp:MenuItem fp:Truffle_Pizza)
+ClassAssertion(fp:Pizza fp:Truffle_Pizza)
+ObjectPropertyAssertion(fp:hasIngredientAsTopping fp:Truffle_Pizza fp:truffle)
+ObjectPropertyAssertion(fp:isMenuItemAt fp:Truffle_Pizza fp:Little_Pizza_Paradise)
+
+# Individual: fp:US (fp:US)
+
+ClassAssertion(fp:Country fp:US)
+ObjectPropertyAssertion(fp:hasCurrency fp:US fp:USD)
+ObjectPropertyAssertion(fp:hasPlace fp:US fp:Bend)
+
+# Individual: fp:USD (fp:USD)
+
+ClassAssertion(fp:Currency fp:USD)
+ObjectPropertyAssertion(fp:isCurrencyOf fp:USD fp:US)
+
+# Individual: fp:Veggie_Heaven (fp:Veggie_Heaven)
+
+AnnotationAssertion(dc:creator fp:Veggie_Heaven "fei"^^xsd:string)
+ClassAssertion(fp:Restaurant fp:Veggie_Heaven)
+
+# Individual: fp:buffalo_mozzarella (fp:buffalo_mozzarella)
+
+AnnotationAssertion(dc:creator fp:buffalo_mozzarella "fei"^^xsd:string)
+ClassAssertion(fp:Mozzarella fp:buffalo_mozzarella)
+
+# Individual: fp:canadian_bacon (fp:canadian_bacon)
+
+AnnotationAssertion(dc:creator fp:canadian_bacon "fei"^^xsd:string)
+ClassAssertion(fp:Bacon fp:canadian_bacon)
+
+# Individual: fp:margherita_pizza (fp:margherita_pizza)
+
+AnnotationAssertion(dc:creator fp:margherita_pizza "fei"^^xsd:string)
+ClassAssertion(fp:Margherita fp:margherita_pizza)
+ClassAssertion(fp:MenuItem fp:margherita_pizza)
+ClassAssertion(fp:Pizza fp:margherita_pizza)
+ObjectPropertyAssertion(fp:hasIngredientAsTopping fp:margherita_pizza fp:buffalo_mozzarella)
+ObjectPropertyAssertion(fp:hasIngredientAsTopping fp:margherita_pizza fp:tomato)
+ObjectPropertyAssertion(fp:isMenuItemAt fp:margherita_pizza fp:Veggie_Heaven)
+
+# Individual: fp:tomato (fp:tomato)
+
+AnnotationAssertion(dc:creator fp:tomato "fei"^^xsd:string)
+ClassAssertion(fp:Tomato fp:tomato)
+
+# Individual: fp:truffle (fp:truffle)
+
+AnnotationAssertion(dc:creator fp:truffle "fei"^^xsd:string)
+ClassAssertion(fp:Mushroom fp:truffle)
+
+# Individual: fp:yellowtail_tuna (fp:yellowtail_tuna)
+
+AnnotationAssertion(dc:creator fp:yellowtail_tuna "fei"^^xsd:string)
+ClassAssertion(fp:Tuna fp:yellowtail_tuna)
+
+
+)

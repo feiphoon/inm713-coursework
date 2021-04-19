@@ -1,0 +1,575 @@
+@prefix : <http://www.city.ac.uk/ds/inm713/feiphoon#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix fp: <http://www.city.ac.uk/ds/inm713/feiphoon#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@base <http://www.city.ac.uk/ds/inm713/feiphoon> .
+
+<http://www.city.ac.uk/ds/inm713/feiphoon> rdf:type owl:Ontology ;
+                                            owl:versionIRI <http://www.city.ac.uk/ds/inm713/feiphoon/1.0.0> ;
+                                            dc:creator "Fei Phoon" ;
+                                            dc:title "Pizza restaurants"@en ;
+                                            rdfs:comment "An ontology with a focus on restaurants serving pizza menu items."@en ;
+                                            rdfs:label "Pizza restaurants"@en .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://purl.org/dc/elements/1.1/creator
+dc:creator rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/elements/1.1/title
+dc:title rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#cityHasPlace
+fp:cityHasPlace rdf:type owl:ObjectProperty ;
+                rdfs:subPropertyOf fp:hasPlace ;
+                owl:inverseOf fp:isPlaceInCity ;
+                rdfs:domain fp:City ;
+                rdfs:range fp:Location .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#countryHasPlace
+fp:countryHasPlace rdf:type owl:ObjectProperty ;
+                   rdfs:subPropertyOf fp:hasPlace ;
+                   owl:inverseOf fp:isPlaceInCountry ;
+                   rdfs:domain fp:Country ;
+                   rdfs:range fp:City .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#hasCurrency
+fp:hasCurrency rdf:type owl:ObjectProperty ;
+               owl:inverseOf fp:isCurrencyOf ;
+               rdf:type owl:FunctionalProperty ;
+               rdfs:domain fp:Country ;
+               rdfs:range fp:Currency .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#hasIngredient
+fp:hasIngredient rdf:type owl:ObjectProperty ;
+                 owl:inverseOf fp:isIngredientOf ;
+                 rdfs:domain fp:Dish ;
+                 rdfs:range fp:Ingredient .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#hasIngredientAsTopping
+fp:hasIngredientAsTopping rdf:type owl:ObjectProperty ;
+                          rdfs:subPropertyOf fp:hasIngredient ;
+                          rdfs:domain fp:Pizza ;
+                          rdfs:range fp:Ingredient .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#hasMenuItem
+fp:hasMenuItem rdf:type owl:ObjectProperty ;
+               owl:inverseOf fp:isMenuItemAt ;
+               rdfs:domain fp:Restaurant ;
+               rdfs:range fp:Dish .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#hasPlace
+fp:hasPlace rdf:type owl:ObjectProperty ;
+            owl:inverseOf fp:isPlaceIn .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#isCurrencyOf
+fp:isCurrencyOf rdf:type owl:ObjectProperty ;
+                rdfs:domain fp:Currency ;
+                rdfs:range fp:Country .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#isIngredientAsToppingOf
+fp:isIngredientAsToppingOf rdf:type owl:ObjectProperty ;
+                           rdfs:subPropertyOf fp:isIngredientOf ;
+                           rdf:type owl:FunctionalProperty ;
+                           rdfs:domain fp:Ingredient ;
+                           rdfs:range fp:Pizza .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#isIngredientOf
+fp:isIngredientOf rdf:type owl:ObjectProperty ,
+                           owl:FunctionalProperty ;
+                  rdfs:domain fp:Ingredient ;
+                  rdfs:range fp:Dish .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#isMenuItemAt
+fp:isMenuItemAt rdf:type owl:ObjectProperty ,
+                         owl:FunctionalProperty ;
+                rdfs:domain fp:Dish ;
+                rdfs:range fp:Restaurant .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#isPlaceIn
+fp:isPlaceIn rdf:type owl:ObjectProperty .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#isPlaceInCity
+fp:isPlaceInCity rdf:type owl:ObjectProperty ;
+                 rdfs:subPropertyOf fp:isPlaceIn ;
+                 rdfs:domain fp:Location ;
+                 rdfs:range fp:City .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#isPlaceInCountry
+fp:isPlaceInCountry rdf:type owl:ObjectProperty ;
+                    rdfs:subPropertyOf fp:isPlaceIn ;
+                    rdfs:domain fp:City ;
+                    rdfs:range fp:Country .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#address
+fp:address rdf:type owl:DatatypeProperty ,
+                    owl:FunctionalProperty ;
+           rdfs:domain fp:Location ;
+           rdfs:range rdf:PlainLiteral ;
+           dc:creator "fei"^^xsd:string .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#categories
+fp:categories rdf:type owl:DatatypeProperty ,
+                       owl:FunctionalProperty ;
+              rdfs:domain fp:Location ;
+              rdfs:range rdf:PlainLiteral ;
+              dc:creator "fei"^^xsd:string .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#menu_item_description
+fp:menu_item_description rdf:type owl:DatatypeProperty ,
+                                  owl:FunctionalProperty ;
+                         rdfs:domain fp:MenuItem ;
+                         rdfs:range rdf:PlainLiteral ;
+                         dc:creator "fei"^^xsd:string .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#menu_item_price
+fp:menu_item_price rdf:type owl:DatatypeProperty ,
+                            owl:FunctionalProperty ;
+                   rdfs:domain fp:MenuItem ;
+                   rdfs:range xsd:decimal ;
+                   dc:creator "fei"^^xsd:string .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#menu_item_price_currency
+fp:menu_item_price_currency rdf:type owl:DatatypeProperty ,
+                                     owl:FunctionalProperty ;
+                            rdfs:domain fp:MenuItem ;
+                            rdfs:range xsd:string ;
+                            dc:creator "fei"^^xsd:string .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#name
+fp:name rdf:type owl:DatatypeProperty ,
+                 owl:FunctionalProperty ;
+        rdfs:domain owl:Thing ;
+        rdfs:range rdf:PlainLiteral ;
+        dc:creator "fei"^^xsd:string .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#postcode
+fp:postcode rdf:type owl:DatatypeProperty ,
+                     owl:FunctionalProperty ;
+            rdfs:domain fp:Location ;
+            rdfs:range xsd:string ;
+            dc:creator "fei"^^xsd:string .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#state
+fp:state rdf:type owl:DatatypeProperty ;
+         rdfs:domain fp:Location ;
+         rdfs:range xsd:string ;
+         dc:creator "fei"^^xsd:string .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Anchovies
+fp:Anchovies rdf:type owl:Class ;
+             rdfs:subClassOf fp:Fish ;
+             dc:creator "fei"^^xsd:string ;
+             rdfs:label "Anchovies"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Artichoke
+fp:Artichoke rdf:type owl:Class ;
+             rdfs:subClassOf fp:Vegetable ;
+             dc:creator "fei"^^xsd:string ;
+             rdfs:label "Artichoke"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Bacon
+fp:Bacon rdf:type owl:Class ;
+         rdfs:subClassOf fp:Meat ;
+         rdfs:label "Bacon"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Basil
+fp:Basil rdf:type owl:Class ;
+         rdfs:subClassOf fp:Herbs ;
+         rdfs:label "Basil"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Bianca
+fp:Bianca rdf:type owl:Class ;
+          rdfs:subClassOf fp:KnownPizza ,
+                          [ owl:intersectionOf ( fp:Pizza
+                                                 [ rdf:type owl:Class ;
+                                                   owl:complementOf [ rdf:type owl:Restriction ;
+                                                                      owl:onProperty fp:hasIngredientAsTopping ;
+                                                                      owl:someValuesFrom fp:Tomato
+                                                                    ]
+                                                 ]
+                                               ) ;
+                            rdf:type owl:Class
+                          ] ;
+          dc:creator "fei"^^xsd:string ;
+          rdfs:label "Bianca"@en ,
+                     "White"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Burger
+fp:Burger rdf:type owl:Class ;
+          rdfs:subClassOf fp:Dish ;
+          owl:disjointWith fp:Pizza ;
+          dc:creator "fei"^^xsd:string ;
+          rdfs:label "Burger"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Cheese
+fp:Cheese rdf:type owl:Class ;
+          rdfs:subClassOf fp:Ingredient ;
+          rdfs:label "Cheese"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#City
+fp:City rdf:type owl:Class ;
+        rdfs:subClassOf fp:Place ;
+        rdfs:label "City"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Country
+fp:Country rdf:type owl:Class ;
+           rdfs:subClassOf fp:Place ;
+           rdfs:label "Countru"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Currency
+fp:Currency rdf:type owl:Class ;
+            rdfs:label "Currency"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Dish
+fp:Dish rdf:type owl:Class ;
+        rdfs:label "Dish"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#ExpensiveBurger
+fp:ExpensiveBurger rdf:type owl:Class ;
+                   rdfs:subClassOf fp:Burger ,
+                                   fp:MenuItem ;
+                   rdfs:comment "A Burger that is a MenuItem that has a MenuItemPrice of above 50.00"@en ;
+                   rdfs:label "ExpensiveBurger"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#ExpensivePizza
+fp:ExpensivePizza rdf:type owl:Class ;
+                  rdfs:subClassOf fp:MenuItem ,
+                                  fp:Pizza ;
+                  rdfs:comment "A Pizza that is a MenuItem that has a MenuItemPrice of above 50.00"@en ;
+                  rdfs:label "ExpensivePizza"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Fish
+fp:Fish rdf:type owl:Class ;
+        rdfs:subClassOf fp:Ingredient ;
+        dc:creator "fei"^^xsd:string ;
+        rdfs:label "Fish"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Fruit
+fp:Fruit rdf:type owl:Class ;
+         rdfs:subClassOf fp:Ingredient ;
+         rdfs:label "Fruit"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Garlic
+fp:Garlic rdf:type owl:Class ;
+          rdfs:subClassOf fp:Vegetable ;
+          rdfs:label "Garlic"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Ham
+fp:Ham rdf:type owl:Class ;
+       rdfs:subClassOf fp:Meat ;
+       rdfs:label "Ham"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Herbs
+fp:Herbs rdf:type owl:Class ;
+         rdfs:subClassOf fp:Vegetable ;
+         rdfs:label "Herbs"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Ingredient
+fp:Ingredient rdf:type owl:Class ;
+              rdfs:label "Ingredient"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#KnownPizza
+fp:KnownPizza rdf:type owl:Class ;
+              rdfs:subClassOf fp:Pizza ;
+              dc:creator "fei"^^xsd:string .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Location
+fp:Location rdf:type owl:Class ;
+            rdfs:subClassOf fp:Place ;
+            rdfs:label "Location"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Margherita
+fp:Margherita rdf:type owl:Class ;
+              rdfs:subClassOf [ owl:intersectionOf ( fp:KnownPizza
+                                                     [ rdf:type owl:Restriction ;
+                                                       owl:onProperty fp:hasIngredientAsTopping ;
+                                                       owl:allValuesFrom [ owl:intersectionOf ( fp:Mozzarella
+                                                                                                fp:Tomato
+                                                                                              ) ;
+                                                                           rdf:type owl:Class
+                                                                         ]
+                                                     ]
+                                                   ) ;
+                                rdf:type owl:Class
+                              ] ;
+              rdfs:label "Margherita"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Meat
+fp:Meat rdf:type owl:Class ;
+        rdfs:subClassOf fp:Ingredient ;
+        rdfs:label "Meat"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#MenuItem
+fp:MenuItem rdf:type owl:Class ;
+            rdfs:comment "An item on the menu of a restaurant"@en ;
+            rdfs:label "MenuItem"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Mozzarella
+fp:Mozzarella rdf:type owl:Class ;
+              rdfs:subClassOf fp:Cheese ;
+              rdfs:label "Mozzarella"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Mushroom
+fp:Mushroom rdf:type owl:Class ;
+            rdfs:subClassOf fp:Vegetable ;
+            dc:creator "fei"^^xsd:string ;
+            rdfs:label "Mushroom"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Oil
+fp:Oil rdf:type owl:Class ;
+       rdfs:subClassOf fp:Ingredient ;
+       rdfs:label "Oil"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#OliveOil
+fp:OliveOil rdf:type owl:Class ;
+            rdfs:subClassOf fp:Oil ;
+            rdfs:label "OliveOil"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Olives
+fp:Olives rdf:type owl:Class ;
+          rdfs:subClassOf fp:Vegetable ;
+          dc:creator "fei"^^xsd:string ;
+          rdfs:label "Olives"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Pineapple
+fp:Pineapple rdf:type owl:Class ;
+             rdfs:subClassOf fp:Fruit ;
+             rdfs:label "Pineapple"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Pizza
+fp:Pizza rdf:type owl:Class ;
+         rdfs:subClassOf fp:Dish ;
+         rdfs:label "Pizza"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Place
+fp:Place rdf:type owl:Class ;
+         rdfs:label "Place"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Restaurant
+fp:Restaurant rdf:type owl:Class ;
+              rdfs:subClassOf fp:Location ;
+              rdfs:label "Restaurant"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Tomato
+fp:Tomato rdf:type owl:Class ;
+          rdfs:subClassOf fp:Vegetable ;
+          rdfs:label "Tomato"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Tuna
+fp:Tuna rdf:type owl:Class ;
+        rdfs:subClassOf fp:Fish ;
+        dc:creator "fei"^^xsd:string ;
+        rdfs:label "Tuna"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Vegetable
+fp:Vegetable rdf:type owl:Class ;
+             rdfs:subClassOf fp:Ingredient ;
+             rdfs:label "Vegetable"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#VegetarianPizza
+fp:VegetarianPizza rdf:type owl:Class ;
+                   owl:equivalentClass [ owl:intersectionOf ( fp:Pizza
+                                                              [ owl:intersectionOf ( [ rdf:type owl:Class ;
+                                                                                       owl:complementOf [ rdf:type owl:Restriction ;
+                                                                                                          owl:onProperty fp:hasIngredientAsTopping ;
+                                                                                                          owl:someValuesFrom fp:Fish
+                                                                                                        ]
+                                                                                     ]
+                                                                                     [ rdf:type owl:Class ;
+                                                                                       owl:complementOf [ rdf:type owl:Restriction ;
+                                                                                                          owl:onProperty fp:hasIngredientAsTopping ;
+                                                                                                          owl:someValuesFrom fp:Meat
+                                                                                                        ]
+                                                                                     ]
+                                                                                   ) ;
+                                                                rdf:type owl:Class
+                                                              ]
+                                                              [ rdf:type owl:Class ;
+                                                                owl:complementOf [ rdf:type owl:Restriction ;
+                                                                                   owl:onProperty fp:hasIngredientAsTopping ;
+                                                                                   owl:someValuesFrom fp:Meat
+                                                                                 ]
+                                                              ]
+                                                            ) ;
+                                         rdf:type owl:Class
+                                       ] ;
+                   rdfs:subClassOf fp:MenuItem ,
+                                   fp:Pizza ;
+                   rdfs:comment "A Pizza that has no Meat or Fish toppings."@en ;
+                   rdfs:label "VegetarianPizza"@en .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Bend
+fp:Bend rdf:type owl:NamedIndividual ,
+                 fp:City ;
+        fp:isPlaceIn fp:US .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Hamburger
+fp:Hamburger rdf:type owl:NamedIndividual ,
+                      fp:Burger ,
+                      fp:MenuItem ;
+             fp:isMenuItemAt fp:Little_Pizza_Paradise ;
+             dc:creator "fei"^^xsd:string .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Little_Pizza_Paradise
+fp:Little_Pizza_Paradise rdf:type owl:NamedIndividual ,
+                                  fp:Restaurant ;
+                         fp:isPlaceIn fp:Bend .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Truffle_Pizza
+fp:Truffle_Pizza rdf:type owl:NamedIndividual ,
+                          fp:MenuItem ,
+                          fp:Pizza ;
+                 fp:hasIngredientAsTopping fp:truffle ;
+                 fp:isMenuItemAt fp:Little_Pizza_Paradise ;
+                 dc:creator "fei"^^xsd:string .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#US
+fp:US rdf:type owl:NamedIndividual ,
+               fp:Country ;
+      fp:hasCurrency fp:USD ;
+      fp:hasPlace fp:Bend .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#USD
+fp:USD rdf:type owl:NamedIndividual ,
+                fp:Currency ;
+       fp:isCurrencyOf fp:US .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Veggie_Heaven
+fp:Veggie_Heaven rdf:type owl:NamedIndividual ,
+                          fp:Restaurant ;
+                 dc:creator "fei"^^xsd:string .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#buffalo_mozzarella
+fp:buffalo_mozzarella rdf:type owl:NamedIndividual ,
+                               fp:Mozzarella ;
+                      dc:creator "fei"^^xsd:string .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#canadian_bacon
+fp:canadian_bacon rdf:type owl:NamedIndividual ,
+                           fp:Bacon ;
+                  dc:creator "fei"^^xsd:string .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#margherita_pizza
+fp:margherita_pizza rdf:type owl:NamedIndividual ,
+                             fp:Margherita ,
+                             fp:MenuItem ,
+                             fp:Pizza ;
+                    fp:hasIngredientAsTopping fp:buffalo_mozzarella ,
+                                              fp:tomato ;
+                    fp:isMenuItemAt fp:Veggie_Heaven ;
+                    dc:creator "fei"^^xsd:string .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#tomato
+fp:tomato rdf:type owl:NamedIndividual ,
+                   fp:Tomato ;
+          dc:creator "fei"^^xsd:string .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#truffle
+fp:truffle rdf:type owl:NamedIndividual ,
+                    fp:Mushroom ;
+           dc:creator "fei"^^xsd:string .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#yellowtail_tuna
+fp:yellowtail_tuna rdf:type owl:NamedIndividual ,
+                            fp:Tuna ;
+                   dc:creator "fei"^^xsd:string .
+
+
+###  Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi
