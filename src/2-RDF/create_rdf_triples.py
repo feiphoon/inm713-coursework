@@ -4,9 +4,8 @@ Created on 05 March 2021
 @author: ejimenez-ruiz
 """
 import rdflib
-from rdflib import Graph, Namespace
-from rdflib import URIRef
-from rdflib.namespace import RDF
+from rdflib import Graph, Namespace, URIRef, Literal
+from rdflib.namespace import RDF, XSD
 
 import pandas as pd
 
@@ -39,10 +38,40 @@ class TabToGraph:
         self.string_to_uri = {}
 
     def convert_csv_to_rdf(self) -> None:
-        if "name" in self.data_df:
+        if "currency" in self.data_df:
 
             # We give subject column and target type
-            self.mapping_to_create_type_triple("name", self.namespace.Name)
+            self.mapping_to_create_type_triple(
+                subject_col="currency", class_type=self.namespace.Currency
+            )
+
+            self.mapping_to_create_literal_triple(
+                subject_col="currency",
+                object_col="currency",
+                predicate=self.namespace.name,
+                datatype=XSD.string,
+            )
+
+        if "currency" in self.data_df:
+
+            # We give subject column and target type
+            self.mapping_to_create_type_triple(
+                subject_col="currency", class_type=self.namespace.Currency
+            )
+
+            self.mapping_to_create_literal_triple(
+                subject_col="currency",
+                object_col="currency",
+                predicate=self.namespace.name,
+                datatype=XSD.string,
+            )
+
+    @staticmethod
+    def is_nan(x) -> bool:
+        """Check for NaN when the subject value
+        could be a string (so can't use math.isnan())
+        """
+        return x != x
 
     def createURIForEntity(self, entity_name: str) -> Dict[str, str]:
         # We create fresh URI (default option)
@@ -58,8 +87,8 @@ class TabToGraph:
         return self.string_to_uri[entity_name]
 
     def mapping_to_create_type_triple(
-        self, subject_column: str, class_type: rdflib.term.URIRef
-    ):
+        self, subject_col: str, class_type: rdflib.term.URIRef
+    ) -> None:
         """
         Mapping to create triples like lab6:London rdf:type lab6:City
         A mapping may create more than one triple
@@ -82,6 +111,32 @@ class TabToGraph:
             # For the concepts we use the ones in the ontology and we are using the NameSpace class
             # Alternatively one could use URIRef(self.lab6_ns_str+"City") for example
             self.graph.add((URIRef(entity_uri), RDF.type, class_type))
+
+    def mapping_to_create_literal_triple(
+        self, subject_col: str, object_col: str, predicate: str, datatype: str
+    ) -> None:
+        """
+        Mappings to create triples of the form lab6:london lab6:name "London"
+        """
+
+        for subject, lit_value in zip(
+            self.data_df[subject_col], self.data_df[object_col]
+        ):
+
+            # Make sure this does nothing when the object is missing
+            if self.is_nan(lit_value) or lit_value is None or lit_value == "":
+                return
+
+            else:
+                subject = subject.lower()
+                # Use already created URI
+                entity_uri = self.string_to_uri[subject]
+
+                # Literal
+                literal = Literal(lit_value, datatype=datatype)
+
+                # Add new literal triple to graph
+                self.graph.add((URIRef(entity_uri), predicate, literal))
 
     def debug(self):
         pprint(vars(self))
