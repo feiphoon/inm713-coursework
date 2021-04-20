@@ -6,7 +6,7 @@ Created on 05 March 2021
 from pandas.core.frame import DataFrame
 import rdflib
 from rdflib import Graph, Namespace, URIRef, Literal
-from rdflib.namespace import RDF, XSD
+from rdflib.namespace import RDF, XSD, RDFS
 
 import pandas as pd
 from unidecode import unidecode
@@ -111,6 +111,14 @@ class TabToGraph:
         """
         Subtask RDF.2
         """
+        # Add some subclasses
+        self.graph.add(
+            (self.namespace.Restaurant, RDFS.subClassOf, self.namespace.Location)
+        )
+        self.graph.add((self.namespace.Location, RDFS.subClassOf, self.namespace.Place))
+        self.graph.add((self.namespace.City, RDFS.subClassOf, self.namespace.Place))
+        self.graph.add((self.namespace.Country, RDFS.subClassOf, self.namespace.Place))
+
         if "country" in self.data_df:
             self.mapping_to_create_type_triple(
                 subject_col="country", class_type=self.namespace.Country
