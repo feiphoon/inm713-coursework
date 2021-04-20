@@ -6,6 +6,8 @@ Created on 05 March 2021
 import rdflib
 from rdflib import Graph, Namespace, URIRef, Literal
 from rdflib.namespace import RDF, XSD, RDFS
+from rdflib.util import guess_format
+import owlrl
 
 import time
 import pandas as pd
@@ -393,6 +395,22 @@ class TabToGraph:
                 # New triple
                 self.graph.add((URIRef(subject_uri), predicate, URIRef(object_uri)))
 
+    def perform_reasoning(self, ontology_file: str) -> None:
+        """
+        Expand the graph with the inferred triples.
+        """
+        # print(guess_format(ontology_file))
+        self.graph.load(ontology_file, format=guess_format(ontology_file))
+
+        print(f"Triples including ontology: {len(self.graph)}.")
+
+        # We apply reasoning and expand the graph with new triples
+        owlrl.DeductiveClosure(
+            owlrl.OWLRL_Semantics, axiomatic_triples=False, datatype_axioms=False
+        ).expand(self.graph)
+
+        print(f"Triples after OWL 2 RL reasoning: {len(self.graph)}.")
+
     def debug(self) -> None:
         pprint(vars(self))
 
@@ -427,14 +445,16 @@ if __name__ == "__main__":
     # tab_to_graph.print()
 
     # Graph with only data
-    tab_to_graph.save_graph(output_file="pizza_restaurants.ttl")
+    tab_to_graph.save_graph(output_file="pizza_restaurants_without_reasoning.ttl")
 
-    # # OWL 2 RL reasoning
-    # solution.performReasoning("ontology_lab6.ttl")  ##ttl format
-    # # solution.performReasoning("ontology_lab6.owl") ##owl (rdf/xml) format
+    # Apply OWL 2 RL reasoning
+    tab_to_graph.perform_reasoning(
+        "../1-OWL/pizza_restaurant_ontology5-slim.ttl"
+    )  # ttl format
+    # # tab_to_graph.perform_reasoning("../data/pizza_restaurant_ontology5-slim.owl") ##owl (rdf/xml) format
 
     # # Graph with ontology triples and entailed triples
-    # solution.saveGraph(file.replace(".csv", "-" + task) + "-reasoning.ttl")
+    tab_to_graph.save_graph("pizza_restaurants_with_reasoning.ttl")
 
     # # SPARQL results into CSV
     # solution.performSPARQLQuery(file.replace(".csv", "-" + task) + "-query-results.csv")
