@@ -291,7 +291,7 @@ class TabToGraph:
             )
 
             toc = time.perf_counter()
-            print(f"Finished in {toc - tic} seconds.")
+            print(f"Finished converting CSV to RDF in {toc - tic} seconds.")
             print(f"Extracted {len(self.graph)} triples.")
 
     @staticmethod
