@@ -147,7 +147,7 @@ class TabToGraph:
                 subject_col="country",
                 object_col="country",
                 predicate=self.namespace.name,
-                datatype=RDF.PlainLiteral,
+                datatype=XSD.string,
             )
 
         if "currency" in self.data_df:
@@ -159,7 +159,7 @@ class TabToGraph:
                 subject_col="currency",
                 object_col="currency",
                 predicate=self.namespace.name,
-                datatype=RDF.PlainLiteral,
+                datatype=XSD.string,
             )
 
             self.mapping_to_create_object_triple(
@@ -178,7 +178,7 @@ class TabToGraph:
                 subject_col="city",
                 object_col="city",
                 predicate=self.namespace.name,
-                datatype=RDF.PlainLiteral,
+                datatype=XSD.string,
             )
 
         if "state" in self.data_df:
@@ -192,7 +192,7 @@ class TabToGraph:
                 subject_col="state",
                 object_col="state",
                 predicate=self.namespace.name,
-                datatype=RDF.PlainLiteral,
+                datatype=XSD.string,
             )
 
         # supposed to be Location
@@ -206,7 +206,7 @@ class TabToGraph:
         #         subject_col="state",
         #         object_col="state",
         #         predicate=self.namespace.name,
-        #         datatype=RDF.PlainLiteral,
+        #         datatype=XSD.string,
         #     )
 
         if "name" in self.data_df:
@@ -239,14 +239,14 @@ class TabToGraph:
                 subject_col="complete_address",
                 object_col="address",
                 predicate=self.namespace.address,
-                datatype=RDF.PlainLiteral,
+                datatype=XSD.string,
             )
 
             self.mapping_to_create_literal_triple(
                 subject_col="complete_address",
                 object_col="city",
                 predicate=self.namespace.city,
-                datatype=RDF.PlainLiteral,
+                datatype=XSD.string,
             )
 
             self.mapping_to_create_literal_triple(
@@ -267,7 +267,7 @@ class TabToGraph:
                 subject_col="complete_address",
                 object_col="country",
                 predicate=self.namespace.country,
-                datatype=RDF.PlainLiteral,
+                datatype=XSD.string,
             )
 
             self.mapping_to_create_literal_triple(
@@ -296,7 +296,7 @@ class TabToGraph:
                 subject_col="cleaned_name",
                 object_col="name",
                 predicate=self.namespace.name,
-                datatype=RDF.PlainLiteral,
+                datatype=XSD.string,
             )
 
         if "cleaned_name" in self.data_df and "menu item" in self.data_df:
@@ -327,7 +327,7 @@ class TabToGraph:
                 subject_col="location_menu_item",
                 object_col="cleaned_menu_item",
                 predicate=self.namespace.name,
-                datatype=RDF.PlainLiteral,
+                datatype=XSD.string,
             )
 
             self.mapping_to_create_literal_triple(
@@ -341,14 +341,14 @@ class TabToGraph:
                 subject_col="location_menu_item",
                 object_col="currency",
                 predicate=self.namespace.menu_item_price_currency,
-                datatype=RDF.PlainLiteral,
+                datatype=XSD.string,
             )
 
             self.mapping_to_create_literal_triple(
                 subject_col="location_menu_item",
                 object_col="item description",
                 predicate=self.namespace.menu_item_description,
-                datatype=RDF.PlainLiteral,
+                datatype=XSD.string,
             )
 
         if ("location_menu_item" in self.data_df) and (
@@ -361,7 +361,7 @@ class TabToGraph:
                 predicate=self.namespace.isMenuItemAt,
             )
 
-        # Then let's pick out our Known Pizza types
+        # Then let's pick out our Known Pizza
         if ("cleaned_menu_item" in self.data_df) and (
             "location_menu_item" in self.data_df
         ):
@@ -578,11 +578,11 @@ class TabToGraph:
 
 
 if __name__ == "__main__":
-    # INPUT_FILEPATH: str = "../../data/INM713_coursework_data_pizza_8358_1_reduced.csv"
+    INPUT_FILEPATH: str = "../../data/INM713_coursework_data_pizza_8358_1_reduced.csv"
     # INPUT_FILEPATH = "../../data/data_pizza_preprocessing_test.csv"
     # INPUT_FILEPATH = "../../data/data_pizza_shared_restaurant_name_test.csv"
     # INPUT_FILEPATH = "../../data/data_pizza_bianca_white_test.csv"
-    INPUT_FILEPATH = "../../data/data_pizza_margherita_test.csv"
+    # INPUT_FILEPATH = "../../data/data_pizza_margherita_test.csv"
     NAMESPACE: str = Namespace("http://www.city.ac.uk/ds/inm713/feiphoon#")
     PREFIX: str = "fp"
 
@@ -592,20 +592,17 @@ if __name__ == "__main__":
 
     tab_to_graph.convert_csv_to_rdf()
 
-    for s, p, o in tab_to_graph.graph:
-        print((s.n3(), p.n3(), o.n3()))
-
     # Graph with only data
-    # tab_to_graph.save_graph(output_file="pizza_restaurants_without_reasoning.ttl")
+    tab_to_graph.save_graph(output_file="pizza_restaurants_without_reasoning.ttl")
 
     # Apply OWL 2 RL reasoning
-    # tab_to_graph.perform_reasoning(
-    #     "../../1-OWL/pizza_restaurant_ontology6.ttl"
-    # )  # ttl format
+    tab_to_graph.perform_reasoning(
+        "../../1-OWL/pizza_restaurant_ontology6.ttl"
+    )  # ttl format
     # # tab_to_graph.perform_reasoning("../data/pizza_restaurant_ontology5-slim.owl") ##owl (rdf/xml) format
 
     # # Graph with ontology triples and entailed triples
-    # tab_to_graph.save_graph("pizza_restaurants_with_reasoning.ttl")
+    tab_to_graph.save_graph("pizza_restaurants_with_reasoning.ttl")
 
     # # SPARQL results into CSV
     # solution.performSPARQLQuery(file.replace(".csv", "-" + task) + "-query-results.csv")
