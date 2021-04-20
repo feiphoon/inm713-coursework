@@ -72,25 +72,31 @@ class TabToGraph:
 
         # Target some known troublemakers
         if "@" in non_alphanum_chars:
-            df[transformed_col] = df[transformed_col].str.replace("@", "at")
+            df[transformed_col] = df[transformed_col].str.replace(
+                "@", "at", regex=False
+            )
             non_alphanum_chars.remove("@")
 
         if "&" in non_alphanum_chars:
-            df[transformed_col] = df[transformed_col].str.replace("&", "and")
+            df[transformed_col] = df[transformed_col].str.replace(
+                "&", "and", regex=False
+            )
             non_alphanum_chars.remove("&")
 
         if "+" in non_alphanum_chars:
-            df[transformed_col] = df[transformed_col].str.replace("+", "and")
+            df[transformed_col] = df[transformed_col].str.replace(
+                "+", "and", regex=False
+            )
             non_alphanum_chars.remove("+")
 
         # Remove sketchy characters
         for _ in non_alphanum_chars:
-            df[transformed_col] = df[transformed_col].str.replace(_, "")
+            df[transformed_col] = df[transformed_col].str.replace(_, "", regex=False)
 
         # Collapse remaining double whitespace,
         # possibly resulting from character removals.
         # E.g "Bonnie & Clyde" -> "Bonnie  Clyde"
-        df[transformed_col] = df[transformed_col].str.replace(r" +", " ")
+        df[transformed_col] = df[transformed_col].str.replace(r" +", " ", regex=True)
 
     @staticmethod
     def replace_missing_values(
