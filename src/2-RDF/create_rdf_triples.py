@@ -326,7 +326,7 @@ class TabToGraph:
             if self.is_object_missing(subject):
                 return
             else:
-                entity_uri = None
+                entity_uri: str = None
                 subject = subject.lower()
 
                 # We use the ascii name to create the fresh URI for a city in the dataset
@@ -393,15 +393,16 @@ class TabToGraph:
                 # New triple
                 self.graph.add((URIRef(subject_uri), predicate, URIRef(object_uri)))
 
-    def debug(self):
+    def debug(self) -> None:
         pprint(vars(self))
 
-    def print(self, nrows: int = None):
+    def print(self, nrows: int = None) -> None:
         if not nrows:
             nrows = len(self.graph)
 
         for s, p, o in self.graph[:nrows]:
             print((s.n3(), p.n3(), o.n3()))
+
         print(f"Printed {len(self.graph)} triples.")
 
     def save_graph(self, output_file: str) -> None:
@@ -411,10 +412,10 @@ class TabToGraph:
 
 
 if __name__ == "__main__":
-    INPUT_FILEPATH = "../data/INM713_coursework_data_pizza_8358_1_reduced.csv"
+    INPUT_FILEPATH: str = "../data/INM713_coursework_data_pizza_8358_1_reduced.csv"
     # INPUT_FILEPATH = "../data/data_pizza_spike.csv"
-    NAMESPACE = Namespace("http://www.city.ac.uk/ds/inm713/feiphoon#")
-    PREFIX = "fp"
+    NAMESPACE: str = Namespace("http://www.city.ac.uk/ds/inm713/feiphoon#")
+    PREFIX: str = "fp"
 
     tab_to_graph = TabToGraph(
         input_filepath=INPUT_FILEPATH, namespace_str=NAMESPACE, prefix=PREFIX
