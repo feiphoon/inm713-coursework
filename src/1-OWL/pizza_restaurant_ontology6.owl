@@ -744,6 +744,27 @@
         <rdfs:comment xml:lang="en">A Pizza that has no Meat or Fish toppings.</rdfs:comment>
         <rdfs:label xml:lang="en">VegetarianPizza</rdfs:label>
     </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#City"/>
+            <rdf:Description rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#Country"/>
+            <rdf:Description rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#Location"/>
+            <rdf:Description rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#Restaurant"/>
+            <rdf:Description rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#State"/>
+        </owl:members>
+    </rdf:Description>
 </rdf:RDF>
 
 
