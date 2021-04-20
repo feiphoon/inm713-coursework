@@ -8,6 +8,7 @@ import rdflib
 from rdflib import Graph, Namespace, URIRef, Literal
 from rdflib.namespace import RDF, XSD, RDFS
 
+import time
 import pandas as pd
 from unidecode import unidecode
 
@@ -111,6 +112,8 @@ class TabToGraph:
         """
         Subtask RDF.2
         """
+        tic = time.perf_counter()
+
         # Add some subclasses
         self.graph.add(
             (self.namespace.Restaurant, RDFS.subClassOf, self.namespace.Location)
@@ -278,6 +281,10 @@ class TabToGraph:
                 predicate=self.namespace.menu_item_description,
                 datatype=RDF.PlainLiteral,
             )
+
+            toc = time.perf_counter()
+            print(f"Finished in {toc - tic} seconds.")
+            print(f"Extracted {len(self.graph)} triples.")
 
     @staticmethod
     def is_object_missing(value: str):
