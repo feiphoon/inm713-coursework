@@ -36,7 +36,9 @@ class TabToGraph:
         # Load input as dataframe
         # TODO: consider using usecols here
         # TODO: datatypes along with that
-        self.data_df: pd.DataFrame = pd.read_csv(input_filepath, encoding="utf-8")
+        self.data_df: pd.DataFrame = pd.read_csv(
+            input_filepath, sep=",", quotechar='"', escapechar="\\", encoding="utf-8"
+        )
 
         # Dictionary to store URIs
         self.string_to_uri: dict = {}
@@ -415,7 +417,7 @@ class TabToGraph:
     def debug(self) -> None:
         pprint(vars(self))
 
-    def print(self, nrows: int = None) -> None:
+    def display(self, nrows: int = None) -> None:
         if not nrows:
             nrows = len(self.graph)
 
@@ -431,7 +433,7 @@ class TabToGraph:
 
 
 if __name__ == "__main__":
-    INPUT_FILEPATH: str = "../data/INM713_coursework_data_pizza_8358_1_reduced.csv"
+    INPUT_FILEPATH: str = "../../data/INM713_coursework_data_pizza_8358_1_reduced.csv"
     # INPUT_FILEPATH = "../data/data_pizza_spike.csv"
     NAMESPACE: str = Namespace("http://www.city.ac.uk/ds/inm713/feiphoon#")
     PREFIX: str = "fp"
@@ -443,14 +445,14 @@ if __name__ == "__main__":
     tab_to_graph.convert_csv_to_rdf()
 
     # tab_to_graph.debug()
-    # tab_to_graph.print()
+    # tab_to_graph.display()
 
     # Graph with only data
     tab_to_graph.save_graph(output_file="pizza_restaurants_without_reasoning.ttl")
 
     # Apply OWL 2 RL reasoning
     tab_to_graph.perform_reasoning(
-        "../1-OWL/pizza_restaurant_ontology5-slim.ttl"
+        "../../1-OWL/pizza_restaurant_ontology5-slim.ttl"
     )  # ttl format
     # # tab_to_graph.perform_reasoning("../data/pizza_restaurant_ontology5-slim.owl") ##owl (rdf/xml) format
 
