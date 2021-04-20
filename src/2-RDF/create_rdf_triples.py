@@ -404,6 +404,11 @@ class TabToGraph:
             print((s.n3(), p.n3(), o.n3()))
         print(f"Printed {len(self.graph)} triples.")
 
+    def save_graph(self, output_file: str) -> None:
+        # TODO: check what the first line does
+        # print(self.g.serialize(format="turtle").decode("utf-8"))
+        self.graph.serialize(destination=output_file, format="ttl")
+
 
 if __name__ == "__main__":
     INPUT_FILEPATH = "../data/INM713_coursework_data_pizza_8358_1_reduced.csv"
@@ -420,8 +425,8 @@ if __name__ == "__main__":
     # tab_to_graph.debug()
     # tab_to_graph.print()
 
-    # # Graph with only data
-    # solution.saveGraph(file.replace(".csv", "-" + task) + ".ttl")
+    # Graph with only data
+    tab_to_graph.save_graph(output_file="pizza_restaurants.ttl")
 
     # # OWL 2 RL reasoning
     # solution.performReasoning("ontology_lab6.ttl")  ##ttl format
