@@ -148,7 +148,7 @@ fp:isMenuItemAt rdf:type owl:ObjectProperty ,
 fp:address rdf:type owl:DatatypeProperty ,
                     owl:FunctionalProperty ;
            rdfs:domain fp:Location ;
-           rdfs:range rdf:PlainLiteral ;
+           rdfs:range xsd:string ;
            dc:creator "fei"^^xsd:string .
 
 
@@ -164,7 +164,7 @@ fp:categories rdf:type owl:DatatypeProperty ,
 fp:city rdf:type owl:DatatypeProperty ,
                  owl:FunctionalProperty ;
         rdfs:domain fp:City ;
-        rdfs:range rdf:PlainLiteral ;
+        rdfs:range xsd:string ;
         dc:creator "fei"^^xsd:string .
 
 
@@ -172,7 +172,7 @@ fp:city rdf:type owl:DatatypeProperty ,
 fp:country rdf:type owl:DatatypeProperty ,
                     owl:FunctionalProperty ;
            rdfs:domain fp:Country ;
-           rdfs:range rdf:PlainLiteral ;
+           rdfs:range xsd:string ;
            dc:creator "fei"^^xsd:string .
 
 
@@ -180,7 +180,7 @@ fp:country rdf:type owl:DatatypeProperty ,
 fp:menu_item_description rdf:type owl:DatatypeProperty ,
                                   owl:FunctionalProperty ;
                          rdfs:domain fp:MenuItem ;
-                         rdfs:range rdf:PlainLiteral ;
+                         rdfs:range xsd:string ;
                          dc:creator "fei"^^xsd:string .
 
 
@@ -196,7 +196,7 @@ fp:menu_item_price rdf:type owl:DatatypeProperty ,
 fp:menu_item_price_currency rdf:type owl:DatatypeProperty ,
                                      owl:FunctionalProperty ;
                             rdfs:domain fp:MenuItem ;
-                            rdfs:range rdf:PlainLiteral ;
+                            rdfs:range xsd:string ;
                             dc:creator "fei"^^xsd:string .
 
 
@@ -204,7 +204,7 @@ fp:menu_item_price_currency rdf:type owl:DatatypeProperty ,
 fp:name rdf:type owl:DatatypeProperty ,
                  owl:FunctionalProperty ;
         rdfs:domain owl:Thing ;
-        rdfs:range rdf:PlainLiteral ;
+        rdfs:range xsd:string ;
         dc:creator "fei"^^xsd:string .
 
 
@@ -252,24 +252,6 @@ fp:Bacon rdf:type owl:Class ;
 fp:Basil rdf:type owl:Class ;
          rdfs:subClassOf fp:Herbs ;
          rdfs:label "Basil"@en .
-
-
-###  http://www.city.ac.uk/ds/inm713/feiphoon#Bianca
-fp:Bianca rdf:type owl:Class ;
-          rdfs:subClassOf fp:KnownPizza ,
-                          [ owl:intersectionOf ( fp:Pizza
-                                                 [ rdf:type owl:Class ;
-                                                   owl:complementOf [ rdf:type owl:Restriction ;
-                                                                      owl:onProperty fp:hasIngredientAsTopping ;
-                                                                      owl:someValuesFrom fp:Tomato
-                                                                    ]
-                                                 ]
-                                               ) ;
-                            rdf:type owl:Class
-                          ] ;
-          dc:creator "fei"^^xsd:string ;
-          rdfs:label "Bianca"@en ,
-                     "White"@en .
 
 
 ###  http://www.city.ac.uk/ds/inm713/feiphoon#Burger
@@ -371,23 +353,6 @@ fp:Location rdf:type owl:Class ;
             rdfs:label "Location"@en .
 
 
-###  http://www.city.ac.uk/ds/inm713/feiphoon#Margherita
-fp:Margherita rdf:type owl:Class ;
-              rdfs:subClassOf [ owl:intersectionOf ( fp:KnownPizza
-                                                     [ rdf:type owl:Restriction ;
-                                                       owl:onProperty fp:hasIngredientAsTopping ;
-                                                       owl:allValuesFrom [ owl:intersectionOf ( fp:Mozzarella
-                                                                                                fp:Tomato
-                                                                                              ) ;
-                                                                           rdf:type owl:Class
-                                                                         ]
-                                                     ]
-                                                   ) ;
-                                rdf:type owl:Class
-                              ] ;
-              rdfs:label "Margherita"@en .
-
-
 ###  http://www.city.ac.uk/ds/inm713/feiphoon#Meat
 fp:Meat rdf:type owl:Class ;
         rdfs:subClassOf fp:Ingredient ;
@@ -442,6 +407,41 @@ fp:Pineapple rdf:type owl:Class ;
 fp:Pizza rdf:type owl:Class ;
          rdfs:subClassOf fp:Dish ;
          rdfs:label "Pizza"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#PizzaBianca
+fp:PizzaBianca rdf:type owl:Class ;
+               rdfs:subClassOf fp:KnownPizza ,
+                               [ owl:intersectionOf ( fp:Pizza
+                                                      [ rdf:type owl:Class ;
+                                                        owl:complementOf [ rdf:type owl:Restriction ;
+                                                                           owl:onProperty fp:hasIngredientAsTopping ;
+                                                                           owl:someValuesFrom fp:Tomato
+                                                                         ]
+                                                      ]
+                                                    ) ;
+                                 rdf:type owl:Class
+                               ] ;
+               dc:creator "fei"^^xsd:string ;
+               rdfs:label "Bianca"@en ,
+                          "White"@en .
+
+
+###  http://www.city.ac.uk/ds/inm713/feiphoon#PizzaMargherita
+fp:PizzaMargherita rdf:type owl:Class ;
+                   rdfs:subClassOf [ owl:intersectionOf ( fp:KnownPizza
+                                                          [ rdf:type owl:Restriction ;
+                                                            owl:onProperty fp:hasIngredientAsTopping ;
+                                                            owl:allValuesFrom [ owl:intersectionOf ( fp:Mozzarella
+                                                                                                     fp:Tomato
+                                                                                                   ) ;
+                                                                                rdf:type owl:Class
+                                                                              ]
+                                                          ]
+                                                        ) ;
+                                     rdf:type owl:Class
+                                   ] ;
+                   rdfs:label "Margherita"@en .
 
 
 ###  http://www.city.ac.uk/ds/inm713/feiphoon#Restaurant
