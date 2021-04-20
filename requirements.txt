@@ -13,3 +13,4 @@ requests==2.25.1
 rdflib==5.0.0
 seaborn==0.11.1
 smart-open==5.0.0
+Unidecode==1.2.0
