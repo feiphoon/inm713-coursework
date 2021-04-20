@@ -406,8 +406,8 @@ class TabToGraph:
 
 
 if __name__ == "__main__":
-    # INPUT_FILEPATH = "../data/INM713_coursework_data_pizza_8358_1_reduced.csv"
-    INPUT_FILEPATH = "../data/data_pizza_spike.csv"
+    INPUT_FILEPATH = "../data/INM713_coursework_data_pizza_8358_1_reduced.csv"
+    # INPUT_FILEPATH = "../data/data_pizza_spike.csv"
     NAMESPACE = Namespace("http://www.city.ac.uk/ds/inm713/feiphoon#")
     PREFIX = "fp"
 
@@ -417,9 +417,8 @@ if __name__ == "__main__":
 
     tab_to_graph.convert_csv_to_rdf()
 
-    tab_to_graph.debug()
-
-    tab_to_graph.print()
+    # tab_to_graph.debug()
+    # tab_to_graph.print()
 
     # # Graph with only data
     # solution.saveGraph(file.replace(".csv", "-" + task) + ".ttl")
