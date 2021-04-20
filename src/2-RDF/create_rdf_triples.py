@@ -3,28 +3,30 @@ Based heavily on code for lab6 of INM713.
 Created on 05 March 2021
 @author: ejimenez-ruiz
 """
+from pandas.core.frame import DataFrame
 import rdflib
 from rdflib import Graph, Namespace, URIRef, Literal
 from rdflib.namespace import RDF, XSD
 
 import pandas as pd
+from unidecode import unidecode
 
-from typing import Dict
+from typing import Dict, Optional, Any
 
 from pprint import pprint
 
 
 class TabToGraph:
     def __init__(self, input_filepath: str, namespace_str: str, prefix: str) -> None:
-        self.input_filepath = input_filepath
-        self.namespace_str = namespace_str
-        self.prefix = prefix
+        self.input_filepath: str = input_filepath
+        self.namespace_str: str = namespace_str
+        self.prefix: str = prefix
 
         # Initialise graph
-        self.graph = Graph()
+        self.graph: rdflib.Graph = Graph()
 
         # Special Namespace class to directly create URIRefs
-        self.namespace = Namespace(self.namespace_str)
+        self.namespace: rdflib.Namespace = Namespace(self.namespace_str)
 
         # Bind namespace
         self.graph.bind(self.prefix, self.namespace)
@@ -32,10 +34,78 @@ class TabToGraph:
         # Load input as dataframe
         # TODO: consider using usecols here
         # TODO: datatypes along with that
-        self.data_df = pd.read_csv(input_filepath)
+        self.data_df: pd.DataFrame = pd.read_csv(input_filepath, encoding="utf-8")
 
         # Dictionary to store URIs
-        self.string_to_uri = {}
+        self.string_to_uri: dict = {}
+
+    @staticmethod
+    def apply_preprocessing(
+        df: pd.DataFrame, target_col: str, transformed_col: Optional[str]
+    ) -> None:
+        """
+        A bit crude and does a lot of stuff, but it will do for now.
+        Note, have tested all the bad characters in this dataset and
+        how tolerant the URI creation is = there are some dangerous
+        things like # and /, but it breaks on pipe character |.
+        """
+        # If no new col is named to hold transformations,
+        # then the transformations should be in-place.
+        if not transformed_col:
+            print(
+                "WARNING: transformed_col name not supplied, transformations will be applied in-place."
+            )
+            transformed_col = target_col
+
+        # Normalise unicode/accented characters,
+        # e.g. café becomes cafe.
+        # TODO: buggy
+        df[transformed_col] = df[target_col].apply(unidecode)
+
+        # Check unique characters in menu item column
+        unique_chars: list = list(set(df[transformed_col].sum()))
+
+        non_alphanum_chars: list = [
+            _ for _ in unique_chars if (not _.isalnum()) and (_ != " ")
+        ]
+
+        # Target some known troublemakers
+        if "@" in non_alphanum_chars:
+            df[transformed_col] = df[transformed_col].str.replace("@", "at")
+            non_alphanum_chars.remove("@")
+
+        if "&" in non_alphanum_chars:
+            df[transformed_col] = df[transformed_col].str.replace("&", "and")
+            non_alphanum_chars.remove("&")
+
+        if "+" in non_alphanum_chars:
+            df[transformed_col] = df[transformed_col].str.replace("+", "and")
+            non_alphanum_chars.remove("+")
+
+        # Remove sketchy characters
+        for _ in non_alphanum_chars:
+            df[transformed_col] = df[transformed_col].str.replace(_, "")
+
+        # Collapse remaining double whitespace,
+        # possibly resulting from character removals.
+        # E.g "Bonnie & Clyde" -> "Bonnie  Clyde"
+        df[transformed_col] = df[transformed_col].str.replace(r" +", " ")
+
+    @staticmethod
+    def replace_missing_values(
+        df: DataFrame,
+        target_col: str,
+        transformed_col: Optional[str],
+        fillna_value: Any,
+    ) -> None:
+        # If no new col is named to hold transformations,
+        # then the transformations should be in-place.
+        if not transformed_col:
+            print(
+                "WARNING: transformed_col name not supplied, transformations will be applied in-place."
+            )
+            transformed_col = target_col
+        df[transformed_col] = df[target_col].fillna(fillna_value)
 
     def convert_csv_to_rdf(self) -> None:
         """
@@ -85,14 +155,18 @@ class TabToGraph:
             )
 
         if "name" in self.data_df:
+            # TODO: preprocessing
+            self.apply_preprocessing(
+                df=self.data_df, target_col="name", transformed_col="cleaned_name"
+            )
 
             # We give subject column and target type
             self.mapping_to_create_type_triple(
-                subject_col="name", class_type=self.namespace.Restaurant
+                subject_col="cleaned_name", class_type=self.namespace.Restaurant
             )
 
             self.mapping_to_create_literal_triple(
-                subject_col="name",
+                subject_col="cleaned_name",
                 object_col="name",
                 predicate=self.namespace.name,
                 datatype=RDF.PlainLiteral,
@@ -102,7 +176,7 @@ class TabToGraph:
             # Instead of XSD: primitive datatypes
             if "address" in self.data_df:
                 self.mapping_to_create_literal_triple(
-                    subject_col="name",
+                    subject_col="cleaned_name",
                     object_col="address",
                     predicate=self.namespace.address,
                     datatype=RDF.PlainLiteral,
@@ -110,7 +184,7 @@ class TabToGraph:
 
             if "postcode" in self.data_df:
                 self.mapping_to_create_literal_triple(
-                    subject_col="name",
+                    subject_col="cleaned_name",
                     object_col="postcode",
                     predicate=self.namespace.postcode,
                     datatype=XSD.string,
@@ -118,7 +192,7 @@ class TabToGraph:
 
             if "state" in self.data_df:
                 self.mapping_to_create_literal_triple(
-                    subject_col="name",
+                    subject_col="cleaned_name",
                     object_col="state",
                     predicate=self.namespace.state,
                     datatype=XSD.string,
@@ -126,14 +200,14 @@ class TabToGraph:
 
             if "categories" in self.data_df:
                 self.mapping_to_create_literal_triple(
-                    subject_col="name",
+                    subject_col="cleaned_name",
                     object_col="categories",
                     predicate=self.namespace.categories,
                     datatype=RDF.PlainLiteral,
                 )
 
             self.mapping_to_create_object_triple(
-                subject_col="name",
+                subject_col="cleaned_name",
                 object_col="city",
                 predicate=self.namespace.isPlaceInCity,
             )
@@ -145,11 +219,17 @@ class TabToGraph:
             )
 
         if "name" in self.data_df and "menu item" in self.data_df:
+            # Tidy weird characters from menu item column first
+            self.apply_preprocessing(
+                df=self.data_df,
+                target_col="menu item",
+                transformed_col="cleaned_menu_item",
+            )
 
             # Make each item unique to the restaurant
-            self.data_df["restaurant_name_menu_item"] = self.data_df["name"].str.cat(
-                self.data_df["menu item"], " "
-            )
+            self.data_df["restaurant_name_menu_item"] = self.data_df[
+                "cleaned_name"
+            ].str.cat(self.data_df["cleaned_menu_item"], " ")
 
             # Create the menu item
             self.mapping_to_create_type_triple(
@@ -159,13 +239,13 @@ class TabToGraph:
 
             self.mapping_to_create_object_triple(
                 subject_col="restaurant_name_menu_item",
-                object_col="name",
+                object_col="cleaned_name",
                 predicate=self.namespace.isMenuItemAt,
             )
 
             self.mapping_to_create_literal_triple(
                 subject_col="restaurant_name_menu_item",
-                object_col="menu item",
+                object_col="cleaned_menu_item",
                 predicate=self.namespace.name,
                 datatype=RDF.PlainLiteral,
             )
@@ -222,22 +302,25 @@ class TabToGraph:
         TODO: useExternalURI: if URI is fresh or from external KG
         """
         for subject in self.data_df[subject_col]:
-            entity_uri = None
-            subject = subject.lower()
-
-            # We use the ascii name to create the fresh URI for a city in the dataset
-            if subject in self.string_to_uri:
-                entity_uri = self.string_to_uri[subject]
+            if self.is_object_missing(subject):
+                return
             else:
-                entity_uri = self.createURIForEntity(subject)
-            # else:
-            #     entity_uri = self.createURIForEntity(subject.lower(), useExternalURI)
+                entity_uri = None
+                subject = subject.lower()
 
-            # TYPE TRIPLE
-            # For the individuals we use URIRef to create an object "URI" out of the string URIs
-            # For the concepts we use the ones in the ontology and we are using the NameSpace class
-            # Alternatively one could use URIRef(self.lab6_ns_str+"City") for example
-            self.graph.add((URIRef(entity_uri), RDF.type, class_type))
+                # We use the ascii name to create the fresh URI for a city in the dataset
+                if subject in self.string_to_uri:
+                    entity_uri = self.string_to_uri[subject]
+                else:
+                    entity_uri = self.createURIForEntity(subject)
+                # else:
+                #     entity_uri = self.createURIForEntity(subject.lower(), useExternalURI)
+
+                # TYPE TRIPLE
+                # For the individuals we use URIRef to create an object "URI" out of the string URIs
+                # For the concepts we use the ones in the ontology and we are using the NameSpace class
+                # Alternatively one could use URIRef(self.lab6_ns_str+"City") for example
+                self.graph.add((URIRef(entity_uri), RDF.type, class_type))
 
     # def mapping_to_create_menu_item_type_triple(
     #     self, restaurant_name_col: str, menu_item_col: str
@@ -277,7 +360,6 @@ class TabToGraph:
         """
         TODO: Mappings to create triples of the form lab6:london lab6:name "London"
         """
-
         for subject, lit_value in zip(
             self.data_df[subject_col], self.data_df[object_col]
         ):
@@ -304,12 +386,10 @@ class TabToGraph:
         Mappings to create triples of the form fp:Bend fp:isLocatedInCountry fp:USA
         """
         for subject, object in zip(self.data_df[subject_col], self.data_df[object_col]):
-            print("subject", subject)
-            print("predicate", predicate)
-            print("object", object)
-
             # Make sure this does nothing when the object is missing
-            if self.is_object_missing(value=object.lower()):
+            if self.is_object_missing(value=subject) or self.is_object_missing(
+                value=object
+            ):
                 return
 
             else:
