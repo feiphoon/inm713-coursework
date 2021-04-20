@@ -15,7 +15,6 @@ from pandas.core.frame import DataFrame
 from unidecode import unidecode
 
 from typing import Dict, Optional, Any
-
 from pprint import pprint
 
 
@@ -222,7 +221,7 @@ class TabToGraph:
                     subject_col="cleaned_name",
                     object_col="categories",
                     predicate=self.namespace.categories,
-                    datatype=RDF.PlainLiteral,
+                    datatype=XSD.string,
                 )
 
             self.mapping_to_create_object_triple(
@@ -406,7 +405,9 @@ class TabToGraph:
 
         # We apply reasoning and expand the graph with new triples
         owlrl.DeductiveClosure(
-            owlrl.OWLRL_Semantics, axiomatic_triples=False, datatype_axioms=False
+            owlrl.CombinedClosure.RDFS_OWLRL_Semantics,
+            axiomatic_triples=False,
+            datatype_axioms=False,
         ).expand(self.graph)
 
         print(f"Triples after OWL 2 RL reasoning: {len(self.graph)}.")
