@@ -390,12 +390,13 @@ class TabToGraph:
     def debug(self):
         pprint(vars(self))
 
-    def print(self):
-        counter = 0
-        for s, p, o in self.graph:
+    def print(self, nrows: int = None):
+        if not nrows:
+            nrows = len(self.graph)
+
+        for s, p, o in self.graph[:nrows]:
             print((s.n3(), p.n3(), o.n3()))
-            counter += 1
-        print(f"There are {counter} triples.")
+        print(f"Printed {len(self.graph)} triples.")
 
 
 if __name__ == "__main__":
