@@ -400,28 +400,6 @@ class TabToGraph:
                 # New triple
                 self.graph.add((URIRef(subject_uri), predicate, URIRef(object_uri)))
 
-    # def mapping_to_create_place_triple(self, subject_col: str, object_col: str, value_col: str) -> None:
-
-    #     for subject, object, value in zip(self.data_df[subject_col], self.data_df[object_col], self.data_df[value_col]):
-
-    #         # Access already created URIs
-    #         subject_uri = self.string_to_uri[subject.lower()]
-    #         object_uri = self.string_to_uri[object.lower()]
-
-    #         self.
-
-    #         isPlaceIn
-    #         isPlaceInCity
-    #         isPlaceInCountry
-
-    # def mapping_to_create_menu_item_triple(self, subject_col: str, object_col: str, value_col: str) -> None:
-
-    #     for subject, object, value in zip(self.data_df[subject_col], self.data_df[object_col], self.data_df[value_col]):
-
-    #         # Access already created URIs
-    #         subject_uri = self.string_to_uri[subject.lower()]
-    #         object_uri = self.string_to_uri[object.lower()]
-
     def debug(self):
         pprint(vars(self))
 
