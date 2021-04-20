@@ -371,6 +371,12 @@ class TabToGraph:
                 class_type=self.namespace.PizzaBianca,
             )
 
+            self.mapping_to_create_pizza_margherita_type_triple(
+                subject_col="location_menu_item",
+                conditional_col="cleaned_menu_item",
+                class_type=self.namespace.PizzaMargherita,
+            )
+
         toc = time.perf_counter()
         print(f"Finished converting CSV to RDF in {toc - tic} seconds.")
         print(f"Extracted {len(self.graph)} triples.")
@@ -389,6 +395,35 @@ class TabToGraph:
 
                 # Pizza Bianca conditions
                 if (conditional == "pizza bianca") or (conditional == "white pizza"):
+                    entity_uri: str = None
+
+                    if subject in self.string_to_uri:
+                        entity_uri = self.string_to_uri[subject]
+                    else:
+                        entity_uri = self.createURIForEntity(subject)
+                    # else:
+                    #     entity_uri = self.createURIForEntity(subject.lower(), useExternalURI)
+
+                    # TYPE TRIPLE
+                    # For the individuals we use URIRef to create an object "URI" out of the string URIs
+                    # For the concepts we use the ones in the ontology and we are using the NameSpace class
+                    # Alternatively one could use URIRef(self.lab6_ns_str+"City") for example
+                    self.graph.add((URIRef(entity_uri), RDF.type, class_type))
+
+    def mapping_to_create_pizza_margherita_type_triple(
+        self, subject_col: str, conditional_col: str, class_type: rdflib.term.URIRef
+    ) -> None:
+        for subject, conditional in zip(
+            self.data_df[subject_col], self.data_df[conditional_col]
+        ):
+            if self.is_object_missing(subject) or self.is_object_missing(conditional):
+                return
+            else:
+                conditional = conditional.lower()
+                subject = subject.lower()
+
+                # Pizza Bianca conditions
+                if "margherita" in conditional:
                     entity_uri: str = None
 
                     if subject in self.string_to_uri:
@@ -507,14 +542,15 @@ class TabToGraph:
 
     def perform_reasoning(self, ontology_file: str) -> None:
         """
-        Expand the graph with the inferred triples.
+        Subtask SPARQL.1
+        Expand the graph with the inferred triples, using reasoning.
         """
         # print(guess_format(ontology_file))
         self.graph.load(ontology_file, format=guess_format(ontology_file))
 
         print(f"Triples including ontology: {len(self.graph)}.")
 
-        # We apply reasoning and expand the graph with new triples
+        # Happy with this reasoner
         owlrl.DeductiveClosure(
             owlrl.OWLRL.OWLRL_Semantics,
             axiomatic_triples=False,
@@ -545,7 +581,8 @@ if __name__ == "__main__":
     # INPUT_FILEPATH: str = "../../data/INM713_coursework_data_pizza_8358_1_reduced.csv"
     # INPUT_FILEPATH = "../../data/data_pizza_preprocessing_test.csv"
     # INPUT_FILEPATH = "../../data/data_pizza_shared_restaurant_name_test.csv"
-    INPUT_FILEPATH = "../../data/data_pizza_bianca_white_test.csv"
+    # INPUT_FILEPATH = "../../data/data_pizza_bianca_white_test.csv"
+    INPUT_FILEPATH = "../../data/data_pizza_margherita_test.csv"
     NAMESPACE: str = Namespace("http://www.city.ac.uk/ds/inm713/feiphoon#")
     PREFIX: str = "fp"
 
