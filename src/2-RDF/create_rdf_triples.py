@@ -322,34 +322,6 @@ class TabToGraph:
                 # Alternatively one could use URIRef(self.lab6_ns_str+"City") for example
                 self.graph.add((URIRef(entity_uri), RDF.type, class_type))
 
-    # def mapping_to_create_menu_item_type_triple(
-    #     self, restaurant_name_col: str, menu_item_col: str
-    # ) -> None:
-    #     """
-    #     TODO: Mapping to create triples like lab6:London rdf:type lab6:City
-    #     A mapping may create more than one triple
-    #     column: columns where the entity information is stored
-    #     TODO: useExternalURI: if URI is fresh or from external KG
-    #     """
-    #     for _restaurant_name, _menu_item in zip(
-    #         self.data_df[restaurant_name_col], self.data_df[menu_item_col]
-    #     ):
-
-    #         _menu_item_at_name = f"{_restaurant_name.lower()} {_menu_item.lower()}"
-    #         entity_menu_item_uri = None
-    #         subject = _menu_item_at_name.lower()
-
-    #         if subject in self.string_to_uri:
-    #             entity_menu_item_uri = self.string_to_uri[subject]
-    #         else:
-    #             entity_menu_item_uri = self.createURIForEntity(subject)
-    #         # else:
-    #         #     entity_uri = self.createURIForEntity(subject.lower(), useExternalURI)
-
-    #         self.graph.add(
-    #             (URIRef(entity_menu_item_uri), RDF.type, self.namespace.MenuItem)
-    #         )
-
     def mapping_to_create_literal_triple(
         self,
         subject_col: str,
