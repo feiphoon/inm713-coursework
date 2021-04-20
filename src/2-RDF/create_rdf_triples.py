@@ -3,13 +3,13 @@ Based heavily on code for lab6 of INM713.
 Created on 05 March 2021
 @author: ejimenez-ruiz
 """
-from pandas.core.frame import DataFrame
 import rdflib
 from rdflib import Graph, Namespace, URIRef, Literal
 from rdflib.namespace import RDF, XSD, RDFS
 
 import time
 import pandas as pd
+from pandas.core.frame import DataFrame
 from unidecode import unidecode
 
 from typing import Dict, Optional, Any
