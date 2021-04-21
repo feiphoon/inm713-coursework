@@ -77,16 +77,6 @@ fp:hasMenuItem rdf:type owl:ObjectProperty ;
                dc:creator "fei" .
 
 
-###  http://www.city.ac.uk/ds/inm713/feiphoon#hasState
-fp:hasState rdf:type owl:ObjectProperty ;
-            owl:inverseOf fp:stateHasPlace ;
-            rdf:type owl:FunctionalProperty ,
-                     owl:AsymmetricProperty ;
-            rdfs:domain fp:Restaurant ;
-            rdfs:range fp:State ;
-            dc:creator "fei"^^xsd:string .
-
-
 ###  http://www.city.ac.uk/ds/inm713/feiphoon#isCurrencyOf
 fp:isCurrencyOf rdf:type owl:ObjectProperty ;
                 rdfs:domain fp:Currency ;
@@ -505,30 +495,6 @@ fp:VegetarianPizza rdf:type owl:Class ;
                                    fp:Pizza ;
                    rdfs:comment "A Pizza that has no Meat or Fish toppings."@en ;
                    rdfs:label "VegetarianPizza"@en .
-
-
-#################################################################
-#    Individuals
-#################################################################
-
-###  http://www.city.ac.uk/ds/inm713/feiphoon#US
-fp:US rdf:type owl:NamedIndividual ,
-               fp:Country ;
-      dc:creator "fei"^^xsd:string .
-
-
-###  http://www.city.ac.uk/ds/inm713/feiphoon#banana_place
-fp:banana_place rdf:type owl:NamedIndividual ,
-                         fp:Restaurant ;
-                fp:isPlaceInCountry fp:US ;
-                dc:creator "fei"^^xsd:string .
-
-
-###  http://www.city.ac.uk/ds/inm713/feiphoon#potato_place
-fp:potato_place rdf:type owl:NamedIndividual ,
-                         fp:Restaurant ;
-                fp:isPlaceInCountry fp:US ;
-                dc:creator "fei"^^xsd:string .
 
 
 #################################################################
