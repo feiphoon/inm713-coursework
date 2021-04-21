@@ -75,7 +75,7 @@ if __name__ == "__main__":
 
     TASK: Task = Task.SPARQL2.value
     TASK: Task = Task.SPARQL3.value
-    # TASK: Task = Task.SPARQL4.value
+    TASK: Task = Task.SPARQL4.value
     # TASK: Task = Task.SPARQL5.value
 
     if TASK == Task.SPARQL2.value:
@@ -156,7 +156,7 @@ if __name__ == "__main__":
         OUTPUT_FIELDS = ["restaurant", "city", "state", "num_restaurants"]
 
         QUERY: str = """
-            SELECT DISTINCT ?restaurant ?city ?state (COUNT(?restaurant) AS ?num_restaurants
+            SELECT DISTINCT ?restaurant ?city ?state (COUNT(?restaurant) AS ?num_restaurants)
             WHERE {
                 ?restaurant rdf:type fp:Restaurant .
                 ?restaurant fp:city ?city .
