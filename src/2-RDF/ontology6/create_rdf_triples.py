@@ -2,13 +2,21 @@
 Based heavily on code for lab6 of INM713.
 Created on 05 March 2021
 @author: ejimenez-ruiz
+
+Subtask RDF.2
+Subtask RDF.3
+Subtask SPARQL.1
 """
 import rdflib
 from rdflib import Graph, Namespace, URIRef, Literal
-from rdflib.namespace import RDF, XSD, RDFS
+from rdflib.namespace import RDF, XSD
 from rdflib.util import guess_format
 import owlrl
 
+from lookup import DBpediaLookup, WikidataAPI, GoogleKGLookup
+from stringcmp import isub
+
+from enum import Enum
 import re
 import time
 import pandas as pd
@@ -17,6 +25,12 @@ from unidecode import unidecode
 
 from typing import Dict, Optional, Any
 from pprint import pprint
+
+
+class Task(Enum):
+    RDF2 = "rdf2"
+    RDF3 = "rdf3"
+    SPARQL1 = "sparql1"
 
 
 class TabToGraph:
@@ -35,14 +49,21 @@ class TabToGraph:
         self.graph.bind(self.prefix, self.namespace)
 
         # Load input as dataframe
-        # TODO: consider using usecols here
-        # TODO: datatypes along with that
         self.data_df: pd.DataFrame = pd.read_csv(
             input_filepath, sep=",", quotechar='"', escapechar="\\", encoding="utf-8"
         )
 
         # Dictionary to store URIs
         self.string_to_uri: dict = {}
+
+        # Enable DBPedia lookups
+        self.dbpedia = DBpediaLookup()
+
+        # Enable Wikidata lookups
+        self.wikidata = WikidataAPI()
+
+        # Enable GoogleKG lookups
+        self.googlekg = GoogleKGLookup()
 
     @staticmethod
     def apply_preprocessing(
@@ -132,15 +153,19 @@ class TabToGraph:
         else:
             return menu_item_name
 
-    def convert_csv_to_rdf(self) -> None:
+    def convert_csv_to_rdf(self, use_external_uri: bool = False) -> None:
         """
         Subtask RDF.2
+        Subtask RDF.3
         """
         tic = time.perf_counter()
 
         if "country" in self.data_df:
             self.mapping_to_create_type_triple(
-                subject_col="country", class_type=self.namespace.Country
+                subject_col="country",
+                class_type=self.namespace.Country,
+                use_external_uri=use_external_uri,
+                category_filter="http://dbpedia.org/resource/Category:Lists_of_countries",
             )
 
             self.mapping_to_create_literal_triple(
@@ -152,7 +177,8 @@ class TabToGraph:
 
         if "currency" in self.data_df:
             self.mapping_to_create_type_triple(
-                subject_col="currency", class_type=self.namespace.Currency
+                subject_col="currency",
+                class_type=self.namespace.Currency,
             )
 
             self.mapping_to_create_literal_triple(
@@ -169,9 +195,11 @@ class TabToGraph:
             )
 
         if "city" in self.data_df:
-
             self.mapping_to_create_type_triple(
-                subject_col="city", class_type=self.namespace.City
+                subject_col="city",
+                class_type=self.namespace.City,
+                use_external_uri=use_external_uri,
+                category_filter="http://dbpedia.org/resource/Category:Cities_in_the_United_States",
             )
 
             self.mapping_to_create_literal_triple(
@@ -182,10 +210,11 @@ class TabToGraph:
             )
 
         if "state" in self.data_df:
-            # TODO: Great candidate for cleaning/lexical similarities
-
             self.mapping_to_create_type_triple(
-                subject_col="state", class_type=self.namespace.State
+                subject_col="state",
+                class_type=self.namespace.State,
+                use_external_uri=use_external_uri,
+                category_filter="http://dbpedia.org/resource/Category:States_of_the_United_States",
             )
 
             self.mapping_to_create_literal_triple(
@@ -194,20 +223,6 @@ class TabToGraph:
                 predicate=self.namespace.name,
                 datatype=XSD.string,
             )
-
-        # supposed to be Location
-        # if "address" in self.data_df:
-
-        #     self.mapping_to_create_type_triple(
-        #         subject_col="state", class_type=self.namespace.State
-        #     )
-
-        #     self.mapping_to_create_literal_triple(
-        #         subject_col="state",
-        #         object_col="state",
-        #         predicate=self.namespace.name,
-        #         datatype=XSD.string,
-        #     )
 
         if "name" in self.data_df:
             self.apply_preprocessing(
@@ -401,13 +416,7 @@ class TabToGraph:
                         entity_uri = self.string_to_uri[subject]
                     else:
                         entity_uri = self.createURIForEntity(subject)
-                    # else:
-                    #     entity_uri = self.createURIForEntity(subject.lower(), useExternalURI)
 
-                    # TYPE TRIPLE
-                    # For the individuals we use URIRef to create an object "URI" out of the string URIs
-                    # For the concepts we use the ones in the ontology and we are using the NameSpace class
-                    # Alternatively one could use URIRef(self.lab6_ns_str+"City") for example
                     self.graph.add((URIRef(entity_uri), RDF.type, class_type))
 
     def mapping_to_create_pizza_margherita_type_triple(
@@ -423,45 +432,71 @@ class TabToGraph:
                 subject = subject.lower()
 
                 # Pizza Bianca conditions
-                if "margherita" in conditional:
+                if "margherita" in conditional or "margarita" in conditional:
                     entity_uri: str = None
 
                     if subject in self.string_to_uri:
                         entity_uri = self.string_to_uri[subject]
                     else:
                         entity_uri = self.createURIForEntity(subject)
-                    # else:
-                    #     entity_uri = self.createURIForEntity(subject.lower(), useExternalURI)
 
-                    # TYPE TRIPLE
-                    # For the individuals we use URIRef to create an object "URI" out of the string URIs
-                    # For the concepts we use the ones in the ontology and we are using the NameSpace class
-                    # Alternatively one could use URIRef(self.lab6_ns_str+"City") for example
                     self.graph.add((URIRef(entity_uri), RDF.type, class_type))
 
     @staticmethod
-    def is_object_missing(value: str):
+    def is_object_missing(value: str) -> bool:
         """
         First is a check for NaN when the subject value
         could be a string (so can't use math.isnan())
         """
         return (value != value) or (value is None) or (value == "")
 
-    def createURIForEntity(self, entity_name: str) -> Dict[str, str]:
+    def get_external_kg_uri(self, name: str, category_filter: str = "") -> None:
+        """
+        Approximate solution: We get the entity with highest lexical similarity
+        The use of context may be necessary in some cases
+        """
+        entities = self.dbpedia.getKGEntities(
+            query=name, limit=5, category_filter=category_filter
+        )
+        # entities = self.wikidata.getKGEntities(name, 5)
+        # entities = self.googlekg.getKGEntities(name, 5)
+        current_sim = -1
+        current_uri = ""
+        if entities:
+            for ent in entities:
+                isub_score = isub(name, ent.label)
+                if current_sim < isub_score:
+                    current_uri = ent.ident
+                    current_sim = isub_score
+
+        return current_uri
+
+    def createURIForEntity(
+        self,
+        entity_name: str,
+        use_external_uri: bool = False,
+        category_filter: str = "",
+    ) -> Dict[str, str]:
         # We create fresh URI (default option)
         self.string_to_uri[entity_name] = self.namespace_str + entity_name.replace(
             " ", "_"
         )
 
-        # if useExternalURI:  # We connect to online KG
-        #     uri = self.getExternalKGURI(name)
-        #     if uri != "":
-        #         self.stringToURI[name] = uri
+        if use_external_uri:
+            uri = self.get_external_kg_uri(
+                name=entity_name, category_filter=category_filter
+            )
+            if uri != "":
+                self.string_to_uri[entity_name] = uri
 
         return self.string_to_uri[entity_name]
 
     def mapping_to_create_type_triple(
-        self, subject_col: str, class_type: rdflib.term.URIRef
+        self,
+        subject_col: str,
+        class_type: rdflib.term.URIRef,
+        use_external_uri: bool = False,
+        category_filter: str = "",
     ) -> None:
         """
         TODO: Mapping to create triples like lab6:London rdf:type lab6:City
@@ -476,18 +511,15 @@ class TabToGraph:
                 entity_uri: str = None
                 subject = subject.lower()
 
-                # We use the ascii name to create the fresh URI for a city in the dataset
                 if subject in self.string_to_uri:
                     entity_uri = self.string_to_uri[subject]
                 else:
-                    entity_uri = self.createURIForEntity(subject)
-                # else:
-                #     entity_uri = self.createURIForEntity(subject.lower(), useExternalURI)
+                    entity_uri = self.createURIForEntity(
+                        entity_name=subject,
+                        use_external_uri=use_external_uri,
+                        category_filter=category_filter,
+                    )
 
-                # TYPE TRIPLE
-                # For the individuals we use URIRef to create an object "URI" out of the string URIs
-                # For the concepts we use the ones in the ontology and we are using the NameSpace class
-                # Alternatively one could use URIRef(self.lab6_ns_str+"City") for example
                 self.graph.add((URIRef(entity_uri), RDF.type, class_type))
 
     def mapping_to_create_literal_triple(
@@ -526,6 +558,7 @@ class TabToGraph:
         Mappings to create triples of the form fp:Bend fp:isLocatedInCountry fp:USA
         """
         for subject, object in zip(self.data_df[subject_col], self.data_df[object_col]):
+
             # Make sure this does nothing when the object is missing
             if self.is_object_missing(value=subject) or self.is_object_missing(
                 value=object
@@ -545,6 +578,7 @@ class TabToGraph:
         Subtask SPARQL.1
         Expand the graph with the inferred triples, using reasoning.
         """
+        tic = time.perf_counter()
         # print(guess_format(ontology_file))
         self.graph.load(ontology_file, format=guess_format(ontology_file))
 
@@ -557,6 +591,8 @@ class TabToGraph:
             datatype_axioms=False,
         ).expand(self.graph)
 
+        toc = time.perf_counter()
+        print(f"Finished reasoning on graph in {toc - tic} seconds.")
         print(f"Triples after OWL 2 RL reasoning: {len(self.graph)}.")
 
     def debug(self) -> None:
@@ -572,7 +608,6 @@ class TabToGraph:
         print(f"Printed {len(self.graph)} triples.")
 
     def save_graph(self, output_file: str) -> None:
-        # TODO: check what the first line does
         # print(self.g.serialize(format="turtle").decode("utf-8"))
         self.graph.serialize(destination=output_file, format="ttl")
 
@@ -583,6 +618,8 @@ if __name__ == "__main__":
     # INPUT_FILEPATH = "../../data/data_pizza_shared_restaurant_name_test.csv"
     # INPUT_FILEPATH = "../../data/data_pizza_bianca_white_test.csv"
     # INPUT_FILEPATH = "../../data/data_pizza_margherita_test.csv"
+    # INPUT_FILEPATH = "../../data/data_pizza_minimum_test.csv"
+
     NAMESPACE: str = Namespace("http://www.city.ac.uk/ds/inm713/feiphoon#")
     PREFIX: str = "fp"
 
@@ -590,19 +627,33 @@ if __name__ == "__main__":
         input_filepath=INPUT_FILEPATH, namespace_str=NAMESPACE, prefix=PREFIX
     )
 
-    tab_to_graph.convert_csv_to_rdf()
+    # TASK: Task = Task.RDF2
+    # TASK: Task = Task.RDF3
+    TASK: Task = Task.SPARQL1
 
-    # Graph with only data
-    tab_to_graph.save_graph(output_file="pizza_restaurants_without_reasoning.ttl")
+    if TASK == Task.RDF2:
+        tab_to_graph.convert_csv_to_rdf(use_external_uri=False)
+    elif TASK == Task.RDF3:
+        tab_to_graph.convert_csv_to_rdf(use_external_uri=True)
 
-    # Apply OWL 2 RL reasoning
-    tab_to_graph.perform_reasoning(
-        "../../1-OWL/pizza_restaurant_ontology6.ttl"
-    )  # ttl format
-    # # tab_to_graph.perform_reasoning("../data/pizza_restaurant_ontology5-slim.owl") ##owl (rdf/xml) format
+    # Save graph with only data
+    tab_to_graph.save_graph(
+        output_file=f"pizza_restaurants_without_reasoning_{TASK.value}.ttl"
+    )
 
-    # # Graph with ontology triples and entailed triples
-    tab_to_graph.save_graph("pizza_restaurants_with_reasoning.ttl")
+    if TASK == Task.SPARQL1:
+        tab_to_graph.convert_csv_to_rdf(use_external_uri=True)
+
+        # Apply OWL 2 RL reasoning
+        tab_to_graph.perform_reasoning(
+            "../../1-OWL/pizza_restaurant_ontology6.ttl"
+        )  # ttl format
+        # tab_to_graph.perform_reasoning("../../1-OWL/pizza_restaurant_ontology6.owl") ##owl (rdf/xml) format
+
+        # Graph with ontology triples and entailed triples
+        tab_to_graph.save_graph(
+            output_file=f"pizza_restaurants_with_reasoning_{TASK.value}.ttl"
+        )
 
     # # SPARQL results into CSV
     # solution.performSPARQLQuery(file.replace(".csv", "-" + task) + "-query-results.csv")
