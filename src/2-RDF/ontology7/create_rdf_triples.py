@@ -245,9 +245,15 @@ class TabToGraph:
                 lambda row: " ".join(row.values.astype(str)), axis=1
             )
 
-            # Can be used in future to do an address lookup :)
             self.mapping_to_create_type_triple(
-                subject_col="complete_address", class_type=self.namespace.Location
+                subject_col="complete_address", class_type=self.namespace.Restaurant
+            )
+
+            self.mapping_to_create_literal_triple(
+                subject_col="complete_address",
+                object_col="name",
+                predicate=self.namespace.name,
+                datatype=XSD.string,
             )
 
             self.mapping_to_create_literal_triple(
@@ -292,27 +298,45 @@ class TabToGraph:
                 datatype=XSD.string,
             )
 
-        if (
-            ("name" in self.data_df)
-            and ("cleaned_name" in self.data_df)
-            and ("complete_address" in self.data_df)
-        ):
-            self.mapping_to_create_type_triple(
-                subject_col="cleaned_name", class_type=self.namespace.Restaurant
+            self.mapping_to_create_object_triple(
+                subject_col="complete_address",
+                object_col="city",
+                predicate=self.namespace.isPlaceInCity,
             )
 
             self.mapping_to_create_object_triple(
-                subject_col="cleaned_name",
-                object_col="complete_address",
-                predicate=self.namespace.hasLocation,
+                subject_col="complete_address",
+                object_col="state",
+                predicate=self.namespace.isPlaceInState,
             )
 
-            self.mapping_to_create_literal_triple(
-                subject_col="cleaned_name",
-                object_col="name",
-                predicate=self.namespace.name,
-                datatype=XSD.string,
+            self.mapping_to_create_object_triple(
+                subject_col="complete_address",
+                object_col="country",
+                predicate=self.namespace.isPlaceInCountry,
             )
+
+        # if (
+        #     ("name" in self.data_df)
+        #     and ("cleaned_name" in self.data_df)
+        #     and ("complete_address" in self.data_df)
+        # ):
+        #     self.mapping_to_create_type_triple(
+        #         subject_col="cleaned_name", class_type=self.namespace.Restaurant
+        #     )
+
+        #     self.mapping_to_create_object_triple(
+        #         subject_col="cleaned_name",
+        #         object_col="complete_address",
+        #         predicate=self.namespace.hasLocation,
+        #     )
+
+        #     self.mapping_to_create_literal_triple(
+        #         subject_col="cleaned_name",
+        #         object_col="name",
+        #         predicate=self.namespace.name,
+        #         datatype=XSD.string,
+        #     )
 
         if "cleaned_name" in self.data_df and "menu item" in self.data_df:
             # Tidy weird characters from menu item column first
@@ -327,67 +351,67 @@ class TabToGraph:
                 lambda row: self.clean_swapped_pizza(row)
             )
 
-            # Make each item unique to the location
-            self.data_df["location_menu_item"] = self.data_df[
+            # Make each item unique to the restaurant
+            self.data_df["restaurant_menu_item"] = self.data_df[
                 "complete_address"
             ].str.cat(self.data_df["cleaned_menu_item"], " ")
 
             # Create the menu item
             self.mapping_to_create_type_triple(
-                subject_col="location_menu_item",
+                subject_col="restaurant_menu_item",
                 class_type=self.namespace.MenuItem,
             )
 
             self.mapping_to_create_literal_triple(
-                subject_col="location_menu_item",
+                subject_col="restaurant_menu_item",
                 object_col="cleaned_menu_item",
                 predicate=self.namespace.name,
                 datatype=XSD.string,
             )
 
             self.mapping_to_create_literal_triple(
-                subject_col="location_menu_item",
+                subject_col="restaurant_menu_item",
                 object_col="item value",
                 predicate=self.namespace.menu_item_price,
                 datatype=XSD.decimal,
             )
 
             self.mapping_to_create_literal_triple(
-                subject_col="location_menu_item",
+                subject_col="restaurant_menu_item",
                 object_col="currency",
                 predicate=self.namespace.menu_item_price_currency,
                 datatype=XSD.string,
             )
 
             self.mapping_to_create_literal_triple(
-                subject_col="location_menu_item",
+                subject_col="restaurant_menu_item",
                 object_col="item description",
                 predicate=self.namespace.menu_item_description,
                 datatype=XSD.string,
             )
 
-        if ("location_menu_item" in self.data_df) and (
+        if ("restaurant_menu_item" in self.data_df) and (
             "complete_address" in self.data_df
         ):
-            # Place menu items at a Location using isMenuItemAt
+            # Place menu items at a Restaurant using isMenuItemAt
             self.mapping_to_create_object_triple(
-                subject_col="location_menu_item",
+                subject_col="restaurant_menu_item",
                 object_col="complete_address",
                 predicate=self.namespace.isMenuItemAt,
             )
 
         # Then let's pick out our Known Pizza
         if ("cleaned_menu_item" in self.data_df) and (
-            "location_menu_item" in self.data_df
+            "restaurant_menu_item" in self.data_df
         ):
             self.mapping_to_create_pizza_bianca_type_triple(
-                subject_col="location_menu_item",
+                subject_col="restaurant_menu_item",
                 conditional_col="cleaned_menu_item",
                 class_type=self.namespace.PizzaBianca,
             )
 
             self.mapping_to_create_pizza_margherita_type_triple(
-                subject_col="location_menu_item",
+                subject_col="restaurant_menu_item",
                 conditional_col="cleaned_menu_item",
                 class_type=self.namespace.PizzaMargherita,
             )
@@ -409,7 +433,7 @@ class TabToGraph:
                 subject = subject.lower()
 
                 # Pizza Bianca conditions
-                if (conditional == "pizza bianca") or (conditional == "white pizza"):
+                if ("bianca" in conditional) or (conditional == "white pizza"):
                     entity_uri: str = None
 
                     if subject in self.string_to_uri:
@@ -616,6 +640,7 @@ if __name__ == "__main__":
     # INPUT_FILEPATH = "../../data/data_pizza_bianca_white_test.csv"
     # INPUT_FILEPATH = "../../data/data_pizza_margherita_test.csv"
     # INPUT_FILEPATH = "../../data/data_pizza_minimum_test.csv"
+    INPUT_FILEPATH = "../../data/data_pizza_no_postcode_test.csv"
 
     NAMESPACE: str = Namespace("http://www.city.ac.uk/ds/inm713/feiphoon#")
     PREFIX: str = "fp"
@@ -624,8 +649,8 @@ if __name__ == "__main__":
         input_filepath=INPUT_FILEPATH, namespace_str=NAMESPACE, prefix=PREFIX
     )
 
-    # TASK: Task = Task.RDF2
-    # TASK: Task = Task.RDF3
+    TASK: Task = Task.RDF2
+    TASK: Task = Task.RDF3
     TASK: Task = Task.SPARQL1
 
     if TASK == Task.RDF2:
@@ -645,7 +670,7 @@ if __name__ == "__main__":
 
         # Apply OWL 2 RL reasoning
         tab_to_graph.perform_reasoning(
-            "../../1-OWL/pizza_restaurant_ontology6.ttl"
+            "../../1-OWL/pizza_restaurant_ontology7.ttl"
         )  # ttl format
         # tab_to_graph.perform_reasoning("../../1-OWL/pizza_restaurant_ontology6.owl") ##owl (rdf/xml) format
 
