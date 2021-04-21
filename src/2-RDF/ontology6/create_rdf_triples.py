@@ -409,7 +409,7 @@ class TabToGraph:
                 subject = subject.lower()
 
                 # Pizza Bianca conditions
-                if (conditional == "pizza bianca") or (conditional == "white pizza"):
+                if ("bianca" in conditional) or (conditional == "white pizza"):
                     entity_uri: str = None
 
                     if subject in self.string_to_uri:
