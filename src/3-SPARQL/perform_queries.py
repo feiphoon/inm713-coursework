@@ -89,6 +89,7 @@ if __name__ == "__main__":
             "country",
         ]
 
+        # Alternative search field
         # QUERY: str = """
         #     SELECT ?restaurant
         #     WHERE {
@@ -134,32 +135,17 @@ if __name__ == "__main__":
         #     }
         # """
 
-        OUTPUT_FIELDS = ["avg_price_margherita_pizza"]
+        OUTPUT_FIELDS = ["avg_price"]
         QUERY: str = """
-            SELECT (AVG(?price)) AS ?avg_price
-            WHERE {
-                ?pizza rdf:type fp:PizzaMargherita .
-                ?pizza rdf:type fp:MenuItem .
-                ?pizza fp:menu_item_price ?price .
+            SELECT (AVG(?price) AS ?avg_price) {
+                SELECT ?pizza ?price
+                WHERE {
+                    ?pizza rdf:type fp:PizzaMargherita .
+                    ?pizza rdf:type fp:MenuItem .
+                    ?pizza fp:menu_item_price ?price .
+                }
             }
             """
-
-        # QUERY: str = """
-        #     SELECT (AVG(?price)) AS ?avg_price
-        #     WHERE {
-        #         ?pizza rdf:type fp:PizzaMargherita .
-        #         ?pizza rdf:type fp:MenuItem .
-        #         ?pizza fp:menu_item_price ?price .
-        #     }
-        #     """
-        # QUERY: str = """
-        #     SELECT (AVG(?price)) AS ?avg_price
-        #     WHERE {
-        #         ?pizza rdf:type fp:PizzaBianca .
-        #         ?pizza rdf:type fp:MenuItem .
-        #         ?pizza fp:menu_item_price ?price .
-        #     }
-        #     """
 
         pr_graph.query_graph(
             query=QUERY, output_filename=TASK, output_fields=OUTPUT_FIELDS
