@@ -358,7 +358,7 @@ def do_stringcmp(cmp_method, str1, str2, min_threshold=None):
     # Check if Winkler modification should be applied - - - - - - - - - - - - - -
     #
     if (
-        (cmp_method.endswith("-winkler") == True)
+        (cmp_method.endswith("-winkler") is True)
         and (sim_weight > 0.0)
         and (sim_weight < 1.0)
     ):
@@ -450,7 +450,7 @@ def jaro(str1, str2, min_threshold=None):
             + ", common1: %i, common2: %i" % (common1, common2)
             + ", common should be the same."
         )
-        common1 = float(common1 + common2) / 2.0  ##### This is just a fix #####
+        common1 = float(common1 + common2) / 2.0  # This is just a fix
 
     if common1 == 0:
         return 0.0
@@ -532,7 +532,7 @@ def winklermod(str1, str2, in_weight):
 
     assert (winkler_weight >= 0.0) and (
         winkler_weight <= 1.0
-    ), "Similarity weight outside 0-1: %f" % (w)
+    ), "Similarity weight outside 0-1: %f" % (winkler_weight)
 
     # A log message - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     #
@@ -603,7 +603,7 @@ def qgram(str1, str2, q=2, common_divisor="average", min_threshold=None, padded=
 
     # Calculate number of q-grams in strings (plus start and end characters) - -
     #
-    if padded == True:
+    if padded is True:
         num_qgram1 = len(str1) + q - 1
         num_qgram2 = len(str2) + q - 1
     else:
@@ -613,7 +613,7 @@ def qgram(str1, str2, q=2, common_divisor="average", min_threshold=None, padded=
     # Check if there are q-grams at all from both strings - - - - - - - - - - - -
     # (no q-grams if length of a string is less than q)
     #
-    if (padded == False) and (min(num_qgram1, num_qgram2) == 0):
+    if (padded is False) and (min(num_qgram1, num_qgram2) == 0):
         return 0.0
 
     # Calculate the divisor - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -631,7 +631,7 @@ def qgram(str1, str2, q=2, common_divisor="average", min_threshold=None, padded=
 
     # Use number of q-grams to quickly check for minimum threshold - - - - - - -
     #
-    if min_threshold != None:
+    if min_threshold is not None:
         if (
             (isinstance(min_threshold, float))
             and (min_threshold > 0.0)
@@ -654,7 +654,7 @@ def qgram(str1, str2, q=2, common_divisor="average", min_threshold=None, padded=
 
     # Add start and end characters (padding) - - - - - - - - - - - - - - - - - -
     #
-    if padded == True:
+    if padded is True:
         qgram_str1 = (q - 1) * QGRAM_START_CHAR + str1 + (q - 1) * QGRAM_END_CHAR
         qgram_str2 = (q - 1) * QGRAM_START_CHAR + str2 + (q - 1) * QGRAM_END_CHAR
     else:
@@ -776,7 +776,7 @@ def posqgram(
 
     # Calculate number of q-grams in strings (plus start and end characters) - -
     #
-    if padded == True:
+    if padded is True:
         num_qgram1 = len(str1) + q - 1
         num_qgram2 = len(str2) + q - 1
     else:
@@ -786,7 +786,7 @@ def posqgram(
     # Check if there are q-grams at all from both strings - - - - - - - - - - - -
     # (no q-grams if length of a string is less than q)
     #
-    if (padded == False) and (min(num_qgram1, num_qgram2) == 0):
+    if (padded is False) and (min(num_qgram1, num_qgram2) == 0):
         return 0.0
 
     # Calculate the divisor - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -804,7 +804,7 @@ def posqgram(
 
     # Use number of q-grams to quickly check for minimum threshold - - - - - - -
     #
-    if min_threshold != None:
+    if min_threshold is not None:
         if (
             (isinstance(min_threshold, float))
             and (min_threshold > 0.0)
@@ -827,7 +827,7 @@ def posqgram(
 
     # Add start and end characters (padding) - - - - - - - - - - - - - - - - - -
     #
-    if padded == True:
+    if padded is True:
         qgram_str1 = (q - 1) * QGRAM_START_CHAR + str1 + (q - 1) * QGRAM_END_CHAR
         qgram_str2 = (q - 1) * QGRAM_START_CHAR + str2 + (q - 1) * QGRAM_END_CHAR
     else:
@@ -924,7 +924,7 @@ def sgram(str1, str2, gc, common_divisor="average", min_threshold=None, padded=T
 
     # Extend strings with start and end characters
     #
-    if padded == True:
+    if padded is True:
         tmp_str1 = QGRAM_START_CHAR + str1 + QGRAM_END_CHAR
         tmp_str2 = QGRAM_START_CHAR + str2 + QGRAM_END_CHAR
     else:
@@ -1027,7 +1027,7 @@ def editdist(str1, str2, min_threshold=None):
     m = len(str2)
     max_len = max(n, m)
 
-    if min_threshold != None:
+    if min_threshold is not None:
         if (
             (isinstance(min_threshold, float))
             and (min_threshold > 0.0)
@@ -1071,7 +1071,7 @@ def editdist(str1, str2, min_threshold=None):
             #
             current[j] = min(previous[j] + 1, current[j - 1] + 1, substitute)
 
-        if (min_threshold != None) and (min(current) > max_dist):
+        if (min_threshold is not None) and (min(current) > max_dist):
             return 1.0 - float(max_dist + 1) / float(max_len)
 
     w = 1.0 - float(current[n]) / float(max_len)
@@ -1125,7 +1125,7 @@ def mod_editdist(str1, str2, min_threshold=None):
     m = len(str2)
     max_len = max(n, m)
 
-    if min_threshold != None:
+    if min_threshold is not None:
         if (
             (isinstance(min_threshold, float))
             and (min_threshold > 0.0)
@@ -1186,7 +1186,7 @@ def mod_editdist(str1, str2, min_threshold=None):
 
         d.append(current)
 
-        if (min_threshold != None) and (min(current) > max_dist):
+        if (min_threshold is not None) and (min(current) > max_dist):
             return 1.0 - float(max_dist + 1) / float(max_len)
 
     w = 1.0 - float(current[n]) / float(max_len)
@@ -1492,8 +1492,8 @@ def swdist(str1, str2, common_divisor="average", min_threshold=None):
                 insert = max(insert, score)
 
             delete = 0
-            for l in range(1, j):
-                score = d[i][j - l] - gap_penalty - l * extension_penalty
+            for _l in range(1, j):
+                score = d[i][j - _l] - gap_penalty - _l * extension_penalty
                 delete = max(delete, score)
 
             d[i][j] = max(match, insert, delete, 0)
@@ -1558,7 +1558,7 @@ def syllaligndist(
     elif str1 == str2:
         return 1.0
 
-    if do_phonix == True:
+    if do_phonix is True:
         workstr1 = encode.phonix_transform(str1)
         workstr2 = encode.phonix_transform(str2)
     else:
@@ -1816,7 +1816,7 @@ def compression(str1, str2, compressor="zlib", min_threshold=None):
         c1 = float(mymath.arith_coder_encode(str1, trainprob))
         c2 = float(mymath.arith_coder_encode(str2, trainprob))
         c12 = float(mymath.arith_coder_encode(str1 + str2, trainprob))
-        c21 = float(mymath.arith_coder_encode(str2 + str1, trainprob))
+        # c21 = float(mymath.arith_coder_encode(str2 + str1, trainprob))
 
         # print c1, c2, c12, 1.0 - (c12 - min(c1,c2)) / max(c1,c2)
         # print
@@ -1913,7 +1913,7 @@ def lcs(str1, str2, min_common_len=2, common_divisor="average", min_threshold=No
 
     # Use string length to quickly check for minimum threshold - - - - - - - - -
     #
-    if min_threshold != None:
+    if min_threshold is not None:
         if (
             (isinstance(min_threshold, float))
             and (min_threshold > 0.0)
@@ -2027,7 +2027,7 @@ def do_lcs(str1, str2):
     str1 = str1[: com_ans1 - com_len + 1] + str1[1 + com_ans1 :]
     str2 = str2[: com_ans2 - com_len + 1] + str2[1 + com_ans2 :]
 
-    if swapped == True:
+    if swapped is True:
         return com1, com_len, str2, str1
     else:
         return com1, com_len, str1, str2
@@ -2494,7 +2494,7 @@ def twoleveljaro(str1, str2, comp_funct="equal", min_threshold=None):
 
     # If a comparison function is given, a minimum threshold is also required
     #
-    if (comp_funct != "equal") and (min_threshold == None):
+    if (comp_funct != "equal") and (min_threshold is None):
         logging.exception("Comparison function is given but no minimal threshold")
         raise Exception
 
@@ -2571,7 +2571,7 @@ def twoleveljaro(str1, str2, comp_funct="equal", min_threshold=None):
                 + ", common1: %i, common2: %i" % (common1, common2)
                 + ", common should be the same."
             )
-            common1 = float(common1 + common2) / 2.0  ##### This is just a fix #####
+            common1 = float(common1 + common2) / 2.0  # This is just a fix
 
     # For approximate comparison function, compare all words within current
     # 'window' and keep all matches above threshold, then select the best match
@@ -2770,7 +2770,7 @@ def charhistogram(str1, str2, min_threshold=None):
         #
         cos_sim = min(cos_sim, 1.0)
 
-    assert (cos_sim >= 0.0) and (cos_sim <= 1.0), (cos_sim, vec1, vec2)
+    assert (cos_sim >= 0.0) and (cos_sim <= 1.0), (cos_sim, vec1sum, vec2sum)
 
     return cos_sim
 
