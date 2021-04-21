@@ -66,14 +66,16 @@ class PizzaRestaurantGraph:
 
 
 if __name__ == "__main__":
-    FILENAME: str = "../2-RDF/ontology6/pizza_restaurants_with_reasoning_sparql1.ttl"
+    INPUT_FILEPATH: str = (
+        "../2-RDF/ontology7/pizza_restaurants_with_reasoning_sparql1.ttl"
+    )
 
-    pr_graph = PizzaRestaurantGraph(filename=FILENAME)
+    pr_graph = PizzaRestaurantGraph(filename=INPUT_FILEPATH)
 
     TASK: Task = Task.SPARQL2.value
-    # TASK: Task = Task.SPARQL3.value
-    # TASK: Task = Task.SPARQL4.value
-    # TASK: Task = Task.SPARQL5.value
+    TASK: Task = Task.SPARQL3.value
+    TASK: Task = Task.SPARQL4.value
+    TASK: Task = Task.SPARQL5.value
 
     if TASK == Task.SPARQL2.value:
         # OUTPUT_FIELDS = [
@@ -109,17 +111,18 @@ if __name__ == "__main__":
                 ?restaurant fp:name ?name .
                 ?restaurant fp:address ?address .
                 ?restaurant fp:city ?city .
-                ?restaurant fp:postcode ?postcode .
+                ?restaurant fp:state ?state .
+                OPTIONAL { ?restaurant fp:postcode ?postcode . }
                 ?restaurant fp:country ?country .
             }
-            """
-        QUERY: str = """
-            SELECT DISTINCT ?restaurant
-            WHERE {
-                ?restaurant fp:hasMenuItem ?x .
-                ?x rdf:type fp:PizzaBianca .
-            }
-            """
+        #     """
+        # QUERY: str = """
+        #     SELECT DISTINCT ?restaurant
+        #     WHERE {
+        #         ?restaurant fp:hasMenuItem ?x .
+        #         ?x rdf:type fp:PizzaBianca .
+        #     }
+        #     """
 
         pr_graph.query_graph(
             query=QUERY, output_filename=TASK, output_fields=OUTPUT_FIELDS
@@ -139,9 +142,17 @@ if __name__ == "__main__":
         #     """
 
         QUERY: str = """
-            SELECT avg(?price) AS avg_price
+            SELECT (AVG(?price)) AS ?avg_price
             WHERE {
                 ?pizza rdf:type fp:PizzaMargherita .
+                ?pizza rdf:type fp:MenuItem .
+                ?pizza fp:menu_item_price ?price .
+            }
+            """
+        QUERY: str = """
+            SELECT (AVG(?price)) AS ?avg_price
+            WHERE {
+                ?pizza rdf:type fp:PizzaBianca .
                 ?pizza rdf:type fp:MenuItem .
                 ?pizza fp:menu_item_price ?price .
             }
@@ -186,9 +197,3 @@ if __name__ == "__main__":
         pr_graph.query_graph(
             query=QUERY, output_filename=TASK, output_fields=OUTPUT_FIELDS
         )
-
-# # SPARQL results into CSV
-# solution.performSPARQLQuery(file.replace(".csv", "-" + task) + "-query-results.csv")
-
-# # SPARQL for Lab 7
-# solution.performSPARQLQueryLab7()
