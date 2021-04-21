@@ -417,11 +417,8 @@ class TabToGraph:
     def debug(self) -> None:
         pprint(vars(self))
 
-    def display(self, nrows: int = None) -> None:
-        if not nrows:
-            nrows = len(self.graph)
-
-        for s, p, o in self.graph[:nrows]:
+    def display(self) -> None:
+        for s, p, o in self.graph:
             print((s.n3(), p.n3(), o.n3()))
 
         print(f"Printed {len(self.graph)} triples.")
