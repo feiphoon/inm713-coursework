@@ -35,6 +35,8 @@ dc:title rdf:type owl:AnnotationProperty .
 ###  http://www.city.ac.uk/ds/inm713/feiphoon#cityHasPlace
 fp:cityHasPlace rdf:type owl:ObjectProperty ;
                 owl:inverseOf fp:isPlaceInCity ;
+                rdfs:domain fp:City ;
+                rdfs:range fp:Restaurant ;
                 dc:creator "fei"^^xsd:string .
 
 
@@ -110,8 +112,7 @@ fp:isMenuItemAt rdf:type owl:ObjectProperty ,
 
 ###  http://www.city.ac.uk/ds/inm713/feiphoon#isPlaceInCity
 fp:isPlaceInCity rdf:type owl:ObjectProperty ,
-                          owl:FunctionalProperty ,
-                          owl:AsymmetricProperty ;
+                          owl:FunctionalProperty ;
                  rdfs:domain fp:Restaurant ;
                  rdfs:range fp:City ;
                  dc:creator "fei"^^xsd:string .
@@ -120,6 +121,8 @@ fp:isPlaceInCity rdf:type owl:ObjectProperty ,
 ###  http://www.city.ac.uk/ds/inm713/feiphoon#isPlaceInCountry
 fp:isPlaceInCountry rdf:type owl:ObjectProperty ,
                              owl:FunctionalProperty ;
+                    rdfs:domain fp:Restaurant ;
+                    rdfs:range fp:Country ;
                     dc:creator "fei"^^xsd:string .
 
 
@@ -127,11 +130,15 @@ fp:isPlaceInCountry rdf:type owl:ObjectProperty ,
 fp:isPlaceInState rdf:type owl:ObjectProperty ;
                   owl:inverseOf fp:stateHasPlace ;
                   rdf:type owl:FunctionalProperty ;
+                  rdfs:domain fp:Restaurant ;
+                  rdfs:range fp:State ;
                   dc:creator "fei"^^xsd:string .
 
 
 ###  http://www.city.ac.uk/ds/inm713/feiphoon#stateHasPlace
 fp:stateHasPlace rdf:type owl:ObjectProperty ;
+                 rdfs:domain fp:State ;
+                 rdfs:range fp:Restaurant ;
                  dc:creator "fei"^^xsd:string .
 
 
