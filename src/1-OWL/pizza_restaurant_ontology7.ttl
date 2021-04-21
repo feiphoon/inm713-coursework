@@ -183,7 +183,7 @@ fp:menu_item_description rdf:type owl:DatatypeProperty ,
 fp:menu_item_price rdf:type owl:DatatypeProperty ,
                             owl:FunctionalProperty ;
                    rdfs:domain fp:MenuItem ;
-                   rdfs:range xsd:decimal ;
+                   rdfs:range xsd:float ;
                    dc:creator "fei"^^xsd:string .
 
 
