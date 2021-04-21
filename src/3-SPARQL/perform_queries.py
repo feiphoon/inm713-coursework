@@ -122,16 +122,24 @@ if __name__ == "__main__":
         )
 
     elif TASK == Task.SPARQL3.value:
+        # Retrieves all prices
+        # OUTPUT_FIELDS = ["pizza", "name", "price"]
+        # QUERY: str = """
+        #     SELECT ?pizza ?name ?price
+        #     WHERE {
+        #         ?pizza rdf:type fp:PizzaMargherita .
+        #         ?pizza rdf:type fp:MenuItem .
+        #         ?pizza fp:name ?name .
+        #         ?pizza fp:menu_item_price ?price .
+        #     }
+        # """
 
-        OUTPUT_FIELDS = ["pizza", "name", "price"]
-        # OUTPUT_FIELDS = ["avg_price_margherita_pizza"]
-
+        OUTPUT_FIELDS = ["avg_price_margherita_pizza"]
         QUERY: str = """
-            SELECT ?pizza ?name ?price
+            SELECT (AVG(?price)) AS ?avg_price
             WHERE {
                 ?pizza rdf:type fp:PizzaMargherita .
                 ?pizza rdf:type fp:MenuItem .
-                ?pizza fp:name ?name .
                 ?pizza fp:menu_item_price ?price .
             }
             """
