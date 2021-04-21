@@ -49,9 +49,11 @@ class TabToGraph:
         self.graph.bind(self.prefix, self.namespace)
 
         # Load input as dataframe
-        self.data_df: pd.DataFrame = pd.read_csv(
-            input_filepath, sep=",", quotechar='"', escapechar="\\", encoding="utf-8"
-        )
+        # self.data_df: pd.DataFrame = pd.read_csv(
+        #     input_filepath, sep=",", quotechar='"', escapechar="\\", encoding="utf-8"
+        # )
+        self.data_df: pd.DataFrame = pd.read_csv(input_filepath, encoding="utf-8")
+        self.data_df_len: int = len(self.data_df)
 
         # Dictionary to store URIs
         self.string_to_uri: dict = {}
@@ -85,7 +87,7 @@ class TabToGraph:
 
         # Normalise unicode/accented characters,
         # e.g. café becomes cafe.
-        # TODO: buggy
+        # Note: unidecode is buggy
         df[transformed_col] = df[target_col].apply(unidecode)
 
         # Check unique characters in menu item column
@@ -138,6 +140,19 @@ class TabToGraph:
             )
             transformed_col = target_col
         df[transformed_col] = df[target_col].fillna(fillna_value)
+
+    # @staticmethod
+    # def convert_number_to_spelling(
+    #     df: DataFrame, target_col: str, transformed_col: Optional[str]
+    # ) -> None:
+    #     # If no new col is named to hold transformations,
+    #     # then the transformations should be in-place.
+    #     if not transformed_col:
+    #         print(
+    #             "WARNING: transformed_col name not supplied, transformations will be applied in-place."
+    #         )
+    #         transformed_col = target_col
+    #     df[transformed_col] = df[target_col].replace("4", "four")
 
     @staticmethod
     def clean_swapped_pizza(menu_item_name: str) -> None:
@@ -230,6 +245,21 @@ class TabToGraph:
             )
 
         if "address" in self.data_df:
+            self.replace_missing_values(
+                df=self.data_df,
+                target_col="postcode",
+                transformed_col="cleaned_postcode",
+                fillna_value=" ",
+            )
+
+            # Addresses a very specific bug in postcode type being inferred as float.
+            self.data_df["cleaned_postcode"] = self.data_df["cleaned_postcode"].astype(
+                str
+            )
+            self.data_df["cleaned_postcode"] = self.data_df[
+                "cleaned_postcode"
+            ].str.replace(r".0$", "", regex=True)
+
             # Create a new complete_address column
             # While multiple locations could have the same restaurant name,
             # multiple restaurant names could be at the same location.
@@ -238,12 +268,16 @@ class TabToGraph:
                 "address",
                 "city",
                 "state",
-                "postcode",
+                "cleaned_postcode",
                 "country",
             ]
             self.data_df["complete_address"] = self.data_df[_address_parts_cols].apply(
                 lambda row: " ".join(row.values.astype(str)), axis=1
             )
+
+            self.data_df["complete_address"] = self.data_df[
+                "complete_address"
+            ].str.replace("-", "_")
 
             self.mapping_to_create_type_triple(
                 subject_col="complete_address", class_type=self.namespace.Restaurant
@@ -279,7 +313,7 @@ class TabToGraph:
 
             self.mapping_to_create_literal_triple(
                 subject_col="complete_address",
-                object_col="postcode",
+                object_col="cleaned_postcode",
                 predicate=self.namespace.postcode,
                 datatype=XSD.string,
             )
@@ -316,28 +350,6 @@ class TabToGraph:
                 predicate=self.namespace.isPlaceInCountry,
             )
 
-        # if (
-        #     ("name" in self.data_df)
-        #     and ("cleaned_name" in self.data_df)
-        #     and ("complete_address" in self.data_df)
-        # ):
-        #     self.mapping_to_create_type_triple(
-        #         subject_col="cleaned_name", class_type=self.namespace.Restaurant
-        #     )
-
-        #     self.mapping_to_create_object_triple(
-        #         subject_col="cleaned_name",
-        #         object_col="complete_address",
-        #         predicate=self.namespace.hasLocation,
-        #     )
-
-        #     self.mapping_to_create_literal_triple(
-        #         subject_col="cleaned_name",
-        #         object_col="name",
-        #         predicate=self.namespace.name,
-        #         datatype=XSD.string,
-        #     )
-
         if "cleaned_name" in self.data_df and "menu item" in self.data_df:
             # Tidy weird characters from menu item column first
             self.apply_preprocessing(
@@ -349,6 +361,28 @@ class TabToGraph:
             # Special cleaning for Pizza items
             self.data_df["cleaned_menu_item"] = self.data_df["cleaned_menu_item"].apply(
                 lambda row: self.clean_swapped_pizza(row)
+            )
+
+            # Fill in nulls
+            self.replace_missing_values(
+                df=self.data_df,
+                target_col="item value",
+                transformed_col="menu_item_price",
+                fillna_value=0.0,
+            )
+
+            self.replace_missing_values(
+                df=self.data_df,
+                target_col="currency",
+                transformed_col="menu_item_price_currency",
+                fillna_value=" ",
+            )
+
+            self.replace_missing_values(
+                df=self.data_df,
+                target_col="item description",
+                transformed_col="menu_item_description",
+                fillna_value=" ",
             )
 
             # Make each item unique to the restaurant
@@ -371,21 +405,21 @@ class TabToGraph:
 
             self.mapping_to_create_literal_triple(
                 subject_col="restaurant_menu_item",
-                object_col="item value",
+                object_col="menu_item_price",
                 predicate=self.namespace.menu_item_price,
-                datatype=XSD.decimal,
+                datatype=XSD.float,
             )
 
             self.mapping_to_create_literal_triple(
                 subject_col="restaurant_menu_item",
-                object_col="currency",
+                object_col="menu_item_price_currency",
                 predicate=self.namespace.menu_item_price_currency,
                 datatype=XSD.string,
             )
 
             self.mapping_to_create_literal_triple(
                 subject_col="restaurant_menu_item",
-                object_col="item description",
+                object_col="menu_item_description",
                 predicate=self.namespace.menu_item_description,
                 datatype=XSD.string,
             )
@@ -529,7 +563,7 @@ class TabToGraph:
         TODO: useExternalURI: if URI is fresh or from external KG
         """
         for subject in self.data_df[subject_col]:
-            if self.is_object_missing(subject):
+            if self.is_object_missing(value=subject):
                 return
             else:
                 entity_uri: str = None
@@ -678,3 +712,4 @@ if __name__ == "__main__":
         tab_to_graph.save_graph(
             output_file=f"pizza_restaurants_with_reasoning_{TASK.value}.ttl"
         )
+        print(tab_to_graph.data_df["menu_item_description"])
