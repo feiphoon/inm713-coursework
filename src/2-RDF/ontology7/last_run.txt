@@ -1,12 +1,12 @@
-(venv) ➜  ontology6 git:(rdf-task) ✗ python create_rdf_triples.py
-Finished converting CSV to RDF in 2.215797424 seconds.
-Extracted 20980 triples.
-(venv) ➜  ontology6 git:(rdf-task) ✗ python create_rdf_triples.py
-Finished converting CSV to RDF in 365.457829323 seconds.
-Extracted 20974 triples.
-(venv) ➜  ontology6 git:(rdf-task) ✗ python create_rdf_triples.py
-Finished converting CSV to RDF in 362.431552013 seconds.
-Extracted 20974 triples.
-Triples including ontology: 21290.
-Finished reasoning on graph in 20.852632054000026 seconds.
-Triples after OWL 2 RL reasoning: 72803.
+(venv) ➜  ontology7 git:(sparql-task) ✗ python create_rdf_triples.py
+Finished converting CSV to RDF in 2.6588426629999997 seconds.
+Extracted 22097 triples.
+(venv) ➜  ontology7 git:(sparql-task) ✗ python create_rdf_triples.py
+Finished converting CSV to RDF in 355.87598915 seconds.
+Extracted 22091 triples.
+(venv) ➜  ontology7 git:(sparql-task) ✗ python create_rdf_triples.py
+Finished converting CSV to RDF in 348.239697813 seconds.
+Extracted 22091 triples.
+Triples including ontology: 22397.
+Finished reasoning on graph in 23.511841747000005 seconds.
+Triples after OWL 2 RL reasoning: 73022.
