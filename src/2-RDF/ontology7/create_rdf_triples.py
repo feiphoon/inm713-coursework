@@ -640,7 +640,7 @@ if __name__ == "__main__":
     # INPUT_FILEPATH = "../../data/data_pizza_bianca_white_test.csv"
     # INPUT_FILEPATH = "../../data/data_pizza_margherita_test.csv"
     # INPUT_FILEPATH = "../../data/data_pizza_minimum_test.csv"
-    INPUT_FILEPATH = "../../data/data_pizza_no_postcode_test.csv"
+    # INPUT_FILEPATH = "../../data/data_pizza_no_postcode_test.csv"
 
     NAMESPACE: str = Namespace("http://www.city.ac.uk/ds/inm713/feiphoon#")
     PREFIX: str = "fp"
