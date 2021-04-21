@@ -112,15 +112,13 @@ class DBpediaLookup(Lookup):
     Returns list of ordered entities according to relevance: dbpedia
     """
 
-    def __extractKGEntities(self, json, filter=""):
+    def __extractKGEntities(self, json, category_filter, filter=""):
 
         entities = list()
 
         for element in json["docs"]:
 
             types = set()
-
-            # print(element)
 
             if "type" in element:
                 for t in element["type"]:
@@ -150,23 +148,30 @@ class DBpediaLookup(Lookup):
 
             kg_entity = KGEntity(uri, label, description, types, self.getKGName())
 
-            # We filter according to given URI
-            if filter == "" or uri == filter:
-                entities.append(kg_entity)
-            # print(kg_entity)
+            if "category" in element:
+                # Prioritise good matches to category first - prepend
+                if category_filter in element["category"]:
+                    entities.insert(0, kg_entity)
+                # Else we filter according to given URI (not used)
+                elif filter == "" or uri == filter:
+                    # print(kg_entity)
+                    entities.append(kg_entity)
 
-        # for entity in entities:
-        #    print(entity)
+        # if len(entities) > 0:
+        #     for entity in entities:
+        #         print("entities", entity)
         return entities
 
-    def getKGEntities(self, query, limit, filter=""):
+    def getKGEntities(self, query, limit, category_filter=""):
         json = self.getJSONRequest(self.__createParams(query, limit), 3)
 
         if json == None:
             print("None results for", query)
             return list()
 
-        return self.__extractKGEntities(json, filter)  # Optionally filter by URI
+        return self.__extractKGEntities(
+            json, category_filter
+        )  # Optionally filter by URI
 
 
 """
