@@ -633,13 +633,15 @@ if __name__ == "__main__":
 
     if TASK == Task.RDF2:
         tab_to_graph.convert_csv_to_rdf(use_external_uri=False)
+        tab_to_graph.save_graph(
+            output_file=f"pizza_restaurants_without_reasoning_{TASK.value}.ttl"
+        )
+
     elif TASK == Task.RDF3:
         tab_to_graph.convert_csv_to_rdf(use_external_uri=True)
-
-    # Save graph with only data
-    tab_to_graph.save_graph(
-        output_file=f"pizza_restaurants_without_reasoning_{TASK.value}.ttl"
-    )
+        tab_to_graph.save_graph(
+            output_file=f"pizza_restaurants_without_reasoning_{TASK.value}.ttl"
+        )
 
     if TASK == Task.SPARQL1:
         tab_to_graph.convert_csv_to_rdf(use_external_uri=True)
