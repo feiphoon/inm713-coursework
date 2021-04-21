@@ -123,7 +123,7 @@ if __name__ == "__main__":
 
     elif TASK == Task.SPARQL3.value:
 
-        OUTPUT_FIELDS = ["pizza", "price"]
+        OUTPUT_FIELDS = ["pizza", "name", "price"]
         # OUTPUT_FIELDS = ["avg_price_margherita_pizza"]
 
         QUERY: str = """
