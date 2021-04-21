@@ -73,7 +73,8 @@ fp:hasIngredientAsTopping rdf:type owl:ObjectProperty ;
 ###  http://www.city.ac.uk/ds/inm713/feiphoon#hasMenuItem
 fp:hasMenuItem rdf:type owl:ObjectProperty ;
                owl:inverseOf fp:isMenuItemAt ;
-               rdfs:range fp:Dish ;
+               rdfs:domain fp:Restaurant ;
+               rdfs:range fp:MenuItem ;
                dc:creator "fei" .
 
 
@@ -103,7 +104,6 @@ fp:isIngredientOf rdf:type owl:ObjectProperty ,
 ###  http://www.city.ac.uk/ds/inm713/feiphoon#isMenuItemAt
 fp:isMenuItemAt rdf:type owl:ObjectProperty ,
                          owl:FunctionalProperty ;
-                rdfs:domain fp:Dish ;
                 rdfs:range fp:Restaurant ;
                 dc:creator "fei" .
 
@@ -172,24 +172,21 @@ fp:country rdf:type owl:DatatypeProperty ,
 
 
 ###  http://www.city.ac.uk/ds/inm713/feiphoon#menu_item_description
-fp:menu_item_description rdf:type owl:DatatypeProperty ,
-                                  owl:FunctionalProperty ;
+fp:menu_item_description rdf:type owl:DatatypeProperty ;
                          rdfs:domain fp:MenuItem ;
                          rdfs:range rdf:PlainLiteral ;
                          dc:creator "fei"^^xsd:string .
 
 
 ###  http://www.city.ac.uk/ds/inm713/feiphoon#menu_item_price
-fp:menu_item_price rdf:type owl:DatatypeProperty ,
-                            owl:FunctionalProperty ;
+fp:menu_item_price rdf:type owl:DatatypeProperty ;
                    rdfs:domain fp:MenuItem ;
                    rdfs:range xsd:float ;
                    dc:creator "fei"^^xsd:string .
 
 
 ###  http://www.city.ac.uk/ds/inm713/feiphoon#menu_item_price_currency
-fp:menu_item_price_currency rdf:type owl:DatatypeProperty ,
-                                     owl:FunctionalProperty ;
+fp:menu_item_price_currency rdf:type owl:DatatypeProperty ;
                             rdfs:domain fp:MenuItem ;
                             rdfs:range rdf:PlainLiteral ;
                             dc:creator "fei"^^xsd:string .

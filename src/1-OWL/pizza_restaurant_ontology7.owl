@@ -110,7 +110,8 @@
 
     <owl:ObjectProperty rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#hasMenuItem">
         <owl:inverseOf rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#isMenuItemAt"/>
-        <rdfs:range rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Dish"/>
+        <rdfs:domain rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Restaurant"/>
+        <rdfs:range rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#MenuItem"/>
         <dc:creator>fei</dc:creator>
     </owl:ObjectProperty>
     
@@ -152,7 +153,6 @@
 
     <owl:ObjectProperty rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#isMenuItemAt">
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Dish"/>
         <rdfs:range rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Restaurant"/>
         <dc:creator>fei</dc:creator>
     </owl:ObjectProperty>
@@ -256,7 +256,6 @@
     <!-- http://www.city.ac.uk/ds/inm713/feiphoon#menu_item_description -->
 
     <owl:DatatypeProperty rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#menu_item_description">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
         <rdfs:domain rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#MenuItem"/>
         <rdfs:range rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral"/>
         <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
@@ -267,9 +266,8 @@
     <!-- http://www.city.ac.uk/ds/inm713/feiphoon#menu_item_price -->
 
     <owl:DatatypeProperty rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#menu_item_price">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
         <rdfs:domain rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#MenuItem"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
         <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
     </owl:DatatypeProperty>
     
@@ -278,7 +276,6 @@
     <!-- http://www.city.ac.uk/ds/inm713/feiphoon#menu_item_price_currency -->
 
     <owl:DatatypeProperty rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#menu_item_price_currency">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
         <rdfs:domain rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#MenuItem"/>
         <rdfs:range rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral"/>
         <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
