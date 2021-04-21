@@ -712,4 +712,3 @@ if __name__ == "__main__":
         tab_to_graph.save_graph(
             output_file=f"pizza_restaurants_with_reasoning_{TASK.value}.ttl"
         )
-        print(tab_to_graph.data_df["menu_item_description"])
