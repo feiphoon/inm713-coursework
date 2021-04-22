@@ -1,5 +1,5 @@
 """
-Based heavily on code for lab6 of INM713.
+Triples code based on lab6 of INM713.
 Created on 05 March 2021
 @author: ejimenez-ruiz
 

@@ -1,10 +1,4 @@
 """
-Modification of code from INM713 labs
-
-Created on 19 Jan 2021
-
-@author: ejimenez-ruiz
-
 Subtask SPARQL.2
 Subtask SPARQL.3
 Subtask SPARQL.4
