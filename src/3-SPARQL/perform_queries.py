@@ -60,7 +60,9 @@ class PizzaRestaurantGraph:
             with open(f"{output_filename}_{len(result)}results.csv", "w") as f:
                 f.write(",".join(output_fields) + "\n")
                 for row in result:
-                    result_row = [str(row[field]) for field in output_fields]
+                    result_row = [
+                        '"' + str(row[field]) + '"' for field in output_fields
+                    ]
                     line_str = ",".join(result_row)
                     f.write(line_str)
                     f.write("\n")
