@@ -3,13 +3,7 @@ Created on 19 Mar 2019
 
 @author: ejimenez-ruiz
 """
-
-"""
-Parent lookup class
-"""
-
 import json
-from pprint import pprint
 import time
 from urllib import parse, request
 
@@ -17,10 +11,6 @@ from entity import KGEntity
 
 
 class Lookup(object):
-    """
-    classdocs
-    """
-
     def __init__(self, lookup_url):
         self.service_url = lookup_url
 
@@ -44,8 +34,7 @@ class Lookup(object):
 
             return response
 
-        except:
-
+        except Exception:
             print("Lookup '%s' failed. Attempts: %s" % (url, str(attempts)))
             time.sleep(60)  # to avoid limit of calls, sleep 60s
             attempts -= 1
@@ -55,15 +44,9 @@ class Lookup(object):
                 return None
 
 
-"""
-DBpedia lookup access
-"""
-
-
 class DBpediaLookup(Lookup):
     """
-    classdocs
-
+    DBpedia lookup access
     """
 
     def __init__(self):
@@ -99,21 +82,19 @@ class DBpediaLookup(Lookup):
                 "maxResults": limit,
                 "format": "json",
             }
-            #'QueryClass' : query_cls,
-            #'QueryString': query,
-            #'MaxHits': limit,
+            # 'QueryClass' : query_cls,
+            # 'QueryString': query,
+            # 'MaxHits': limit,
 
         return params
 
     def getKGName(self):
         return "DBpedia"
 
-    """
-    Returns list of ordered entities according to relevance: dbpedia
-    """
-
     def __extractKGEntities(self, json, category_filter, filter=""):
-
+        """
+        Returns list of ordered entities according to relevance: dbpedia
+        """
         entities = list()
 
         for element in json["docs"]:
@@ -121,30 +102,30 @@ class DBpediaLookup(Lookup):
             types = set()
 
             if "type" in element:
-                for t in element["type"]:
-                    if t != "http://www.w3.org/2002/07/owl#Thing":
+                for _t in element["type"]:
+                    if _t != "http://www.w3.org/2002/07/owl#Thing":
                         if (
-                            t.startswith("http://dbpedia.org/ontology/")
-                            or t.startswith("http://www.wikidata.org/entity/")
-                            or t.startswith("http://schema.org/")
+                            _t.startswith("http://dbpedia.org/ontology/")
+                            or _t.startswith("http://www.wikidata.org/entity/")
+                            or _t.startswith("http://schema.org/")
                         ):
-                            types.add(t)
+                            types.add(_t)
 
             description = ""
             if "comment" in element:
                 description = element["comment"]
 
-            ##Expected only one
+            # Expected only one
             uri = ""
             if "resource" in element:
-                for u in element["resource"]:
-                    uri = u
+                for _u in element["resource"]:
+                    uri = _u
 
-            ##Expected only one
+            # Expected only one
             label = ""
             if "label" in element:
-                for l in element["label"]:
-                    label = l
+                for _l in element["label"]:
+                    label = _l
 
             kg_entity = KGEntity(uri, label, description, types, self.getKGName())
 
@@ -165,7 +146,7 @@ class DBpediaLookup(Lookup):
     def getKGEntities(self, query, limit, category_filter=""):
         json = self.getJSONRequest(self.__createParams(query, limit), 3)
 
-        if json == None:
+        if json is None:
             print("None results for", query)
             return list()
 
@@ -174,15 +155,9 @@ class DBpediaLookup(Lookup):
         )  # Optionally filter by URI
 
 
-"""
-Wikidata web search API
-"""
-
-
 class WikidataAPI(Lookup):
     """
-    classdocs
-
+    Wikidata web search API
     """
 
     def __init__(self):
@@ -210,12 +185,10 @@ class WikidataAPI(Lookup):
     def getKGName(self):
         return "Wikidata"
 
-    """
-    Returns list of ordered entities according to relevance: wikidata
-    """
-
     def __extractKGEntities(self, json, filter=""):
-
+        """
+        Returns list of ordered entities according to relevance: wikidata
+        """
         entities = list()
 
         for element in json["search"]:
@@ -246,19 +219,18 @@ class WikidataAPI(Lookup):
     def getKGEntities(self, query, limit, type="item", filter=""):
         json = self.getJSONRequest(self.__createParams(query, limit, type), 3)
 
-        if json == None:
+        if json is None:
             print("None results for", query)
             return list()
 
         return self.__extractKGEntities(json, filter)  # Optionally filter by URI
 
 
-"""    
-Entity search for Google KG
-"""
-
-
 class GoogleKGLookup(Lookup):
+    """
+    Entity search for Google KG
+    """
+
     def __init__(self):
         """
         Constructor
@@ -328,7 +300,7 @@ class GoogleKGLookup(Lookup):
     def getKGEntities(self, query, limit, filter=""):
         json = self.getJSONRequest(self.__createParams(query, limit), 3)
 
-        if json == None:
+        if json is None:
             print("None results for", query)
             return list()
 

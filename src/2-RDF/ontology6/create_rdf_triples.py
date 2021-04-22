@@ -409,7 +409,7 @@ class TabToGraph:
                 subject = subject.lower()
 
                 # Pizza Bianca conditions
-                if (conditional == "pizza bianca") or (conditional == "white pizza"):
+                if ("bianca" in conditional) or (conditional == "white pizza"):
                     entity_uri: str = None
 
                     if subject in self.string_to_uri:
@@ -598,11 +598,8 @@ class TabToGraph:
     def debug(self) -> None:
         pprint(vars(self))
 
-    def display(self, nrows: int = None) -> None:
-        if not nrows:
-            nrows = len(self.graph)
-
-        for s, p, o in self.graph[:nrows]:
+    def display(self) -> None:
+        for s, p, o in self.graph:
             print((s.n3(), p.n3(), o.n3()))
 
         print(f"Printed {len(self.graph)} triples.")
@@ -633,13 +630,15 @@ if __name__ == "__main__":
 
     if TASK == Task.RDF2:
         tab_to_graph.convert_csv_to_rdf(use_external_uri=False)
+        tab_to_graph.save_graph(
+            output_file=f"pizza_restaurants_without_reasoning_{TASK.value}.ttl"
+        )
+
     elif TASK == Task.RDF3:
         tab_to_graph.convert_csv_to_rdf(use_external_uri=True)
-
-    # Save graph with only data
-    tab_to_graph.save_graph(
-        output_file=f"pizza_restaurants_without_reasoning_{TASK.value}.ttl"
-    )
+        tab_to_graph.save_graph(
+            output_file=f"pizza_restaurants_without_reasoning_{TASK.value}.ttl"
+        )
 
     if TASK == Task.SPARQL1:
         tab_to_graph.convert_csv_to_rdf(use_external_uri=True)
@@ -654,9 +653,3 @@ if __name__ == "__main__":
         tab_to_graph.save_graph(
             output_file=f"pizza_restaurants_with_reasoning_{TASK.value}.ttl"
         )
-
-    # # SPARQL results into CSV
-    # solution.performSPARQLQuery(file.replace(".csv", "-" + task) + "-query-results.csv")
-
-    # # SPARQL for Lab 7
-    # solution.performSPARQLQueryLab7()

@@ -68,7 +68,7 @@ class URI_KG(object):
     avoid_top_concepts.add(
         "http://www.wikidata.org/entity/Q26720107"
     )  # subject of a right
-    avoid_top_concepts.add("http://www.wikidata.org/entity/Q488383")  #  object
+    avoid_top_concepts.add("http://www.wikidata.org/entity/Q488383")  # object
     avoid_top_concepts.add("http://www.wikidata.org/entity/Q4406616")  # concrete object
     avoid_top_concepts.add("http://www.wikidata.org/entity/Q29651224")  # natural object
     avoid_top_concepts.add("http://www.wikidata.org/entity/Q223557")  # physical object
