@@ -26,11 +26,6 @@ class Task(Enum):
     SPARQL5 = "sparql5"
 
 
-# from rdflib.plugins.sparql import prepareQuery
-# from SPARQLWrapper import SPARQLWrapper, JSON
-# import requests
-
-
 class PizzaRestaurantGraph:
     def __init__(self, filename: str) -> None:
         self.graph = Graph()
@@ -60,7 +55,9 @@ class PizzaRestaurantGraph:
             with open(f"{output_filename}_{len(result)}results.csv", "w") as f:
                 f.write(",".join(output_fields) + "\n")
                 for row in result:
-                    result_row = [str(row[field]) for field in output_fields]
+                    result_row = [
+                        '"' + str(row[field]) + '"' for field in output_fields
+                    ]
                     line_str = ",".join(result_row)
                     f.write(line_str)
                     f.write("\n")
@@ -76,19 +73,9 @@ if __name__ == "__main__":
     TASK: Task = Task.SPARQL2.value
     TASK: Task = Task.SPARQL3.value
     TASK: Task = Task.SPARQL4.value
-    # TASK: Task = Task.SPARQL5.value
+    TASK: Task = Task.SPARQL5.value
 
     if TASK == Task.SPARQL2.value:
-        OUTPUT_FIELDS = [
-            "restaurant",
-            "name",
-            "address",
-            "city",
-            "state",
-            "postcode",
-            "country",
-        ]
-
         # Alternative search field
         # QUERY: str = """
         #     SELECT ?restaurant
@@ -102,8 +89,17 @@ if __name__ == "__main__":
         #             ?x fp:name "white pizza"^^xsd:string .
         #         }
         #     }
-        #     """
+        # """
 
+        OUTPUT_FIELDS = [
+            "restaurant",
+            "name",
+            "address",
+            "city",
+            "state",
+            "postcode",
+            "country",
+        ]
         QUERY: str = """
             SELECT DISTINCT ?restaurant ?name ?address ?city ?state ?postcode ?country
             WHERE {
@@ -145,7 +141,7 @@ if __name__ == "__main__":
                     ?pizza fp:menu_item_price ?price .
                 }
             }
-            """
+        """
 
         pr_graph.query_graph(
             query=QUERY, output_filename=TASK, output_fields=OUTPUT_FIELDS
@@ -153,18 +149,20 @@ if __name__ == "__main__":
 
     elif TASK == Task.SPARQL4.value:
 
-        OUTPUT_FIELDS = ["restaurant", "city", "state", "num_restaurants"]
-
+        OUTPUT_FIELDS = ["city", "state", "num_restaurants_by_city"]
+        # Decided we don't really need DISTINCT here
         QUERY: str = """
-            SELECT DISTINCT ?restaurant ?city ?state (COUNT(?restaurant) AS ?num_restaurants)
-            WHERE {
-                ?restaurant rdf:type fp:Restaurant .
-                ?restaurant fp:city ?city .
-                ?restaurant fp:state ?state .
-            }
-            GROUP BY ?city, ?state
-            ORDER BY DESC(?state), DESC(?num_restaurants)
-            """
+            SELECT ?city ?state ?num_restaurants_by_city {
+                SELECT ?city ?state (COUNT(?restaurant) AS ?num_restaurants_by_city)
+                WHERE {
+                    ?restaurant rdf:type fp:Restaurant .
+                    ?restaurant fp:isPlaceInCity ?city .
+                    ?restaurant fp:isPlaceInState ?state .
+                }
+                GROUP BY ?city
+                ORDER BY ASC(?state)
+            } ORDER BY DESC(?num_restaurants_by_city)
+        """
 
         pr_graph.query_graph(
             query=QUERY, output_filename=TASK, output_fields=OUTPUT_FIELDS
@@ -174,14 +172,36 @@ if __name__ == "__main__":
 
         OUTPUT_FIELDS = ["restaurant", "postcode"]
 
+        # This is the ideal way to do this.
+        # QUERY: str = """
+        #     SELECT DISTINCT ?restaurant ?postcode
+        #     WHERE {
+        #         ?restaurant fp:type fp:Restaurant .
+        #         ?restaurant fp:postcode ?postcode .
+        #         FILTER (!bound(?postcode))
+        #     }
+        # """
+
+        # This is for blank nodes, but I didn't implement this.
+        # QUERY: str = """
+        #     SELECT DISTINCT ?restaurant ?postcode
+        #     WHERE {
+        #         ?restaurant fp:type fp:Restaurant .
+        #         ?restaurant fp:postcode ?postcode .
+        #         FILTER (isBlank(?postcode))
+        #     }
+        # """
+
+        # This is the way I'm forced to do this due to
+        # Pandas torturing me earlier with type inference.
         QUERY: str = """
-            SELECT ?restaurant ?postcode
+            SELECT DISTINCT ?restaurant ?postcode
             WHERE {
-                ?restaurant fp:type fp:Restaurant .
+                ?restaurant rdf:type fp:Restaurant .
                 ?restaurant fp:postcode ?postcode .
-                FILTER (isBlank(?postcode))
+                FILTER (xsd:string(?postcode) = " ") .
             }
-            """
+        """
 
         pr_graph.query_graph(
             query=QUERY, output_filename=TASK, output_fields=OUTPUT_FIELDS
