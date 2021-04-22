@@ -78,7 +78,7 @@ if __name__ == "__main__":
     TASK: Task = Task.SPARQL2.value
     TASK: Task = Task.SPARQL3.value
     TASK: Task = Task.SPARQL4.value
-    # TASK: Task = Task.SPARQL5.value
+    TASK: Task = Task.SPARQL5.value
 
     if TASK == Task.SPARQL2.value:
         # Alternative search field
@@ -155,6 +155,7 @@ if __name__ == "__main__":
     elif TASK == Task.SPARQL4.value:
 
         OUTPUT_FIELDS = ["city", "state", "num_restaurants_by_city"]
+        # Decided we don't really need DISTINCT here
         QUERY: str = """
             SELECT ?city ?state ?num_restaurants_by_city {
                 SELECT ?city ?state (COUNT(?restaurant) AS ?num_restaurants_by_city)
@@ -176,14 +177,36 @@ if __name__ == "__main__":
 
         OUTPUT_FIELDS = ["restaurant", "postcode"]
 
+        # This is the ideal way to do this.
+        # QUERY: str = """
+        #     SELECT DISTINCT ?restaurant ?postcode
+        #     WHERE {
+        #         ?restaurant fp:type fp:Restaurant .
+        #         ?restaurant fp:postcode ?postcode .
+        #         FILTER (!bound(?postcode))
+        #     }
+        # """
+
+        # This is for blank nodes, but I didn't implement this.
+        # QUERY: str = """
+        #     SELECT DISTINCT ?restaurant ?postcode
+        #     WHERE {
+        #         ?restaurant fp:type fp:Restaurant .
+        #         ?restaurant fp:postcode ?postcode .
+        #         FILTER (isBlank(?postcode))
+        #     }
+        # """
+
+        # This is the way I'm forced to do this due to
+        # Pandas torturing me earlier with type inference.
         QUERY: str = """
-            SELECT ?restaurant ?postcode
+            SELECT DISTINCT ?restaurant ?postcode
             WHERE {
-                ?restaurant fp:type fp:Restaurant .
+                ?restaurant rdf:type fp:Restaurant .
                 ?restaurant fp:postcode ?postcode .
-                FILTER (isBlank(?postcode))
+                FILTER (xsd:string(?postcode) = " ") .
             }
-            """
+        """
 
         pr_graph.query_graph(
             query=QUERY, output_filename=TASK, output_fields=OUTPUT_FIELDS
