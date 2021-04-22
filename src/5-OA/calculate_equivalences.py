@@ -11,7 +11,7 @@ import rdflib
 from rdflib import Graph, Namespace, URIRef
 from rdflib.namespace import OWL
 
-from load_ontology import load_classes
+from load_ontology import load_classes, load_object_properties
 
 import re
 from enum import Enum
@@ -215,7 +215,7 @@ def _createURIForEntity(entity_name: str, ns_str: str) -> str:
     return ns_str + entity_name.replace(" ", "_")
 
 
-def _create_object_equivalence_triples_from_candidate_pairs(
+def _create_equivalence_triples_from_candidate_pairs(
     graph: rdflib.Graph,
     candidate_pairs: BestCandidatePairsJW,
     target_ns_str: str,
@@ -243,12 +243,19 @@ def _save_graph(graph: rdflib.Graph, output_file: str) -> None:
 def run_task_oa1(
     filename_a: str, filename_b: str, with_translation: bool = False
 ) -> None:
-    # Calculate best match candidates
+    # Load classes from both ontologies for matching
     klasses_a: list = load_classes(filename_a)
     klasses_b: list = load_classes(filename_b)
 
     klasses_a = [_convert_entity_to_str(_) for _ in klasses_a]
     klasses_b = [_convert_entity_to_str(_) for _ in klasses_b]
+
+    # Load object properties from both ontologies for matching
+    obj_properties_a: list = load_object_properties(filename_a)
+    obj_properties_b: list = load_object_properties(filename_b)
+
+    obj_properties_a = [_convert_entity_to_str(_) for _ in obj_properties_a]
+    obj_properties_b = [_convert_entity_to_str(_) for _ in obj_properties_b]
 
     if not with_translation:
         # Jaro Winkler matching without translation
@@ -277,8 +284,18 @@ def run_task_oa1(
             if (pair.target != "Country") and (pair.target != "FourCheese")
         ]
 
+        # # This is for object properties, but we won't apply them.
+        # results_obj_property: list[
+        #     BestCandidatePairsJW
+        # ] = _find_best_candidate_matches_by_jaro_winkler(
+        #     target_list=obj_properties_a, candidate_list=obj_properties_b
+        # )
+        # best_obj_property_candidate_pairs: list[BestCandidatePairsJW] = [
+        #     pair for pair in results_obj_property if pair.sim_score > 0.99
+        # ]
+
     else:
-        # Jaro Winkler matching with translation.
+        # Just for exploration, Jaro Winkler matching with translation.
         # WARNING: this is extremely flaky, because:
         # - googletrans is not an official library
         # - googletrans uses the Google Translate API and it
@@ -319,7 +336,7 @@ def run_task_oa1(
     # properties that won't match what we have currently, so we'll
     # only produce equivalent classes, and only for things we want
     # to align.
-    _create_object_equivalence_triples_from_candidate_pairs(
+    _create_equivalence_triples_from_candidate_pairs(
         graph=graph,
         candidate_pairs=best_candidate_pairs,
         target_ns_str=TARGET_NAMESPACE_STR,
@@ -327,10 +344,21 @@ def run_task_oa1(
         predicate=OWL.equivalentClass,
     )
 
+    # We won't use these - perhaps further improvements
+    # to the upstream ontology.
+    # _create_equivalence_triples_from_candidate_pairs(
+    #     graph=graph,
+    #     candidate_pairs=best_obj_property_candidate_pairs,
+    #     target_ns_str=TARGET_NAMESPACE_STR,
+    #     candidate_ns_str=CANDIDATE_NAMESPACE_STR,
+    #     predicate=OWL.equivalentProperty,
+    # )
+
     _save_graph(graph=graph, output_file=f"equivalence_triples_{Task.OA1.value}.ttl")
 
 
 # def run_task_oa2(filename_a: str, filename_b: str) -> None:
+
 
 if __name__ == "__main__":
     INPUT_FILEPATH_A: str = "../1-OWL/pizza_restaurant_ontology8.owl"
