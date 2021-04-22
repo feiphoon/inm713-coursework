@@ -59,7 +59,7 @@ class PizzaRestaurantGraph:
 
 if __name__ == "__main__":
     INPUT_FILEPATH: str = (
-        "../2-RDF/ontology7/pizza_restaurants_with_reasoning_sparql1.ttl"
+        "../3-RDF/ontology7/pizza_restaurants_with_reasoning_sparql1.ttl"
     )
 
     pr_graph = PizzaRestaurantGraph(filename=INPUT_FILEPATH)

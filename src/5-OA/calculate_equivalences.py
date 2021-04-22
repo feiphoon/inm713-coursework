@@ -383,7 +383,7 @@ def run_task_oa2() -> None:
 
 
 if __name__ == "__main__":
-    INPUT_FILEPATH_A: str = "../1-OWL/pizza_restaurant_ontology8.owl"
+    INPUT_FILEPATH_A: str = "../2-OWL/pizza_restaurant_ontology8.owl"
     INPUT_FILEPATH_B: str = "../data/pizza_manchester.owl"
 
     TASK: Task = Task.OA1.value
