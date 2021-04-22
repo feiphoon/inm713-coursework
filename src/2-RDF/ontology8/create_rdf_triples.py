@@ -819,11 +819,11 @@ if __name__ == "__main__":
     # INPUT_FILEPATH = "../../data/data_pizza_minimum_test.csv"
     # INPUT_FILEPATH = "../../data/data_pizza_no_postcode_test.csv"
 
-    NAMESPACE: str = Namespace("http://www.city.ac.uk/ds/inm713/feiphoon#")
+    NAMESPACE_STR: str = "http://www.city.ac.uk/ds/inm713/feiphoon#"
     PREFIX: str = "fp"
 
     tab_to_graph = TabToGraph(
-        input_filepath=INPUT_FILEPATH, namespace_str=NAMESPACE, prefix=PREFIX
+        input_filepath=INPUT_FILEPATH, namespace_str=NAMESPACE_STR, prefix=PREFIX
     )
 
     TASK: Task = Task.RDF2
