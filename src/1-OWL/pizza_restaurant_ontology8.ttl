@@ -1,376 +1,274 @@
-<?xml version="1.0"?>
-<rdf:RDF xmlns="http://www.city.ac.uk/ds/inm713/feiphoon#"
-     xml:base="http://www.city.ac.uk/ds/inm713/feiphoon"
-     xmlns:dc="http://purl.org/dc/elements/1.1/"
-     xmlns:fp="http://www.city.ac.uk/ds/inm713/feiphoon#"
-     xmlns:owl="http://www.w3.org/2002/07/owl#"
-     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-     xmlns:xml="http://www.w3.org/XML/1998/namespace"
-     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
-     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
-    <owl:Ontology rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon">
-        <owl:versionIRI rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon/1.0.0"/>
-        <dc:creator xml:lang="en">Fei Phoon</dc:creator>
-        <rdfs:comment xml:lang="en">An ontology with a focus on restaurants serving pizza menu items.</rdfs:comment>
-        <rdfs:label xml:lang="en">Pizza restaurants</rdfs:label>
-        <rdfs:label xml:lang="en">Restaurants selling pizza</rdfs:label>
-    </owl:Ontology>
-    
+@prefix : <http://www.city.ac.uk/ds/inm713/feiphoon#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix fp: <http://www.city.ac.uk/ds/inm713/feiphoon#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://www.city.ac.uk/ds/inm713/feiphoon> .
 
+<http://www.city.ac.uk/ds/inm713/feiphoon> rdf:type owl:Ontology ;
+                                            owl:versionIRI <http://www.city.ac.uk/ds/inm713/feiphoon/1.0.0> ;
+                                            dc:creator "Fei Phoon"@en ;
+                                            rdfs:comment "An ontology with a focus on restaurants serving pizza menu items."@en ;
+                                            rdfs:label "Pizza restaurants"@en ,
+                                                       "Restaurants selling pizza"@en .
 
-    <!-- 
-    ///////////////////////////////////////////////////////////////////////////////////////
-    //
-    // Annotation properties
-    //
-    ///////////////////////////////////////////////////////////////////////////////////////
-     -->
+#################################################################
+#    Annotation properties
+#################################################################
 
-    
+###  http://purl.org/dc/elements/1.1/creator
+dc:creator rdf:type owl:AnnotationProperty .
 
 
-    <!-- http://purl.org/dc/elements/1.1/creator -->
+###  http://purl.org/dc/elements/1.1/title
+dc:title rdf:type owl:AnnotationProperty .
+
 
-    <owl:AnnotationProperty rdf:about="http://purl.org/dc/elements/1.1/creator"/>
-    
+#################################################################
+#    Object Properties
+#################################################################
 
+###  http://www.city.ac.uk/ds/inm713/feiphoon#cityHasPlace
+fp:cityHasPlace rdf:type owl:ObjectProperty ;
+                owl:inverseOf fp:isPlaceInCity ;
+                rdfs:domain fp:City ;
+                rdfs:range fp:Restaurant ;
+                dc:creator "fei"^^xsd:string .
 
-    <!-- http://purl.org/dc/elements/1.1/title -->
 
-    <owl:AnnotationProperty rdf:about="http://purl.org/dc/elements/1.1/title"/>
-    
+###  http://www.city.ac.uk/ds/inm713/feiphoon#countryHasPlace
+fp:countryHasPlace rdf:type owl:ObjectProperty ;
+                   owl:inverseOf fp:isPlaceInCountry ;
+                   rdfs:domain fp:Country ;
+                   rdfs:range fp:Restaurant ;
+                   dc:creator "fei"^^xsd:string .
 
 
-    <!-- 
-    ///////////////////////////////////////////////////////////////////////////////////////
-    //
-    // Object Properties
-    //
-    ///////////////////////////////////////////////////////////////////////////////////////
-     -->
+###  http://www.city.ac.uk/ds/inm713/feiphoon#hasCurrency
+fp:hasCurrency rdf:type owl:ObjectProperty ;
+               rdfs:domain fp:Country ;
+               rdfs:range fp:Currency ;
+               dc:creator "fei"^^xsd:string .
 
-    
 
+###  http://www.city.ac.uk/ds/inm713/feiphoon#hasMenuItem
+fp:hasMenuItem rdf:type owl:ObjectProperty ;
+               rdfs:domain fp:Restaurant ;
+               rdfs:range fp:MenuItem ;
+               dc:creator "fei"^^xsd:string .
 
-    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#cityHasPlace -->
 
-    <owl:ObjectProperty rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#cityHasPlace">
-        <owl:inverseOf rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#isPlaceInCity"/>
-        <rdfs:domain rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#City"/>
-        <rdfs:range rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Restaurant"/>
-        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
-    </owl:ObjectProperty>
-    
+###  http://www.city.ac.uk/ds/inm713/feiphoon#isCurrencyOf
+fp:isCurrencyOf rdf:type owl:ObjectProperty ;
+                rdfs:domain fp:Currency ;
+                rdfs:range fp:Country ;
+                dc:creator "fei"^^xsd:string .
 
 
-    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#countryHasPlace -->
+###  http://www.city.ac.uk/ds/inm713/feiphoon#isMenuItemAt
+fp:isMenuItemAt rdf:type owl:ObjectProperty ;
+                rdfs:domain fp:MenuItem ;
+                rdfs:range fp:Restaurant ;
+                dc:creator "fei"^^xsd:string .
 
-    <owl:ObjectProperty rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#countryHasPlace">
-        <owl:inverseOf rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#isPlaceInCountry"/>
-        <rdfs:domain rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Country"/>
-        <rdfs:range rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Restaurant"/>
-        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
-    </owl:ObjectProperty>
-    
 
+###  http://www.city.ac.uk/ds/inm713/feiphoon#isPlaceInCity
+fp:isPlaceInCity rdf:type owl:ObjectProperty ,
+                          owl:FunctionalProperty ;
+                 rdfs:domain fp:Restaurant ;
+                 rdfs:range fp:City ;
+                 dc:creator "fei"^^xsd:string .
 
-    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#hasCurrency -->
 
-    <owl:ObjectProperty rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#hasCurrency">
-        <rdfs:domain rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Country"/>
-        <rdfs:range rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Currency"/>
-        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
-    </owl:ObjectProperty>
-    
+###  http://www.city.ac.uk/ds/inm713/feiphoon#isPlaceInCountry
+fp:isPlaceInCountry rdf:type owl:ObjectProperty ,
+                             owl:FunctionalProperty ;
+                    rdfs:domain fp:Restaurant ;
+                    rdfs:range fp:Country ;
+                    dc:creator "fei"^^xsd:string .
 
 
-    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#hasMenuItem -->
+###  http://www.city.ac.uk/ds/inm713/feiphoon#isPlaceInState
+fp:isPlaceInState rdf:type owl:ObjectProperty ;
+                  owl:inverseOf fp:stateHasPlace ;
+                  rdf:type owl:FunctionalProperty ;
+                  rdfs:domain fp:Restaurant ;
+                  rdfs:range fp:State ;
+                  dc:creator "fei"^^xsd:string .
 
-    <owl:ObjectProperty rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#hasMenuItem">
-        <rdfs:domain rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Restaurant"/>
-        <rdfs:range rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#MenuItem"/>
-        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
-    </owl:ObjectProperty>
-    
 
+###  http://www.city.ac.uk/ds/inm713/feiphoon#stateHasPlace
+fp:stateHasPlace rdf:type owl:ObjectProperty ;
+                 rdfs:domain fp:State ;
+                 rdfs:range fp:Restaurant ;
+                 dc:creator "fei"^^xsd:string .
 
-    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#isCurrencyOf -->
 
-    <owl:ObjectProperty rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#isCurrencyOf">
-        <rdfs:domain rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Currency"/>
-        <rdfs:range rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Country"/>
-        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
-    </owl:ObjectProperty>
-    
+#################################################################
+#    Data properties
+#################################################################
 
+###  http://www.city.ac.uk/ds/inm713/feiphoon#address
+fp:address rdf:type owl:DatatypeProperty ,
+                    owl:FunctionalProperty ;
+           rdfs:domain fp:Restaurant ;
+           rdfs:range xsd:string ;
+           dc:creator "fei"^^xsd:string .
 
-    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#isMenuItemAt -->
 
-    <owl:ObjectProperty rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#isMenuItemAt">
-        <rdfs:domain rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#MenuItem"/>
-        <rdfs:range rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Restaurant"/>
-        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
-    </owl:ObjectProperty>
-    
+###  http://www.city.ac.uk/ds/inm713/feiphoon#categories
+fp:categories rdf:type owl:DatatypeProperty ,
+                       owl:FunctionalProperty ;
+              rdfs:domain fp:Restaurant ;
+              rdfs:range xsd:string ;
+              dc:creator "fei"^^xsd:string .
 
 
-    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#isPlaceInCity -->
+###  http://www.city.ac.uk/ds/inm713/feiphoon#city
+fp:city rdf:type owl:DatatypeProperty ,
+                 owl:FunctionalProperty ;
+        rdfs:domain fp:Restaurant ;
+        rdfs:range xsd:string ;
+        dc:creator "fei"^^xsd:string .
 
-    <owl:ObjectProperty rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#isPlaceInCity">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Restaurant"/>
-        <rdfs:range rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#City"/>
-        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
-    </owl:ObjectProperty>
-    
 
+###  http://www.city.ac.uk/ds/inm713/feiphoon#country
+fp:country rdf:type owl:DatatypeProperty ,
+                    owl:FunctionalProperty ;
+           rdfs:domain fp:Restaurant ;
+           rdfs:range xsd:string ;
+           dc:creator "fei"^^xsd:string .
 
-    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#isPlaceInCountry -->
 
-    <owl:ObjectProperty rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#isPlaceInCountry">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Restaurant"/>
-        <rdfs:range rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Country"/>
-        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
-    </owl:ObjectProperty>
-    
+###  http://www.city.ac.uk/ds/inm713/feiphoon#menu_item_description
+fp:menu_item_description rdf:type owl:DatatypeProperty ;
+                         rdfs:domain fp:MenuItem ;
+                         rdfs:range xsd:string ;
+                         dc:creator "fei"^^xsd:string .
 
 
-    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#isPlaceInState -->
+###  http://www.city.ac.uk/ds/inm713/feiphoon#menu_item_price
+fp:menu_item_price rdf:type owl:DatatypeProperty ;
+                   rdfs:domain fp:MenuItem ;
+                   rdfs:range xsd:float ;
+                   dc:creator "fei"^^xsd:string .
 
-    <owl:ObjectProperty rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#isPlaceInState">
-        <owl:inverseOf rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#stateHasPlace"/>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Restaurant"/>
-        <rdfs:range rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#State"/>
-        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
-    </owl:ObjectProperty>
-    
 
+###  http://www.city.ac.uk/ds/inm713/feiphoon#menu_item_price_currency
+fp:menu_item_price_currency rdf:type owl:DatatypeProperty ;
+                            rdfs:domain fp:MenuItem ;
+                            rdfs:range xsd:string ;
+                            dc:creator "fei"^^xsd:string .
 
-    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#stateHasPlace -->
 
-    <owl:ObjectProperty rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#stateHasPlace">
-        <rdfs:domain rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#State"/>
-        <rdfs:range rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Restaurant"/>
-        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
-    </owl:ObjectProperty>
-    
+###  http://www.city.ac.uk/ds/inm713/feiphoon#name
+fp:name rdf:type owl:DatatypeProperty ,
+                 owl:FunctionalProperty ;
+        rdfs:domain owl:Thing ;
+        rdfs:range xsd:string ;
+        dc:creator "fei"^^xsd:string .
 
 
-    <!-- 
-    ///////////////////////////////////////////////////////////////////////////////////////
-    //
-    // Data properties
-    //
-    ///////////////////////////////////////////////////////////////////////////////////////
-     -->
+###  http://www.city.ac.uk/ds/inm713/feiphoon#postcode
+fp:postcode rdf:type owl:DatatypeProperty ,
+                     owl:FunctionalProperty ;
+            rdfs:domain fp:Restaurant ;
+            rdfs:range xsd:string ;
+            dc:creator "fei"^^xsd:string .
 
-    
 
+###  http://www.city.ac.uk/ds/inm713/feiphoon#state
+fp:state rdf:type owl:DatatypeProperty ,
+                  owl:FunctionalProperty ;
+         rdfs:domain fp:Restaurant ;
+         rdfs:range xsd:string ;
+         dc:creator "fei"^^xsd:string .
 
-    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#address -->
 
-    <owl:DatatypeProperty rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#address">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Restaurant"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
-    </owl:DatatypeProperty>
-    
+#################################################################
+#    Classes
+#################################################################
 
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Bianca
+fp:Bianca rdf:type owl:Class ;
+          rdfs:subClassOf fp:Pizza ;
+          dc:creator "fei"^^xsd:string .
 
-    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#categories -->
 
-    <owl:DatatypeProperty rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#categories">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Restaurant"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
-    </owl:DatatypeProperty>
-    
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Cheese
+fp:Cheese rdf:type owl:Class ;
+          rdfs:subClassOf fp:Pizza ;
+          dc:creator "fei"^^xsd:string .
 
 
-    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#city -->
+###  http://www.city.ac.uk/ds/inm713/feiphoon#City
+fp:City rdf:type owl:Class ;
+        dc:creator "fei"^^xsd:string ;
+        rdfs:label "City"@en .
 
-    <owl:DatatypeProperty rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#city">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Restaurant"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
-    </owl:DatatypeProperty>
-    
 
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Country
+fp:Country rdf:type owl:Class ;
+           dc:creator "fei"^^xsd:string ;
+           rdfs:label "Country"@en .
 
-    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#country -->
 
-    <owl:DatatypeProperty rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#country">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Restaurant"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
-    </owl:DatatypeProperty>
-    
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Currency
+fp:Currency rdf:type owl:Class ;
+            dc:creator "fei"^^xsd:string ;
+            rdfs:label "Currency"@en .
 
 
-    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#menu_item_description -->
+###  http://www.city.ac.uk/ds/inm713/feiphoon#FourCheese
+fp:FourCheese rdf:type owl:Class ;
+              rdfs:subClassOf fp:Pizza ;
+              dc:creator "fei"^^xsd:string .
 
-    <owl:DatatypeProperty rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#menu_item_description">
-        <rdfs:domain rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#MenuItem"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
-    </owl:DatatypeProperty>
-    
 
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Margherita
+fp:Margherita rdf:type owl:Class ;
+              rdfs:subClassOf fp:Pizza ;
+              dc:creator "fei"^^xsd:string .
 
-    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#menu_item_price -->
 
-    <owl:DatatypeProperty rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#menu_item_price">
-        <rdfs:domain rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#MenuItem"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
-        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
-    </owl:DatatypeProperty>
-    
+###  http://www.city.ac.uk/ds/inm713/feiphoon#MenuItem
+fp:MenuItem rdf:type owl:Class ;
+            dc:creator "fei"^^xsd:string ;
+            rdfs:label "Menu items that are sold by restaurants"@en .
 
 
-    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#menu_item_price_currency -->
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Pizza
+fp:Pizza rdf:type owl:Class ;
+         rdfs:subClassOf fp:MenuItem ;
+         dc:creator "fei"^^xsd:string ;
+         rdfs:label "Items which are pizza"@en .
 
-    <owl:DatatypeProperty rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#menu_item_price_currency">
-        <rdfs:domain rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#MenuItem"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
-    </owl:DatatypeProperty>
-    
 
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Restaurant
+fp:Restaurant rdf:type owl:Class ;
+              dc:creator "fei"^^xsd:string ;
+              rdfs:label "Restaurant"@en .
 
-    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#name -->
 
-    <owl:DatatypeProperty rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#name">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
-    </owl:DatatypeProperty>
-    
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Seafood
+fp:Seafood rdf:type owl:Class ;
+           rdfs:subClassOf fp:Pizza ;
+           dc:creator "fei"^^xsd:string .
 
 
-    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#postcode -->
+###  http://www.city.ac.uk/ds/inm713/feiphoon#Sicilian
+fp:Sicilian rdf:type owl:Class ;
+            rdfs:subClassOf fp:Pizza ;
+            dc:creator "fei"^^xsd:string .
 
-    <owl:DatatypeProperty rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#postcode">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Restaurant"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
-    </owl:DatatypeProperty>
-    
 
+###  http://www.city.ac.uk/ds/inm713/feiphoon#State
+fp:State rdf:type owl:Class ;
+         dc:creator "fei"^^xsd:string ;
+         rdfs:label "State"@en .
 
-    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#state -->
 
-    <owl:DatatypeProperty rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#state">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Restaurant"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- 
-    ///////////////////////////////////////////////////////////////////////////////////////
-    //
-    // Classes
-    //
-    ///////////////////////////////////////////////////////////////////////////////////////
-     -->
-
-    
-
-
-    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#City -->
-
-    <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#City">
-        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
-        <rdfs:label xml:lang="en">City</rdfs:label>
-    </owl:Class>
-    
-
-
-    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#Country -->
-
-    <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#Country">
-        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
-        <rdfs:label xml:lang="en">Country</rdfs:label>
-    </owl:Class>
-    
-
-
-    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#Currency -->
-
-    <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#Currency">
-        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
-        <rdfs:label xml:lang="en">Currency</rdfs:label>
-    </owl:Class>
-    
-
-
-    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#Dish -->
-
-    <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#Dish">
-        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
-        <rdfs:label xml:lang="en">Dish</rdfs:label>
-    </owl:Class>
-    
-
-
-    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#MenuItem -->
-
-    <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#MenuItem">
-        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
-        <rdfs:label xml:lang="en">Menu items that are sold by restaurants</rdfs:label>
-    </owl:Class>
-    
-
-
-    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#NotPizza -->
-
-    <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#NotPizza">
-        <rdfs:subClassOf rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Dish"/>
-        <owl:disjointWith rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Pizza"/>
-        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
-        <rdfs:label xml:lang="en">Items which are not pizza</rdfs:label>
-    </owl:Class>
-    
-
-
-    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#Pizza -->
-
-    <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#Pizza">
-        <rdfs:subClassOf rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Dish"/>
-        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
-        <rdfs:label xml:lang="en">Items which are pizza</rdfs:label>
-    </owl:Class>
-    
-
-
-    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#Restaurant -->
-
-    <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#Restaurant">
-        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
-        <rdfs:label xml:lang="en">Restaurant</rdfs:label>
-    </owl:Class>
-    
-
-
-    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#State -->
-
-    <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#State">
-        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
-        <rdfs:label xml:lang="en">State</rdfs:label>
-    </owl:Class>
-</rdf:RDF>
-
-
-
-<!-- Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi -->
-
+###  Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi

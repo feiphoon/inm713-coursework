@@ -287,6 +287,15 @@
     
 
 
+    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#Bianca -->
+
+    <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#Bianca">
+        <rdfs:subClassOf rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Pizza"/>
+        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
+    </owl:Class>
+    
+
+
     <!-- http://www.city.ac.uk/ds/inm713/feiphoon#City -->
 
     <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#City">
@@ -314,11 +323,11 @@
     
 
 
-    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#Dish -->
+    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#Margherita -->
 
-    <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#Dish">
+    <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#Margherita">
+        <rdfs:subClassOf rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Pizza"/>
         <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
-        <rdfs:label xml:lang="en">Dish</rdfs:label>
     </owl:Class>
     
 
@@ -332,21 +341,10 @@
     
 
 
-    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#NotPizza -->
-
-    <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#NotPizza">
-        <rdfs:subClassOf rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Dish"/>
-        <owl:disjointWith rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Pizza"/>
-        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
-        <rdfs:label xml:lang="en">Items which are not pizza</rdfs:label>
-    </owl:Class>
-    
-
-
     <!-- http://www.city.ac.uk/ds/inm713/feiphoon#Pizza -->
 
     <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#Pizza">
-        <rdfs:subClassOf rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Dish"/>
+        <rdfs:subClassOf rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#MenuItem"/>
         <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
         <rdfs:label xml:lang="en">Items which are pizza</rdfs:label>
     </owl:Class>
