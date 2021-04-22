@@ -10,10 +10,13 @@ https://rawgit.com/ztane/python-Levenshtein/master/docs/Levenshtein.html
 import rdflib
 from rdflib import Graph, Namespace, URIRef
 from rdflib.namespace import OWL
-from owlready2 import * # noqa F403
+from rdflib.util import guess_format
+import owlrl
+from owlready2 import *  # noqa F403
 
 from load_ontology import load_classes, load_object_properties
 
+import time
 import re
 from enum import Enum
 import Levenshtein as lev
@@ -222,6 +225,29 @@ def _create_equivalence_triples_from_candidate_pairs(
         graph.add((URIRef(target_uri), predicate, URIRef(candidate_uri)))
 
 
+# def perform_reasoning(ontology_file: str) -> None:
+#     """
+#     Subtask OA.2
+#     Expand the graph with the inferred triples, using reasoning.
+#     """
+#     tic = time.perf_counter()
+#     # print(guess_format(ontology_file))
+#     self.graph.load(ontology_file, format=guess_format(ontology_file))
+
+#     print(f"Triples including ontology: {len(self.graph)}.")
+
+#     # Happy with this reasoner
+#     owlrl.DeductiveClosure(
+#         owlrl.OWLRL.OWLRL_Semantics,
+#         axiomatic_triples=False,
+#         datatype_axioms=False,
+#     ).expand(self.graph)
+
+#     toc = time.perf_counter()
+#     print(f"Finished reasoning on graph in {toc - tic} seconds.")
+#     print(f"Triples after OWL 2 RL reasoning: {len(self.graph)}.")
+
+
 def _save_graph(graph: rdflib.Graph, output_file: str) -> None:
     # print(self.g.serialize(format="turtle").decode("utf-8"))
     graph.serialize(destination=output_file, format="ttl")
@@ -344,7 +370,16 @@ def run_task_oa1(
     _save_graph(graph=graph, output_file=f"equivalence_triples_{Task.OA1.value}.ttl")
 
 
-# def run_task_oa2(filename_a: str, filename_b: str) -> None:
+def run_task_oa2() -> None:
+
+    pizza = get_ontology("ontologies/pizza_manchester.owl").load()
+    pizza_restaurant = get_ontology("ontologies/pizza_restaurant_ontology8.owl").load()
+
+    pizza.imported_ontologies.append(pizza_restaurant)
+    print(pizza)
+
+    # onto.imported_ontologies.append("pizza_restaurant_ontology8.owl")
+    # onto.load()
 
 
 if __name__ == "__main__":
@@ -362,4 +397,5 @@ if __name__ == "__main__":
         )
 
     elif TASK == Task.OA2.value:
-        run_task_oa1(filename_a=INPUT_FILEPATH_A, filename_b=INPUT_FILEPATH_B)
+        ONTO_PATH: str = "ontologies"
+        run_task_oa2()
