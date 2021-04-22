@@ -706,7 +706,7 @@ if __name__ == "__main__":
         tab_to_graph.perform_reasoning(
             "../../1-OWL/pizza_restaurant_ontology7.ttl"
         )  # ttl format
-        # tab_to_graph.perform_reasoning("../../1-OWL/pizza_restaurant_ontology6.owl") ##owl (rdf/xml) format
+        # tab_to_graph.perform_reasoning("../../1-OWL/pizza_restaurant_ontology7.owl") ##owl (rdf/xml) format
 
         # Graph with ontology triples and entailed triples
         tab_to_graph.save_graph(
