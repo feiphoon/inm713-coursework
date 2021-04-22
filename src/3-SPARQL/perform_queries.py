@@ -26,11 +26,6 @@ class Task(Enum):
     SPARQL5 = "sparql5"
 
 
-# from rdflib.plugins.sparql import prepareQuery
-# from SPARQLWrapper import SPARQLWrapper, JSON
-# import requests
-
-
 class PizzaRestaurantGraph:
     def __init__(self, filename: str) -> None:
         self.graph = Graph()
