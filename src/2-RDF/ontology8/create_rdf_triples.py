@@ -428,13 +428,13 @@ class TabToGraph:
         if ("cleaned_menu_item" in self.data_df) and (
             "restaurant_menu_item" in self.data_df
         ):
-            self.mapping_to_create_pizza_bianca_type_triple(
+            self._mapping_to_create_pizza_bianca_type_triple(
                 subject_col="restaurant_menu_item",
                 conditional_col="cleaned_menu_item",
                 class_type=self.namespace.PizzaBianca,
             )
 
-            self.mapping_to_create_pizza_margherita_type_triple(
+            self._mapping_to_create_pizza_margherita_type_triple(
                 subject_col="restaurant_menu_item",
                 conditional_col="cleaned_menu_item",
                 class_type=self.namespace.PizzaMargherita,
@@ -444,7 +444,7 @@ class TabToGraph:
         print(f"Finished converting CSV to RDF in {toc - tic} seconds.")
         print(f"Extracted {len(self.graph)} triples.")
 
-    def mapping_to_create_pizza_bianca_type_triple(
+    def _mapping_to_create_pizza_bianca_type_triple(
         self, subject_col: str, conditional_col: str, class_type: rdflib.term.URIRef
     ) -> None:
         for subject, conditional in zip(
@@ -456,7 +456,9 @@ class TabToGraph:
                 conditional = conditional.lower()
                 subject = subject.lower()
 
-                # Pizza Bianca conditions
+                # Pizza Bianca conditions - crude and would have been a nice
+                # opportunity to look at labels in different languages -
+                # but Italian is not provided as an option.
                 if ("bianca" in conditional) or (conditional == "white pizza"):
                     entity_uri: str = None
 
@@ -467,7 +469,7 @@ class TabToGraph:
 
                     self.graph.add((URIRef(entity_uri), RDF.type, class_type))
 
-    def mapping_to_create_pizza_margherita_type_triple(
+    def _mapping_to_create_pizza_margherita_type_triple(
         self, subject_col: str, conditional_col: str, class_type: rdflib.term.URIRef
     ) -> None:
         for subject, conditional in zip(
@@ -479,7 +481,7 @@ class TabToGraph:
                 conditional = conditional.lower()
                 subject = subject.lower()
 
-                # Pizza Bianca conditions
+                # Pizza Bianca conditions - crude and chose not to use better matching here
                 if "margherita" in conditional or "margarita" in conditional:
                     entity_uri: str = None
 
@@ -547,10 +549,7 @@ class TabToGraph:
         category_filter: str = "",
     ) -> None:
         """
-        TODO: Mapping to create triples like lab6:London rdf:type lab6:City
-        A mapping may create more than one triple
-        column: columns where the entity information is stored
-        TODO: useExternalURI: if URI is fresh or from external KG
+        Mapping to create triples like fp:MenuItem rdf:type fp:Pizza.
         """
         for subject in self.data_df[subject_col]:
             if self._is_object_missing(value=subject):
@@ -578,7 +577,7 @@ class TabToGraph:
         datatype: str,
     ) -> None:
         """
-        TODO: Mappings to create triples of the form lab6:london lab6:name "London"
+        Mapping to create triples of the form fp:Restaurant fp:name "Nonna's Pizza"^^datatype
         """
         for subject, lit_value in zip(
             self.data_df[subject_col], self.data_df[object_col]
@@ -603,7 +602,7 @@ class TabToGraph:
         self, subject_col: str, object_col: str, predicate: rdflib.term.URIRef
     ) -> None:
         """
-        Mappings to create triples of the form fp:Bend fp:isLocatedInCountry fp:USA
+        Mappings to create triples of the form fp:cheese_pizza fp:isMenuItemAt fp:Restaurant
         """
         for subject, object in zip(self.data_df[subject_col], self.data_df[object_col]):
 
