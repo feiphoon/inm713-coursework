@@ -47,20 +47,6 @@ class Task(Enum):
     OA2 = "oa2"
 
 
-# class OntologyEquivalence:
-#     def __init__(self, filename: str) -> None:
-#         self.graph_a = Graph()
-#         self.graph_a.parse(filename, format=guess_format(filename))
-#         print(f"Loaded {len(self.graph_a)} triples for Graph A.")
-
-#         self.graph_b = Graph()
-#         self.graph_b.parse(filename, format=guess_format(filename))
-#         print(f"Loaded {len(self.graph_b)} triples for Graph B.")
-
-#     def debug(self) -> None:
-#         pprint(vars(self))
-
-
 def _find_best_candidate_matches_by_jaro_winkler(
     target_list: list, candidate_list: list
 ) -> BestCandidatePairsJW:
