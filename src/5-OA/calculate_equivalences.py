@@ -13,9 +13,11 @@ from rdflib.namespace import OWL
 
 from load_ontology import load_classes
 
+import re
 from enum import Enum
 import Levenshtein as lev
 from typing import NamedTuple, Any
+from googletrans import Translator
 
 
 # We define two result structures because
@@ -32,11 +34,16 @@ class BestCandidatePairsJW(NamedTuple):
     sim_score: float
 
 
+class BestCandidatePairsJWTranslated(NamedTuple):
+    target: str
+    candidate: str
+    translated_candidate: str
+    sim_score: float
+
+
 class Task(Enum):
     OA1 = "oa1"
-    OA2A = "oa2a"
-    OA2B = "oa2b"
-    OA3 = "oa3"
+    OA2 = "oa2"
 
 
 # class OntologyEquivalence:
@@ -54,7 +61,7 @@ class Task(Enum):
 
 
 def _find_best_candidate_matches_by_jaro_winkler(
-    list_of_str_a: list, list_of_str_b: list
+    target_list: list, candidate_list: list
 ) -> BestCandidatePairsJW:
     """
     Performed amazingly:
@@ -78,24 +85,74 @@ def _find_best_candidate_matches_by_jaro_winkler(
     """
     candidate_pairs: list = []
 
-    for str_a in list_of_str_a:
+    for target in target_list:
         sim_score: float = None
         best_candidate: str = None
         best_candidate_score: float = 0.0
 
-        for str_b in list_of_str_b:
-            sim_score = lev.jaro_winkler(str_a, str_b)
-            # print(str_a, str_b, sim_score)
+        for candidate in candidate_list:
+            sim_score = lev.jaro_winkler(target, candidate)
 
             # If new distance score is lower than
             # our recorded best, record the new best candidate.
             if sim_score > best_candidate_score:
                 best_candidate_score = sim_score
-                best_candidate = str_b
+                best_candidate = candidate
 
         candidate_pairs.append(
             BestCandidatePairsJW(
-                target=str_a, candidate=best_candidate, sim_score=best_candidate_score
+                target=target, candidate=best_candidate, sim_score=best_candidate_score
+            )
+        )
+
+    return candidate_pairs
+
+
+def _find_best_candidate_matches_by_jaro_winkler_with_translation(
+    target_list: list, candidate_list: list, target_lang: str = "en"
+) -> BestCandidatePairsJWTranslated:
+    """
+    Using googletrans library.
+    Jaro-Winkler distance: lev.jaro_winkler(str_a, str_b)
+    """
+    translator = Translator(
+        service_urls=[
+            "translate.google.com",
+            "translate.google.co.uk",
+        ]
+    )
+    candidate_pairs: list = []
+
+    for target in target_list:
+        print("hey")
+        sim_score: float = None
+        best_candidate: str = None
+        translated_best_candidate: str = None
+        best_candidate_score: float = 0.0
+
+        for candidate in candidate_list:
+            preprocessed_candidate = " ".join(
+                re.sub(r"([A-Z])", r" \1", candidate).split()
+            ).lower()
+            print(preprocessed_candidate)
+            translated_candidate = translator.translate(
+                preprocessed_candidate, to_lang=target_lang
+            ).text
+            sim_score = lev.jaro_winkler(target, translated_candidate)
+
+            # If new distance score is lower than
+            # our recorded best, record the new best candidate.
+            if sim_score > best_candidate_score:
+                best_candidate_score = sim_score
+                best_candidate = candidate
+                translated_best_candidate = translated_candidate
+
+        candidate_pairs.append(
+            BestCandidatePairsJWTranslated(
+                target=target,
+                candidate=best_candidate,
+                translated_candidate=translated_best_candidate,
+                sim_score=best_candidate_score,
             )
         )
 
@@ -103,7 +160,7 @@ def _find_best_candidate_matches_by_jaro_winkler(
 
 
 def _find_best_candidate_matches_by_lev_distance(
-    list_of_str_a: list, list_of_str_b: list
+    target_list: list, candidate_list: list
 ) -> BestCandidatePairsLev:
     """
     Mediocre but expected outcomes:
@@ -127,24 +184,23 @@ def _find_best_candidate_matches_by_lev_distance(
     """
     candidate_pairs: list = []
 
-    for str_a in list_of_str_a:
+    for target in target_list:
         sim_score: int = None
         best_candidate: str = None
         best_candidate_score: int = 10000000
 
-        for str_b in list_of_str_b:
-            sim_score = lev.distance(str_a, str_b)
-            # print(str_a, str_b, sim_score)
+        for candidate in candidate_list:
+            sim_score = lev.distance(target, candidate)
 
             # If new distance score is lower than
             # our recorded best, record the new best candidate.
             if sim_score < best_candidate_score:
                 best_candidate_score = sim_score
-                best_candidate = str_b
+                best_candidate = candidate
 
         candidate_pairs.append(
             BestCandidatePairsLev(
-                target=str_a, candidate=best_candidate, dist_score=best_candidate_score
+                target=target, candidate=best_candidate, dist_score=best_candidate_score
             )
         )
 
@@ -170,7 +226,7 @@ def _create_object_equivalence_triples_from_candidate_pairs(
     Mappings to create equivalence triples of the form:
     fp:Margherita owl:equivalentClass pizza:Margherita
     """
-    for (target, candidate, _) in candidate_pairs:
+    for target, candidate, *_ in candidate_pairs:
         target_uri: str = _createURIForEntity(entity_name=target, ns_str=target_ns_str)
         candidate_uri: str = _createURIForEntity(
             entity_name=candidate, ns_str=candidate_ns_str
@@ -184,7 +240,9 @@ def _save_graph(graph: rdflib.Graph, output_file: str) -> None:
     graph.serialize(destination=output_file, format="ttl")
 
 
-def run_task_oa1(filename_a: str, filename_b: str) -> None:
+def run_task_oa1(
+    filename_a: str, filename_b: str, with_translation: bool = False
+) -> None:
     # Calculate best match candidates
     klasses_a: list = load_classes(filename_a)
     klasses_b: list = load_classes(filename_b)
@@ -192,27 +250,53 @@ def run_task_oa1(filename_a: str, filename_b: str) -> None:
     klasses_a = [_convert_entity_to_str(_) for _ in klasses_a]
     klasses_b = [_convert_entity_to_str(_) for _ in klasses_b]
 
-    results: list[BestCandidatePairsJW] = _find_best_candidate_matches_by_jaro_winkler(
-        klasses_a, klasses_b
-    )
+    if not with_translation:
+        # Jaro Winkler matching without translation
+        results: list[
+            BestCandidatePairsJW
+        ] = _find_best_candidate_matches_by_jaro_winkler(
+            target_list=klasses_a, candidate_list=klasses_b
+        )
 
-    # Extract the ones which have a high enough similarity.
-    # "High enough" at the moment is determined by eyeballing the results
-    # and taking what we want :)
-    best_candidate_pairs: list[BestCandidatePairsJW] = [
-        pair for pair in results if pair.sim_score > 0.99
-    ]
+        # Get best match candidates and extract the ones which
+        # have a high enough similarity.
+        # "High enough" at the moment is determined by eyeballing the results
+        # and taking what we want :)
+        best_candidate_pairs: list[BestCandidatePairsJW] = [
+            pair for pair in results if pair.sim_score > 0.99
+        ]
 
-    # Remove Country, as the meaning is different in both ontologies
-    # but correct within both their contexts.
-    # We also remove FourCheese as sadly its match FourCheeseTopping
-    # in the Pizza ontology has a different meaning/terminology in
-    # the anatomy of a pizza.
-    best_candidate_pairs = [
-        pair
-        for pair in best_candidate_pairs
-        if (pair.target != "Country") and (pair.target != "FourCheese")
-    ]
+        # Remove Country, as the meaning is different in both ontologies
+        # but correct within both their contexts.
+        # We also remove FourCheese as sadly its match FourCheeseTopping
+        # in the Pizza ontology has a different meaning/terminology in
+        # the anatomy of a pizza.
+        best_candidate_pairs = [
+            pair
+            for pair in best_candidate_pairs
+            if (pair.target != "Country") and (pair.target != "FourCheese")
+        ]
+
+    else:
+        # Jaro Winkler matching with translation.
+        # WARNING: this is extremely flaky, because:
+        # - googletrans is not an official library
+        # - googletrans uses the Google Translate API and it
+        # does not give the same results as the web service.
+        # - I think there is rate limiting, which causes
+        # requests to fail silently as no translation performed.
+        # The alternative is to batch requests, but we won't go
+        # there this time.
+        # If you'd like to try this, use example lists of:
+        # ["FourCheeses"], ["QuattroFormaggi"].
+        results: list[
+            BestCandidatePairsJWTranslated
+        ] = _find_best_candidate_matches_by_jaro_winkler_with_translation(
+            target_list=klasses_a, candidate_list=klasses_b, target_lang="en"
+        )
+        best_candidate_pairs: list[BestCandidatePairsJWTranslated] = [
+            pair for pair in results if pair.sim_score > 0.99
+        ]
 
     # Now we instantiate a graph to load both ontologies for alignment
     TARGET_NAMESPACE_STR: str = "http://www.city.ac.uk/ds/inm713/feiphoon#"
@@ -246,21 +330,21 @@ def run_task_oa1(filename_a: str, filename_b: str) -> None:
     _save_graph(graph=graph, output_file=f"equivalence_triples_{Task.OA1.value}.ttl")
 
 
+# def run_task_oa2(filename_a: str, filename_b: str) -> None:
+
 if __name__ == "__main__":
     INPUT_FILEPATH_A: str = "../1-OWL/pizza_restaurant_ontology8.owl"
     INPUT_FILEPATH_B: str = "../data/pizza_manchester.owl"
 
     TASK: Task = Task.OA1.value
-    # TASK: Task = Task.OA2A.value
-    # TASK: Task = Task.OA2B.value
-    # TASK: Task = Task.OA3.value
+    TASK: Task = Task.OA2.value
 
     if TASK == Task.OA1.value:
-        run_task_oa1(filename_a=INPUT_FILEPATH_A, filename_b=INPUT_FILEPATH_B)
+        run_task_oa1(
+            filename_a=INPUT_FILEPATH_A,
+            filename_b=INPUT_FILEPATH_B,
+            with_translation=False,
+        )
 
-    elif TASK == Task.OA2A.value:
-        pass
-    elif TASK == Task.OA2B.value:
-        pass
-    elif TASK == Task.OA3.value:
-        pass
+    elif TASK == Task.OA2.value:
+        run_task_oa1(filename_a=INPUT_FILEPATH_A, filename_b=INPUT_FILEPATH_B)
