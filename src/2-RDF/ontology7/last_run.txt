@@ -10,3 +10,12 @@ Extracted 33356 triples.
 Triples including ontology: 33659.
 Finished reasoning on graph in 31.029748413999982 seconds.
 Triples after OWL 2 RL reasoning: 86967.
+
+
+(venv) ➜  python create_rdf_triples.py
+
+Finished converting CSV to RDF in 350.001067792 seconds.
+Extracted 33356 triples.
+Triples including ontology: 33666.
+Finished reasoning on graph in 27.73453294000001 seconds.
+Triples after OWL 2 RL reasoning: 86981.
