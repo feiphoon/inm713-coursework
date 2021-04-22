@@ -55,6 +55,23 @@ class TabToGraph:
         self.data_df: pd.DataFrame = pd.read_csv(input_filepath, encoding="utf-8")
         self.data_df_len: int = len(self.data_df)
 
+        EXPECTED_COLUMNS = [
+            "name",
+            "address",
+            "city",
+            "country",
+            "postcode",
+            "state",
+            "categories",
+            "menu item",
+            "item value",
+            "currency",
+            "item description",
+        ]
+        self._validate_dataset(
+            df=self.data_df, expected_columns=EXPECTED_COLUMNS, min_expected_len=1
+        )
+
         # Dictionary to store URIs
         self.string_to_uri: dict = {}
 
@@ -68,7 +85,16 @@ class TabToGraph:
         self.googlekg = GoogleKGLookup()
 
     @staticmethod
-    def apply_preprocessing(
+    def _validate_dataset(
+        df: DataFrame, expected_columns: list, min_expected_len: int
+    ) -> Exception:
+        if not (df.columns.isin(expected_columns).all()):
+            raise Exception("Some expected columns are missing.")
+        if not (len(df) >= min_expected_len):
+            raise Exception("Dataset does not meet the minimum expected length.")
+
+    @staticmethod
+    def _apply_preprocessing(
         df: pd.DataFrame, target_col: str, transformed_col: Optional[str]
     ) -> None:
         """
@@ -126,7 +152,7 @@ class TabToGraph:
         df[transformed_col] = df[transformed_col].str.replace(r" +", " ", regex=True)
 
     @staticmethod
-    def replace_missing_values(
+    def _replace_missing_values(
         df: DataFrame,
         target_col: str,
         transformed_col: Optional[str],
@@ -141,24 +167,12 @@ class TabToGraph:
             transformed_col = target_col
         df[transformed_col] = df[target_col].fillna(fillna_value)
 
-    # @staticmethod
-    # def convert_number_to_spelling(
-    #     df: DataFrame, target_col: str, transformed_col: Optional[str]
-    # ) -> None:
-    #     # If no new col is named to hold transformations,
-    #     # then the transformations should be in-place.
-    #     if not transformed_col:
-    #         print(
-    #             "WARNING: transformed_col name not supplied, transformations will be applied in-place."
-    #         )
-    #         transformed_col = target_col
-    #     df[transformed_col] = df[target_col].replace("4", "four")
-
     @staticmethod
-    def clean_swapped_pizza(menu_item_name: str) -> None:
+    def _clean_swapped_pizza(menu_item_name: str) -> None:
         menu_item_name = menu_item_name.lower()
+
+        # A pattern that matches `pizza, something asdjhgas asjdhgasd`
         swapped_pizza_pattern = re.compile(r"^pizza\s?,\s?[a-z\s]+.$")
-        # Matches `pizza, something asdjhgas asjdhgasd`
 
         if re.search(swapped_pizza_pattern, menu_item_name):
 
@@ -175,83 +189,85 @@ class TabToGraph:
         """
         tic = time.perf_counter()
 
-        if "country" in self.data_df:
-            self.mapping_to_create_type_triple(
-                subject_col="country",
-                class_type=self.namespace.Country,
-                use_external_uri=use_external_uri,
-                category_filter="http://dbpedia.org/resource/Category:Lists_of_countries",
-            )
+        # Map Country
+        self._mapping_to_create_type_triple(
+            subject_col="country",
+            class_type=self.namespace.Country,
+            use_external_uri=use_external_uri,
+            category_filter="http://dbpedia.org/resource/Category:Lists_of_countries",
+        )
 
-            self.mapping_to_create_literal_triple(
-                subject_col="country",
-                object_col="country",
-                predicate=self.namespace.name,
-                datatype=XSD.string,
-            )
+        self._mapping_to_create_literal_triple(
+            subject_col="country",
+            object_col="country",
+            predicate=self.namespace.name,
+            datatype=XSD.string,
+        )
 
-        if "currency" in self.data_df:
-            self.mapping_to_create_type_triple(
-                subject_col="currency",
-                class_type=self.namespace.Currency,
-            )
+        # Map Currency
+        self._mapping_to_create_type_triple(
+            subject_col="currency",
+            class_type=self.namespace.Currency,
+        )
 
-            self.mapping_to_create_literal_triple(
-                subject_col="currency",
-                object_col="currency",
-                predicate=self.namespace.name,
-                datatype=XSD.string,
-            )
+        self._mapping_to_create_literal_triple(
+            subject_col="currency",
+            object_col="currency",
+            predicate=self.namespace.name,
+            datatype=XSD.string,
+        )
 
-            self.mapping_to_create_object_triple(
-                subject_col="currency",
-                object_col="country",
-                predicate=self.namespace.isCurrencyOf,
-            )
+        self._mapping_to_create_object_triple(
+            subject_col="currency",
+            object_col="country",
+            predicate=self.namespace.isCurrencyOf,
+        )
 
-        if "city" in self.data_df:
-            self.mapping_to_create_type_triple(
-                subject_col="city",
-                class_type=self.namespace.City,
-                use_external_uri=use_external_uri,
-                category_filter="http://dbpedia.org/resource/Category:Cities_in_the_United_States",
-            )
+        # Map City
+        self._mapping_to_create_type_triple(
+            subject_col="city",
+            class_type=self.namespace.City,
+            use_external_uri=use_external_uri,
+            category_filter="http://dbpedia.org/resource/Category:Cities_in_the_United_States",
+        )
 
-            self.mapping_to_create_literal_triple(
-                subject_col="city",
-                object_col="city",
-                predicate=self.namespace.name,
-                datatype=XSD.string,
-            )
+        self._mapping_to_create_literal_triple(
+            subject_col="city",
+            object_col="city",
+            predicate=self.namespace.name,
+            datatype=XSD.string,
+        )
 
-        if "state" in self.data_df:
-            self.mapping_to_create_type_triple(
-                subject_col="state",
-                class_type=self.namespace.State,
-                use_external_uri=use_external_uri,
-                category_filter="http://dbpedia.org/resource/Category:States_of_the_United_States",
-            )
+        # Map State
+        self._mapping_to_create_type_triple(
+            subject_col="state",
+            class_type=self.namespace.State,
+            use_external_uri=use_external_uri,
+            category_filter="http://dbpedia.org/resource/Category:States_of_the_United_States",
+        )
 
-            self.mapping_to_create_literal_triple(
-                subject_col="state",
-                object_col="state",
-                predicate=self.namespace.name,
-                datatype=XSD.string,
-            )
+        self._mapping_to_create_literal_triple(
+            subject_col="state",
+            object_col="state",
+            predicate=self.namespace.name,
+            datatype=XSD.string,
+        )
 
-        if "name" in self.data_df:
-            self.apply_preprocessing(
-                df=self.data_df, target_col="name", transformed_col="cleaned_name"
-            )
+        # Preprocess name
+        self._apply_preprocessing(
+            df=self.data_df, target_col="name", transformed_col="cleaned_name"
+        )
 
-        if "address" in self.data_df:
-            self.replace_missing_values(
-                df=self.data_df,
-                target_col="postcode",
-                transformed_col="cleaned_postcode",
-                fillna_value=" ",
-            )
+        # Preprocess postcode
+        self._replace_missing_values(
+            df=self.data_df,
+            target_col="postcode",
+            transformed_col="cleaned_postcode",
+            fillna_value=" ",
+        )
 
+        # Build a complete name of each Restaurant based on their name and full address
+        if ("cleaned_postcode" in self.data_df) and ("cleaned_name" in self.data_df):
             # Addresses a very specific bug in postcode type being inferred as float.
             self.data_df["cleaned_postcode"] = self.data_df["cleaned_postcode"].astype(
                 str
@@ -279,111 +295,123 @@ class TabToGraph:
                 "complete_address"
             ].str.replace("-", "_")
 
-            self.mapping_to_create_type_triple(
+            self._mapping_to_create_type_triple(
                 subject_col="complete_address", class_type=self.namespace.Restaurant
             )
 
-            self.mapping_to_create_literal_triple(
+            self._mapping_to_create_literal_triple(
                 subject_col="complete_address",
                 object_col="name",
                 predicate=self.namespace.name,
                 datatype=XSD.string,
             )
 
-            self.mapping_to_create_literal_triple(
+            self._mapping_to_create_literal_triple(
                 subject_col="complete_address",
                 object_col="address",
                 predicate=self.namespace.address,
                 datatype=XSD.string,
             )
 
-            self.mapping_to_create_literal_triple(
+            self._mapping_to_create_literal_triple(
                 subject_col="complete_address",
                 object_col="city",
                 predicate=self.namespace.city,
                 datatype=XSD.string,
             )
 
-            self.mapping_to_create_literal_triple(
+            self._mapping_to_create_literal_triple(
                 subject_col="complete_address",
                 object_col="state",
                 predicate=self.namespace.state,
                 datatype=XSD.string,
             )
 
-            self.mapping_to_create_literal_triple(
+            self._mapping_to_create_literal_triple(
                 subject_col="complete_address",
                 object_col="cleaned_postcode",
                 predicate=self.namespace.postcode,
                 datatype=XSD.string,
             )
 
-            self.mapping_to_create_literal_triple(
+            self._mapping_to_create_literal_triple(
                 subject_col="complete_address",
                 object_col="country",
                 predicate=self.namespace.country,
                 datatype=XSD.string,
             )
 
-            self.mapping_to_create_literal_triple(
+            self._mapping_to_create_literal_triple(
                 subject_col="complete_address",
                 object_col="categories",
                 predicate=self.namespace.categories,
                 datatype=XSD.string,
             )
 
-            self.mapping_to_create_object_triple(
+            self._mapping_to_create_object_triple(
                 subject_col="complete_address",
                 object_col="city",
                 predicate=self.namespace.isPlaceInCity,
             )
 
-            self.mapping_to_create_object_triple(
+            self._mapping_to_create_object_triple(
                 subject_col="complete_address",
                 object_col="state",
                 predicate=self.namespace.isPlaceInState,
             )
 
-            self.mapping_to_create_object_triple(
+            self._mapping_to_create_object_triple(
                 subject_col="complete_address",
                 object_col="country",
                 predicate=self.namespace.isPlaceInCountry,
             )
 
-        if "cleaned_name" in self.data_df and "menu item" in self.data_df:
-            # Tidy weird characters from menu item column first
-            self.apply_preprocessing(
-                df=self.data_df,
-                target_col="menu item",
-                transformed_col="cleaned_menu_item",
-            )
+        # Preprocess menu item
+        # Tidy weird characters from menu item column first
+        self._apply_preprocessing(
+            df=self.data_df,
+            target_col="menu item",
+            transformed_col="cleaned_menu_item",
+        )
 
-            # Special cleaning for Pizza items
-            self.data_df["cleaned_menu_item"] = self.data_df["cleaned_menu_item"].apply(
-                lambda row: self.clean_swapped_pizza(row)
-            )
+        # Special cleaning for Pizza items
+        self.data_df["cleaned_menu_item"] = self.data_df["cleaned_menu_item"].apply(
+            lambda row: self._clean_swapped_pizza(row)
+        )
 
-            # Fill in nulls
-            self.replace_missing_values(
-                df=self.data_df,
-                target_col="item value",
-                transformed_col="menu_item_price",
-                fillna_value=0.0,
-            )
+        # Deal with nulls in data related to menu items
+        # Fill in nulls
+        self._replace_missing_values(
+            df=self.data_df,
+            target_col="item value",
+            transformed_col="menu_item_price",
+            fillna_value=0.0,
+        )
 
-            self.replace_missing_values(
-                df=self.data_df,
-                target_col="currency",
-                transformed_col="menu_item_price_currency",
-                fillna_value=" ",
-            )
+        self._replace_missing_values(
+            df=self.data_df,
+            target_col="currency",
+            transformed_col="menu_item_price_currency",
+            fillna_value=" ",
+        )
 
-            self.replace_missing_values(
-                df=self.data_df,
-                target_col="item description",
-                transformed_col="menu_item_description",
-                fillna_value=" ",
-            )
+        self._replace_missing_values(
+            df=self.data_df,
+            target_col="item description",
+            transformed_col="menu_item_description",
+            fillna_value=" ",
+        )
+
+        # Now complete the menu item name
+        if self.data_df.columns.isin(
+            [
+                "complete_address",
+                "cleaned_menu_item",
+                "menu_item_price",
+                "menu_item_price_currency",
+                "menu_item_description",
+            ]
+        ).any():
 
             # Make each item unique to the restaurant
             self.data_df["restaurant_menu_item"] = self.data_df[
@@ -391,124 +419,242 @@ class TabToGraph:
             ].str.cat(self.data_df["cleaned_menu_item"], " ")
 
             # Create the menu item
-            self.mapping_to_create_type_triple(
+            self._mapping_to_create_type_triple(
                 subject_col="restaurant_menu_item",
                 class_type=self.namespace.MenuItem,
             )
 
-            self.mapping_to_create_literal_triple(
+            self._mapping_to_create_literal_triple(
                 subject_col="restaurant_menu_item",
                 object_col="cleaned_menu_item",
                 predicate=self.namespace.name,
                 datatype=XSD.string,
             )
 
-            self.mapping_to_create_literal_triple(
+            self._mapping_to_create_literal_triple(
                 subject_col="restaurant_menu_item",
                 object_col="menu_item_price",
                 predicate=self.namespace.menu_item_price,
                 datatype=XSD.float,
             )
 
-            self.mapping_to_create_literal_triple(
+            self._mapping_to_create_literal_triple(
                 subject_col="restaurant_menu_item",
                 object_col="menu_item_price_currency",
                 predicate=self.namespace.menu_item_price_currency,
                 datatype=XSD.string,
             )
 
-            self.mapping_to_create_literal_triple(
+            self._mapping_to_create_literal_triple(
                 subject_col="restaurant_menu_item",
                 object_col="menu_item_description",
                 predicate=self.namespace.menu_item_description,
                 datatype=XSD.string,
             )
 
-        if ("restaurant_menu_item" in self.data_df) and (
-            "complete_address" in self.data_df
-        ):
             # Place menu items at a Restaurant using isMenuItemAt
-            self.mapping_to_create_object_triple(
+            self._mapping_to_create_object_triple(
                 subject_col="restaurant_menu_item",
                 object_col="complete_address",
                 predicate=self.namespace.isMenuItemAt,
             )
 
-        # Then let's pick out our Known Pizza
         if ("cleaned_menu_item" in self.data_df) and (
             "restaurant_menu_item" in self.data_df
         ):
-            self.mapping_to_create_pizza_bianca_type_triple(
-                subject_col="restaurant_menu_item",
-                conditional_col="cleaned_menu_item",
-                class_type=self.namespace.PizzaBianca,
+            # Make all menu items Pizza type
+            # It may not be true, but that's another
+            # whole preprocessing issue.
+            self._mapping_to_create_type_triple(
+                subject_col="restaurant_menu_item", class_type=self.namespace.Pizza
             )
 
-            self.mapping_to_create_pizza_margherita_type_triple(
+            # Then let's pick out our Known Pizzas
+            self._mapping_to_create_pizza_bianca_type_triple(
                 subject_col="restaurant_menu_item",
                 conditional_col="cleaned_menu_item",
-                class_type=self.namespace.PizzaMargherita,
+                class_type=self.namespace.Bianca,
+            )
+
+            self._mapping_to_create_pizza_margherita_type_triple(
+                subject_col="restaurant_menu_item",
+                conditional_col="cleaned_menu_item",
+                class_type=self.namespace.Margherita,
+            )
+
+            self._mapping_to_create_pizza_sicilian_type_triple(
+                subject_col="restaurant_menu_item",
+                conditional_col="cleaned_menu_item",
+                class_type=self.namespace.Sicilian,
+            )
+
+            self._mapping_to_create_pizza_seafood_type_triple(
+                subject_col="restaurant_menu_item",
+                conditional_col="cleaned_menu_item",
+                class_type=self.namespace.Seafood,
+            )
+
+            self._mapping_to_create_pizza_four_cheese_type_triple(
+                subject_col="restaurant_menu_item",
+                conditional_col="cleaned_menu_item",
+                class_type=self.namespace.FourCheese,
             )
 
         toc = time.perf_counter()
         print(f"Finished converting CSV to RDF in {toc - tic} seconds.")
         print(f"Extracted {len(self.graph)} triples.")
 
-    def mapping_to_create_pizza_bianca_type_triple(
+    def _mapping_to_create_pizza_bianca_type_triple(
         self, subject_col: str, conditional_col: str, class_type: rdflib.term.URIRef
     ) -> None:
         for subject, conditional in zip(
             self.data_df[subject_col], self.data_df[conditional_col]
         ):
-            if self.is_object_missing(subject) or self.is_object_missing(conditional):
+            if self._is_object_missing(subject) or self._is_object_missing(conditional):
                 return
             else:
                 conditional = conditional.lower()
                 subject = subject.lower()
 
-                # Pizza Bianca conditions
+                # Pizza Bianca conditions - crude and would have been a nice
+                # opportunity to look at labels in different languages -
+                # but Italian is not provided as an option.
                 if ("bianca" in conditional) or (conditional == "white pizza"):
                     entity_uri: str = None
 
                     if subject in self.string_to_uri:
                         entity_uri = self.string_to_uri[subject]
                     else:
-                        entity_uri = self.createURIForEntity(subject)
+                        entity_uri = self._createURIForEntity(subject)
 
                     self.graph.add((URIRef(entity_uri), RDF.type, class_type))
 
-    def mapping_to_create_pizza_margherita_type_triple(
+    def _mapping_to_create_pizza_margherita_type_triple(
         self, subject_col: str, conditional_col: str, class_type: rdflib.term.URIRef
     ) -> None:
         for subject, conditional in zip(
             self.data_df[subject_col], self.data_df[conditional_col]
         ):
-            if self.is_object_missing(subject) or self.is_object_missing(conditional):
+            if self._is_object_missing(subject) or self._is_object_missing(conditional):
                 return
             else:
                 conditional = conditional.lower()
                 subject = subject.lower()
 
-                # Pizza Bianca conditions
+                # Pizza Bianca conditions - crude and chose not to use better matching here
                 if "margherita" in conditional or "margarita" in conditional:
                     entity_uri: str = None
 
                     if subject in self.string_to_uri:
                         entity_uri = self.string_to_uri[subject]
                     else:
-                        entity_uri = self.createURIForEntity(subject)
+                        entity_uri = self._createURIForEntity(subject)
+
+                    self.graph.add((URIRef(entity_uri), RDF.type, class_type))
+
+    def _mapping_to_create_pizza_sicilian_type_triple(
+        self, subject_col: str, conditional_col: str, class_type: rdflib.term.URIRef
+    ) -> None:
+        for subject, conditional in zip(
+            self.data_df[subject_col], self.data_df[conditional_col]
+        ):
+            if self._is_object_missing(subject) or self._is_object_missing(conditional):
+                return
+            else:
+                conditional = conditional.lower()
+                subject = subject.lower()
+
+                # Sicilian conditions - crude and chose not to use better matching here
+                if "sicilian" in conditional:
+                    entity_uri: str = None
+
+                    if subject in self.string_to_uri:
+                        entity_uri = self.string_to_uri[subject]
+                    else:
+                        entity_uri = self._createURIForEntity(subject)
+
+                    self.graph.add((URIRef(entity_uri), RDF.type, class_type))
+
+    def _mapping_to_create_pizza_seafood_type_triple(
+        self, subject_col: str, conditional_col: str, class_type: rdflib.term.URIRef
+    ) -> None:
+        for subject, conditional in zip(
+            self.data_df[subject_col], self.data_df[conditional_col]
+        ):
+            if self._is_object_missing(subject) or self._is_object_missing(conditional):
+                return
+            else:
+                conditional = conditional.lower()
+                subject = subject.lower()
+
+                # Seafood conditions - crude and chose not to use better matching here
+                if "seafood" in conditional:
+                    entity_uri: str = None
+
+                    if subject in self.string_to_uri:
+                        entity_uri = self.string_to_uri[subject]
+                    else:
+                        entity_uri = self._createURIForEntity(subject)
+
+                    self.graph.add((URIRef(entity_uri), RDF.type, class_type))
+
+    def _mapping_to_create_pizza_four_cheese_type_triple(
+        self, subject_col: str, conditional_col: str, class_type: rdflib.term.URIRef
+    ) -> None:
+        for subject, conditional in zip(
+            self.data_df[subject_col], self.data_df[conditional_col]
+        ):
+            if self._is_object_missing(subject) or self._is_object_missing(conditional):
+                return
+            else:
+                conditional = conditional.lower()
+                subject = subject.lower()
+
+                # Four cheese conditions - crude and chose not to use better matching here
+                if (conditional == "4 cheese pizza") or (
+                    conditional == "four cheese pizza"
+                ):
+                    entity_uri: str = None
+
+                    if subject in self.string_to_uri:
+                        entity_uri = self.string_to_uri[subject]
+                    else:
+                        entity_uri = self._createURIForEntity(subject)
+
+                    self.graph.add((URIRef(entity_uri), RDF.type, class_type))
+
+    def _mapping_to_create_pizza_cheese_type_triple(
+        self, subject_col: str, conditional_col: str, class_type: rdflib.term.URIRef
+    ) -> None:
+        for subject, conditional in zip(
+            self.data_df[subject_col], self.data_df[conditional_col]
+        ):
+            if self._is_object_missing(subject) or self._is_object_missing(conditional):
+                return
+            else:
+                conditional = conditional.lower()
+                subject = subject.lower()
+
+                # Cheese conditions - crude and chose not to use better matching here
+                if conditional == "cheese pizza":
+                    entity_uri: str = None
+
+                    if subject in self.string_to_uri:
+                        entity_uri = self.string_to_uri[subject]
+                    else:
+                        entity_uri = self._createURIForEntity(subject)
 
                     self.graph.add((URIRef(entity_uri), RDF.type, class_type))
 
     @staticmethod
-    def is_object_missing(value: str) -> bool:
+    def _is_object_missing(value: str) -> bool:
         """
         First is a check for NaN when the subject value
         could be a string (so can't use math.isnan())
         """
         return (value != value) or (value is None) or (value == "")
 
-    def get_external_kg_uri(self, name: str, category_filter: str = "") -> None:
+    def _get_external_kg_uri(self, name: str, category_filter: str = "") -> None:
         """
         Approximate solution: We get the entity with highest lexical similarity
         The use of context may be necessary in some cases
@@ -529,7 +675,7 @@ class TabToGraph:
 
         return current_uri
 
-    def createURIForEntity(
+    def _createURIForEntity(
         self,
         entity_name: str,
         use_external_uri: bool = False,
@@ -541,7 +687,7 @@ class TabToGraph:
         )
 
         if use_external_uri:
-            uri = self.get_external_kg_uri(
+            uri = self._get_external_kg_uri(
                 name=entity_name, category_filter=category_filter
             )
             if uri != "":
@@ -549,7 +695,7 @@ class TabToGraph:
 
         return self.string_to_uri[entity_name]
 
-    def mapping_to_create_type_triple(
+    def _mapping_to_create_type_triple(
         self,
         subject_col: str,
         class_type: rdflib.term.URIRef,
@@ -557,13 +703,10 @@ class TabToGraph:
         category_filter: str = "",
     ) -> None:
         """
-        TODO: Mapping to create triples like lab6:London rdf:type lab6:City
-        A mapping may create more than one triple
-        column: columns where the entity information is stored
-        TODO: useExternalURI: if URI is fresh or from external KG
+        Mapping to create triples like fp:MenuItem rdf:type fp:Pizza.
         """
         for subject in self.data_df[subject_col]:
-            if self.is_object_missing(value=subject):
+            if self._is_object_missing(value=subject):
                 return
             else:
                 entity_uri: str = None
@@ -572,7 +715,7 @@ class TabToGraph:
                 if subject in self.string_to_uri:
                     entity_uri = self.string_to_uri[subject]
                 else:
-                    entity_uri = self.createURIForEntity(
+                    entity_uri = self._createURIForEntity(
                         entity_name=subject,
                         use_external_uri=use_external_uri,
                         category_filter=category_filter,
@@ -580,7 +723,7 @@ class TabToGraph:
 
                 self.graph.add((URIRef(entity_uri), RDF.type, class_type))
 
-    def mapping_to_create_literal_triple(
+    def _mapping_to_create_literal_triple(
         self,
         subject_col: str,
         object_col: str,
@@ -588,14 +731,14 @@ class TabToGraph:
         datatype: str,
     ) -> None:
         """
-        TODO: Mappings to create triples of the form lab6:london lab6:name "London"
+        Mapping to create triples of the form fp:Restaurant fp:name "Nonna's Pizza"^^datatype
         """
         for subject, lit_value in zip(
             self.data_df[subject_col], self.data_df[object_col]
         ):
 
             # Make sure this does nothing when the object is missing
-            if self.is_object_missing(value=lit_value):
+            if self._is_object_missing(value=lit_value):
                 return
 
             else:
@@ -609,16 +752,16 @@ class TabToGraph:
                 # Add new literal triple to graph
                 self.graph.add((URIRef(entity_uri), predicate, literal))
 
-    def mapping_to_create_object_triple(
+    def _mapping_to_create_object_triple(
         self, subject_col: str, object_col: str, predicate: rdflib.term.URIRef
     ) -> None:
         """
-        Mappings to create triples of the form fp:Bend fp:isLocatedInCountry fp:USA
+        Mappings to create triples of the form fp:cheese_pizza fp:isMenuItemAt fp:Restaurant
         """
         for subject, object in zip(self.data_df[subject_col], self.data_df[object_col]):
 
             # Make sure this does nothing when the object is missing
-            if self.is_object_missing(value=subject) or self.is_object_missing(
+            if self._is_object_missing(value=subject) or self._is_object_missing(
                 value=object
             ):
                 return
@@ -676,11 +819,11 @@ if __name__ == "__main__":
     # INPUT_FILEPATH = "../../data/data_pizza_minimum_test.csv"
     # INPUT_FILEPATH = "../../data/data_pizza_no_postcode_test.csv"
 
-    NAMESPACE: str = Namespace("http://www.city.ac.uk/ds/inm713/feiphoon#")
+    NAMESPACE_STR: str = "http://www.city.ac.uk/ds/inm713/feiphoon#"
     PREFIX: str = "fp"
 
     tab_to_graph = TabToGraph(
-        input_filepath=INPUT_FILEPATH, namespace_str=NAMESPACE, prefix=PREFIX
+        input_filepath=INPUT_FILEPATH, namespace_str=NAMESPACE_STR, prefix=PREFIX
     )
 
     TASK: Task = Task.RDF2
@@ -704,9 +847,9 @@ if __name__ == "__main__":
 
         # Apply OWL 2 RL reasoning
         tab_to_graph.perform_reasoning(
-            "../../1-OWL/pizza_restaurant_ontology7.ttl"
+            "../../1-OWL/pizza_restaurant_ontology8.ttl"
         )  # ttl format
-        # tab_to_graph.perform_reasoning("../../1-OWL/pizza_restaurant_ontology7.owl") ##owl (rdf/xml) format
+        # tab_to_graph.perform_reasoning("../../1-OWL/pizza_restaurant_ontology8.owl") ##owl (rdf/xml) format
 
         # Graph with ontology triples and entailed triples
         tab_to_graph.save_graph(

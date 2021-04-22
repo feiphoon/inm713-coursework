@@ -150,7 +150,7 @@ fp:stateHasPlace rdf:type owl:ObjectProperty ;
 fp:address rdf:type owl:DatatypeProperty ,
                     owl:FunctionalProperty ;
            rdfs:domain fp:Restaurant ;
-           rdfs:range rdf:PlainLiteral ;
+           rdfs:range xsd:string ;
            dc:creator "fei"^^xsd:string .
 
 
@@ -165,23 +165,23 @@ fp:categories rdf:type owl:DatatypeProperty ,
 ###  http://www.city.ac.uk/ds/inm713/feiphoon#city
 fp:city rdf:type owl:DatatypeProperty ,
                  owl:FunctionalProperty ;
-        rdfs:domain fp:City ;
-        rdfs:range rdf:PlainLiteral ;
+        rdfs:domain fp:Restaurant ;
+        rdfs:range xsd:string ;
         dc:creator "fei"^^xsd:string .
 
 
 ###  http://www.city.ac.uk/ds/inm713/feiphoon#country
 fp:country rdf:type owl:DatatypeProperty ,
                     owl:FunctionalProperty ;
-           rdfs:domain fp:Country ;
-           rdfs:range rdf:PlainLiteral ;
+           rdfs:domain fp:Restaurant ;
+           rdfs:range xsd:string ;
            dc:creator "fei"^^xsd:string .
 
 
 ###  http://www.city.ac.uk/ds/inm713/feiphoon#menu_item_description
 fp:menu_item_description rdf:type owl:DatatypeProperty ;
                          rdfs:domain fp:MenuItem ;
-                         rdfs:range rdf:PlainLiteral ;
+                         rdfs:range xsd:string ;
                          dc:creator "fei"^^xsd:string .
 
 
@@ -195,7 +195,7 @@ fp:menu_item_price rdf:type owl:DatatypeProperty ;
 ###  http://www.city.ac.uk/ds/inm713/feiphoon#menu_item_price_currency
 fp:menu_item_price_currency rdf:type owl:DatatypeProperty ;
                             rdfs:domain fp:MenuItem ;
-                            rdfs:range rdf:PlainLiteral ;
+                            rdfs:range xsd:string ;
                             dc:creator "fei"^^xsd:string .
 
 
@@ -203,7 +203,7 @@ fp:menu_item_price_currency rdf:type owl:DatatypeProperty ;
 fp:name rdf:type owl:DatatypeProperty ,
                  owl:FunctionalProperty ;
         rdfs:domain owl:Thing ;
-        rdfs:range rdf:PlainLiteral ;
+        rdfs:range xsd:string ;
         dc:creator "fei"^^xsd:string .
 
 
@@ -218,7 +218,7 @@ fp:postcode rdf:type owl:DatatypeProperty ,
 ###  http://www.city.ac.uk/ds/inm713/feiphoon#state
 fp:state rdf:type owl:DatatypeProperty ,
                   owl:FunctionalProperty ;
-         rdfs:domain fp:State ;
+         rdfs:domain fp:Restaurant ;
          rdfs:range xsd:string ;
          dc:creator "fei"^^xsd:string .
 

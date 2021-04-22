@@ -19,3 +19,11 @@ Extracted 33356 triples.
 Triples including ontology: 33666.
 Finished reasoning on graph in 27.73453294000001 seconds.
 Triples after OWL 2 RL reasoning: 86981.
+
+This one after I corrected the fp:Restaurant thinking it's a lot of other things too:
+(venv) ➜  ontology7 git:(oa-task) ✗ python create_rdf_triples.py
+Finished converting CSV to RDF in 352.286376098 seconds.
+Extracted 33356 triples.
+Triples including ontology: 33666.
+Finished reasoning on graph in 25.18746048500003 seconds.
+Triples after OWL 2 RL reasoning: 66440.

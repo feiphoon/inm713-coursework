@@ -1,0 +1,12 @@
+(venv) ➜  ontology8 git:(oa-task) ✗ python create_rdf_triples.py
+Finished converting CSV to RDF in 3.6422930790000003 seconds.
+Extracted 36765 triples.
+(venv) ➜  ontology8 git:(oa-task) ✗ python create_rdf_triples.py
+Finished converting CSV to RDF in 347.799484388 seconds.
+Extracted 36759 triples.
+(venv) ➜  ontology8 git:(oa-task) ✗ python create_rdf_triples.py
+Finished converting CSV to RDF in 351.79080768 seconds.
+Extracted 36759 triples.
+Triples including ontology: 36900.
+Finished reasoning on graph in 21.30539653699998 seconds.
+Triples after OWL 2 RL reasoning: 65983.
