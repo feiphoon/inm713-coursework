@@ -5,7 +5,7 @@ Created on 19 Jan 2021
 
 @author: ejimenez-ruiz
 """
-from owlready2 import *
+from owlready2 import *  # noqa F401
 from onto_access import OntologyAccess
 
 from typing import Any

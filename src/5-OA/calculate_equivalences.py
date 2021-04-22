@@ -10,6 +10,7 @@ https://rawgit.com/ztane/python-Levenshtein/master/docs/Levenshtein.html
 import rdflib
 from rdflib import Graph, Namespace, URIRef
 from rdflib.namespace import OWL
+from owlready2 import * # noqa F403
 
 from load_ontology import load_classes, load_object_properties
 
