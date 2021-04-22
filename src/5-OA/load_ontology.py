@@ -1,4 +1,6 @@
 """
+Modified from INM713 lab code.
+
 Created on 19 Jan 2021
 
 @author: ejimenez-ruiz
@@ -6,45 +8,61 @@ Created on 19 Jan 2021
 from owlready2 import *
 from onto_access import OntologyAccess
 
+from typing import Any
 
-def load_classes(uri_onto):
+
+def load_classes(uri_onto: str, print: bool = False) -> Any:
+    """
+    Returns objects of type owlready2.entity.ThingClass
+    """
     onto_access = OntologyAccess(uri_onto)
     onto_access.loadOntology(True)
-
     results = onto_access.getClasses()
 
-    for r in results:
-        print(r)
+    if print:
+        for _ in results:
+            print(_)
+
+    return [_ for _ in results]
 
 
-def load_object_properties(uri_onto):
+def load_object_properties(uri_onto: str, print: bool = False):
     onto_access = OntologyAccess(uri_onto)
     onto_access.loadOntology(True)
 
     results = onto_access.getObjectProperties()
 
-    for r in results:
-        print(r)
+    if print:
+        for _ in results:
+            print(_)
+
+    return [_ for _ in results]
 
 
-def load_data_properties(uri_onto):
+def load_data_properties(uri_onto: str, print: bool = False):
     onto_access = OntologyAccess(uri_onto)
     onto_access.loadOntology(True)
 
     results = onto_access.getDataProperties()
 
-    for r in results:
-        print(r)
+    if print:
+        for _ in results:
+            print(_)
+
+    return [_ for _ in results]
 
 
-def load_individuals(uri_onto):
+def load_individuals(uri_onto: str, print: bool = False):
     onto_access = OntologyAccess(uri_onto)
     onto_access.loadOntology(True)
 
     results = onto_access.getIndividuals()
 
-    for r in results:
-        print(r)
+    if print:
+        for _ in results:
+            print(_)
+
+    return [_ for _ in results]
 
 
 # Load ontology
