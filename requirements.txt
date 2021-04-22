@@ -4,7 +4,7 @@ flake8==3.8.4
 invoke==1.5.0
 jupyter==1.0.0
 matplotlib==3.3.4
-levenshtein==0.12.0
+python-Levenshtein==0.12.2
 SPARQLWrapper==1.8.5
 Owlready2==0.26
 owlrl==5.2.1
