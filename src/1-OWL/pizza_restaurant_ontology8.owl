@@ -296,6 +296,15 @@
     
 
 
+    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#Cheese -->
+
+    <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#Cheese">
+        <rdfs:subClassOf rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Pizza"/>
+        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
+    </owl:Class>
+    
+
+
     <!-- http://www.city.ac.uk/ds/inm713/feiphoon#City -->
 
     <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#City">
@@ -319,6 +328,15 @@
     <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#Currency">
         <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
         <rdfs:label xml:lang="en">Currency</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#FourCheese -->
+
+    <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#FourCheese">
+        <rdfs:subClassOf rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Pizza"/>
+        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
     </owl:Class>
     
 
@@ -356,6 +374,24 @@
     <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#Restaurant">
         <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
         <rdfs:label xml:lang="en">Restaurant</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#Seafood -->
+
+    <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#Seafood">
+        <rdfs:subClassOf rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Pizza"/>
+        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
+    </owl:Class>
+    
+
+
+    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#Sicilian -->
+
+    <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#Sicilian">
+        <rdfs:subClassOf rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Pizza"/>
+        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
     </owl:Class>
     
 
