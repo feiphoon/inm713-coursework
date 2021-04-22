@@ -1,0 +1,10 @@
+@prefix fp: <http://www.city.ac.uk/ds/inm713/feiphoon#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix pizza: <http://www.co-ode.org/ontologies/pizza/pizza.owl#> .
+
+fp:Margherita owl:equivalentClass pizza:Margherita .
+
+fp:Pizza owl:equivalentClass pizza:Pizza .
+
+fp:Sicilian owl:equivalentClass pizza:Siciliana .
+
