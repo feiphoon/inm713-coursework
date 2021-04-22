@@ -81,16 +81,6 @@ if __name__ == "__main__":
     # TASK: Task = Task.SPARQL5.value
 
     if TASK == Task.SPARQL2.value:
-        OUTPUT_FIELDS = [
-            "restaurant",
-            "name",
-            "address",
-            "city",
-            "state",
-            "postcode",
-            "country",
-        ]
-
         # Alternative search field
         # QUERY: str = """
         #     SELECT ?restaurant
@@ -104,8 +94,17 @@ if __name__ == "__main__":
         #             ?x fp:name "white pizza"^^xsd:string .
         #         }
         #     }
-        #     """
+        # """
 
+        OUTPUT_FIELDS = [
+            "restaurant",
+            "name",
+            "address",
+            "city",
+            "state",
+            "postcode",
+            "country",
+        ]
         QUERY: str = """
             SELECT DISTINCT ?restaurant ?name ?address ?city ?state ?postcode ?country
             WHERE {
@@ -147,7 +146,7 @@ if __name__ == "__main__":
                     ?pizza fp:menu_item_price ?price .
                 }
             }
-            """
+        """
 
         pr_graph.query_graph(
             query=QUERY, output_filename=TASK, output_fields=OUTPUT_FIELDS
@@ -155,18 +154,19 @@ if __name__ == "__main__":
 
     elif TASK == Task.SPARQL4.value:
 
-        OUTPUT_FIELDS = ["restaurant", "city", "state", "num_restaurants"]
-
+        OUTPUT_FIELDS = ["city", "state", "num_restaurants_by_city"]
         QUERY: str = """
-            SELECT DISTINCT ?restaurant ?city ?state (COUNT(?restaurant) AS ?num_restaurants)
-            WHERE {
-                ?restaurant rdf:type fp:Restaurant .
-                ?restaurant fp:city ?city .
-                ?restaurant fp:state ?state .
-            }
-            GROUP BY ?city, ?state
-            ORDER BY DESC(?state), DESC(?num_restaurants)
-            """
+            SELECT ?city ?state ?num_restaurants_by_city {
+                SELECT ?city ?state (COUNT(?restaurant) AS ?num_restaurants_by_city)
+                WHERE {
+                    ?restaurant rdf:type fp:Restaurant .
+                    ?restaurant fp:isPlaceInCity ?city .
+                    ?restaurant fp:isPlaceInState ?state .
+                }
+                GROUP BY ?city
+                ORDER BY ASC(?state)
+            } ORDER BY DESC(?num_restaurants_by_city)
+        """
 
         pr_graph.query_graph(
             query=QUERY, output_filename=TASK, output_fields=OUTPUT_FIELDS
