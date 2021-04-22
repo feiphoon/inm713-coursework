@@ -9,6 +9,7 @@ from owlready2 import *
 from onto_access import OntologyAccess
 
 from typing import Any
+from pprint import pprint
 
 
 def load_classes(uri_onto: str, print: bool = False) -> Any:
@@ -21,7 +22,7 @@ def load_classes(uri_onto: str, print: bool = False) -> Any:
 
     if print:
         for _ in results:
-            print(_)
+            pprint(_)
 
     return [_ for _ in results]
 
@@ -34,7 +35,7 @@ def load_object_properties(uri_onto: str, print: bool = False):
 
     if print:
         for _ in results:
-            print(_)
+            pprint(_)
 
     return [_ for _ in results]
 
@@ -47,7 +48,7 @@ def load_data_properties(uri_onto: str, print: bool = False):
 
     if print:
         for _ in results:
-            print(_)
+            pprint(_)
 
     return [_ for _ in results]
 
@@ -60,7 +61,7 @@ def load_individuals(uri_onto: str, print: bool = False):
 
     if print:
         for _ in results:
-            print(_)
+            pprint(_)
 
     return [_ for _ in results]
 
