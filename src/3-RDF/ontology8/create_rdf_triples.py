@@ -511,7 +511,7 @@ class TabToGraph:
             self.data_df[subject_col], self.data_df[conditional_col]
         ):
             if self._is_object_missing(subject) or self._is_object_missing(conditional):
-                return
+                pass
             else:
                 conditional = conditional.lower()
                 subject = subject.lower()
@@ -536,7 +536,7 @@ class TabToGraph:
             self.data_df[subject_col], self.data_df[conditional_col]
         ):
             if self._is_object_missing(subject) or self._is_object_missing(conditional):
-                return
+                pass
             else:
                 conditional = conditional.lower()
                 subject = subject.lower()
@@ -559,7 +559,7 @@ class TabToGraph:
             self.data_df[subject_col], self.data_df[conditional_col]
         ):
             if self._is_object_missing(subject) or self._is_object_missing(conditional):
-                return
+                pass
             else:
                 conditional = conditional.lower()
                 subject = subject.lower()
@@ -582,7 +582,7 @@ class TabToGraph:
             self.data_df[subject_col], self.data_df[conditional_col]
         ):
             if self._is_object_missing(subject) or self._is_object_missing(conditional):
-                return
+                pass
             else:
                 conditional = conditional.lower()
                 subject = subject.lower()
@@ -605,7 +605,7 @@ class TabToGraph:
             self.data_df[subject_col], self.data_df[conditional_col]
         ):
             if self._is_object_missing(subject) or self._is_object_missing(conditional):
-                return
+                pass
             else:
                 conditional = conditional.lower()
                 subject = subject.lower()
@@ -630,7 +630,7 @@ class TabToGraph:
             self.data_df[subject_col], self.data_df[conditional_col]
         ):
             if self._is_object_missing(subject) or self._is_object_missing(conditional):
-                return
+                pass
             else:
                 conditional = conditional.lower()
                 subject = subject.lower()

@@ -461,7 +461,7 @@ class TabToGraph:
             self.data_df[subject_col], self.data_df[conditional_col]
         ):
             if self.is_object_missing(subject) or self.is_object_missing(conditional):
-                return
+                pass
             else:
                 conditional = conditional.lower()
                 subject = subject.lower()
@@ -484,7 +484,7 @@ class TabToGraph:
             self.data_df[subject_col], self.data_df[conditional_col]
         ):
             if self.is_object_missing(subject) or self.is_object_missing(conditional):
-                return
+                pass
             else:
                 conditional = conditional.lower()
                 subject = subject.lower()
@@ -596,7 +596,7 @@ class TabToGraph:
 
             # Make sure this does nothing when the object is missing
             if self.is_object_missing(value=lit_value):
-                return
+                pass
 
             else:
                 subject = subject.lower()
@@ -621,7 +621,7 @@ class TabToGraph:
             if self.is_object_missing(value=subject) or self.is_object_missing(
                 value=object
             ):
-                return
+                pass
 
             else:
                 # Use already created URI
