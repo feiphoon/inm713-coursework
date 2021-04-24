@@ -64,6 +64,7 @@ if __name__ == "__main__":
 
     pr_graph = PizzaRestaurantGraph(filename=INPUT_FILEPATH)
 
+    # Comment these out to run each task
     TASK: Task = Task.SPARQL2.value
     TASK: Task = Task.SPARQL3.value
     TASK: Task = Task.SPARQL4.value

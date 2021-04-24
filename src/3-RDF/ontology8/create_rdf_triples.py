@@ -826,6 +826,7 @@ if __name__ == "__main__":
         input_filepath=INPUT_FILEPATH, namespace_str=NAMESPACE_STR, prefix=PREFIX
     )
 
+    # Comment these out to run each task
     TASK: Task = Task.RDF2
     TASK: Task = Task.RDF3
     TASK: Task = Task.SPARQL1
