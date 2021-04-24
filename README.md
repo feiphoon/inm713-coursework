@@ -7,12 +7,12 @@ This is an individual submission of the INM713 coursework.
 See my [file tree documentation](TREE.md) for a quick repo overview.
 
 Relevant files are in the `src/` folder [here](src/):
-- [Exploratory analysis (not marked)](src/0-exploration)
-- [Task OWL (Ontology Modelling)](src/1-OWL)
-- Task RDF (Tabular Data to Knowledge Graph)
-- Task SPARQL (SPARQL & Reasoning)
-- Task OA (Ontology Alignment)
-- Task Vector (Ontology Embeddings)
+- [Exploratory analysis (not marked)](src/1-exploration)
+- [Task OWL (Ontology Modelling)](src/2-OWL)
+- [Task RDF (Tabular Data to Knowledge Graph)](src/3-RDF)
+- [Task SPARQL (SPARQL & Reasoning)](src/4-SPARQL)
+- [Task OA (Ontology Alignment)](src/5-OA)
+- [Task Vector (Ontology Embeddings)](src/6-OE)
 
 
 ## Setup
