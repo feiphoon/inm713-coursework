@@ -1,11 +1,19 @@
 """
+Slightly modified from a file from INM713 labs.
+
 Created on 2 Jan 2019
 
 @author: ejimenez-ruiz
 """
-from owlready2 import get_ontology, onto_path, owlready2, sync_reasoner, default_world
-import rdflib
-from rdflib.plugins.sparql import prepareQuery
+from owlready2 import (
+    get_ontology,
+    owlready2,
+    sync_reasoner,
+    default_world,
+    sync_reasoner_pellet,
+)
+
+# from rdflib.plugins.sparql import prepareQuery
 import logging
 from enum import Enum
 
@@ -60,9 +68,9 @@ class OntologyAccess(object):
                     logging.info("Ontology successfully classified.")
                     if unsat > 0:
                         logging.warning(
-                            "There are " + str(unsat) + " unsatisfiabiable classes."
+                            f"There are {str(unsat)} unsatisfiable classes: {list(self.onto.inconsistent_classes())}"
                         )
-            except:
+            except Exception:
                 logging.info("Classifying with Pellet failed.")
 
         elif reasoner == Reasoner.HERMIT:
@@ -77,15 +85,14 @@ class OntologyAccess(object):
                     logging.info("Ontology successfully classified.")
                     if unsat > 0:
                         logging.warning(
-                            "There are " + str(unsat) + " unsatisfiabiable classes."
+                            f"There are {str(unsat)} unsatisfiable classes: {list(self.onto.inconsistent_classes())}"
                         )
+                    return f"{str(unsat)} unsatisfiable classes: {list(self.onto.inconsistent_classes())}"
 
-            except:
-
+            except Exception:
                 logging.info("Classifying with HermiT failed.")
 
-        ##End Classification
-        ####
+        # End Classification
 
         # report problem with unsat (Nothing not declared....)
         # print(list(self.onto.inconsistent_classes()))

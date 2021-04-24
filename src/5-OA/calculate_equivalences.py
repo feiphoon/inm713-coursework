@@ -464,8 +464,6 @@ if __name__ == "__main__":
         # Equivalence triples file - run Task.OA1 first
         INPUT_FILEPATH_C: str = "equivalence_triples_oa1.ttl"
 
-        # ONTO_PATH: str = "ontologies"
-
         # The following produce outputs to files:
 
         # src/5-OA/hermit_reasoner_results_pizza_restaurant_ontology9_oa2_2.txt
