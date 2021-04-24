@@ -14,9 +14,6 @@ from Label import pre_process_words, URI_parse
 from Onto_Projection import Reasoner, OntologyProjection
 
 
-def potato():
-    print("fei")
-
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
