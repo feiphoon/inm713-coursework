@@ -13,10 +13,14 @@ from rdflib import Graph, Namespace, URIRef
 from rdflib import OWL
 from rdflib.util import guess_format
 import owlrl
+from owlready2 import onto_path
 
 
 from load_ontology import load_classes, load_object_properties
+from onto_access import OntologyAccess, Reasoner
 
+from pathlib import PurePosixPath
+import os
 import time
 import re
 from enum import Enum
@@ -48,7 +52,8 @@ class BestCandidatePairsJWTranslated(NamedTuple):
 
 class Task(Enum):
     OA1 = "oa1"
-    OA2 = "oa2"
+    OA2_1 = "oa2_1"  #  This is one reasoning method
+    OA2_2 = "oa2_2"  # This is an alternative reasoning
 
 
 def _find_best_candidate_matches_by_jaro_winkler(
@@ -374,7 +379,9 @@ def run_task_oa1(
     del graph
 
 
-def run_task_oa2(filename_a: str, filename_b: str, filename_c: str) -> None:
+def run_task_oa2_1(
+    filename_a: str, filename_b: str, filename_c: str, task: str
+) -> None:
     TARGET_NAMESPACE_STR: str = "http://www.city.ac.uk/ds/inm713/feiphoon#"
     TARGET_NAMESPACE: rdflib.Namespace = Namespace(TARGET_NAMESPACE_STR)
     TARGET_PREFIX: str = "fp"
@@ -396,14 +403,23 @@ def run_task_oa2(filename_a: str, filename_b: str, filename_c: str) -> None:
 
     _perform_reasoning(graph)
 
-    # pizza = get_ontology("ontologies/pizza_manchester.owl").load()
-    # pizza_restaurant = get_ontology("ontologies/pizza_restaurant_ontology8.owl").load()
+    _save_graph(graph=graph, output_file=f"all_files_with_reasoning_{task}.ttl")
 
-    # pizza.imported_ontologies.append(pizza_restaurant)
-    # print(pizza)
 
-    # onto.imported_ontologies.append("pizza_restaurant_ontology8.owl")
-    # onto.load()
+def run_task_oa2_2(filename: str, task: str) -> None:
+    """
+    HERMIT is the only one that worked,
+    PELLET doesn't give any information on unsatisfiable classes.
+    """
+    oa = OntologyAccess(filename)
+
+    output_tag = PurePosixPath(filename).stem
+
+    with open(
+        os.path.join(f"hermit_reasoner_results_{output_tag}_{task}.txt"), "w"
+    ) as f:
+        results = oa.loadOntology(reasoner=Reasoner.HERMIT)
+        f.write(results)
 
 
 if __name__ == "__main__":
@@ -413,8 +429,10 @@ if __name__ == "__main__":
     INPUT_FILEPATH_A: str = "../2-OWL/pizza_restaurant_ontology9.owl"
     INPUT_FILEPATH_B: str = "../data/pizza_manchester.owl"
 
+    # Comment these out to run each task
     TASK: Task = Task.OA1.value
-    TASK: Task = Task.OA2.value
+    TASK: Task = Task.OA2_1.value
+    TASK: Task = Task.OA2_2.value
 
     if TASK == Task.OA1.value:
         run_task_oa1(
@@ -423,11 +441,39 @@ if __name__ == "__main__":
             with_translation=False,
         )
 
-    elif TASK == Task.OA2.value:
+    elif TASK == Task.OA2_1.value:
+        # This was one way to do reasoning -
+        # load all three of the ontologies into one graph and reason.
+        # This produces a saved file and we'll have to search for
+        # unsatisfiable classes by hand.
+        # Equivalence triples file - run Task.OA1 first
         INPUT_FILEPATH_C: str = "equivalence_triples_oa1.ttl"
-        # ONTO_PATH: str = "ontologies"
-        run_task_oa2(
+
+        run_task_oa2_1(
             filename_a=INPUT_FILEPATH_A,
             filename_b=INPUT_FILEPATH_B,
             filename_c=INPUT_FILEPATH_C,
+            task=TASK,
         )
+
+        # See all_files_with_reasoning_oa2_1.ttl for output & unsatisfiable classes
+
+    elif TASK == Task.OA2_2.value:
+        #  This is an alternative method using code supplied in the
+        # INM713 labs.
+        # Equivalence triples file - run Task.OA1 first
+        INPUT_FILEPATH_C: str = "equivalence_triples_oa1.ttl"
+
+        # ONTO_PATH: str = "ontologies"
+
+        # The following produce outputs to files:
+
+        # src/5-OA/hermit_reasoner_results_pizza_restaurant_ontology9_oa2_2.txt
+        run_task_oa2_2(filename=INPUT_FILEPATH_A, task=TASK)
+
+        # src/5-OA/hermit_reasoner_results_pizza_manchester_oa2_2.txt
+        # Unsatisfiable classes in here
+        run_task_oa2_2(filename=INPUT_FILEPATH_B, task=TASK)
+
+        # src/5-OA/hermit_reasoner_results_equivalence_triples_oa1_oa2_2.txt
+        run_task_oa2_2(filename=INPUT_FILEPATH_C, task=TASK)
