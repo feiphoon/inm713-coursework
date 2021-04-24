@@ -9,10 +9,9 @@ import configparser
 
 sys.path.append("./rdf2vec/")
 sys.path.append("./lib/")
-from RDF2Vec_Embed import get_rdf2vec_walks
-from Label import pre_process_words, URI_parse
-from Onto_Projection import Reasoner, OntologyProjection
-
+from RDF2Vec_Embed import get_rdf2vec_walks  # noqa E402
+from Label import pre_process_words, URI_parse  # noqa E402
+from Onto_Projection import Reasoner, OntologyProjection  # noqa E402
 
 
 parser = argparse.ArgumentParser()
