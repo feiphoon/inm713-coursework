@@ -12,7 +12,7 @@ Relevant files are in the `src/` folder [here](src/):
 - [Task RDF (Tabular Data to Knowledge Graph)](src/3-RDF)
 - [Task SPARQL (SPARQL & Reasoning)](src/4-SPARQL)
 - [Task OA (Ontology Alignment)](src/5-OA)
-- [Task Vector (Ontology Embeddings)](src/6-OE)
+- [Task Vector (Ontology Embeddings)](src/6-VECTOR)
 
 
 ## Setup
