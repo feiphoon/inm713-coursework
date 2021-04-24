@@ -94,6 +94,17 @@
     
 
 
+    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#hasTopping -->
+
+    <owl:ObjectProperty rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#hasTopping">
+        <owl:inverseOf rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#isToppingOf"/>
+        <rdfs:domain rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Pizza"/>
+        <rdfs:range rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Ingredient"/>
+        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://www.city.ac.uk/ds/inm713/feiphoon#isCurrencyOf -->
 
     <owl:ObjectProperty rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#isCurrencyOf">
@@ -143,6 +154,15 @@
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
         <rdfs:domain rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Restaurant"/>
         <rdfs:range rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#State"/>
+        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#isToppingOf -->
+
+    <owl:ObjectProperty rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#isToppingOf">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
         <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
     </owl:ObjectProperty>
     
@@ -287,6 +307,15 @@
     
 
 
+    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#Basil -->
+
+    <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#Basil">
+        <rdfs:subClassOf rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Herb"/>
+        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
+    </owl:Class>
+    
+
+
     <!-- http://www.city.ac.uk/ds/inm713/feiphoon#Bianca -->
 
     <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#Bianca">
@@ -299,6 +328,15 @@
     <!-- http://www.city.ac.uk/ds/inm713/feiphoon#Cheese -->
 
     <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#Cheese">
+        <rdfs:subClassOf rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Ingredient"/>
+        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
+    </owl:Class>
+    
+
+
+    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#Cheesey -->
+
+    <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#Cheesey">
         <rdfs:subClassOf rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Pizza"/>
         <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
     </owl:Class>
@@ -341,6 +379,23 @@
     
 
 
+    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#Herb -->
+
+    <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#Herb">
+        <rdfs:subClassOf rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Ingredient"/>
+        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
+    </owl:Class>
+    
+
+
+    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#Ingredient -->
+
+    <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#Ingredient">
+        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
+    </owl:Class>
+    
+
+
     <!-- http://www.city.ac.uk/ds/inm713/feiphoon#Margherita -->
 
     <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#Margherita">
@@ -355,6 +410,15 @@
     <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#MenuItem">
         <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
         <rdfs:label xml:lang="en">Menu items that are sold by restaurants</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#Mozzarella -->
+
+    <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#Mozzarella">
+        <rdfs:subClassOf rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Cheese"/>
+        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
     </owl:Class>
     
 
@@ -401,6 +465,24 @@
     <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#State">
         <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
         <rdfs:label xml:lang="en">State</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#Tomato -->
+
+    <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#Tomato">
+        <rdfs:subClassOf rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Vegetable"/>
+        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
+    </owl:Class>
+    
+
+
+    <!-- http://www.city.ac.uk/ds/inm713/feiphoon#Vegetable -->
+
+    <owl:Class rdf:about="http://www.city.ac.uk/ds/inm713/feiphoon#Vegetable">
+        <rdfs:subClassOf rdf:resource="http://www.city.ac.uk/ds/inm713/feiphoon#Ingredient"/>
+        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fei</dc:creator>
     </owl:Class>
 </rdf:RDF>
 
