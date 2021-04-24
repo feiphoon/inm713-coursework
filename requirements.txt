@@ -5,6 +5,7 @@ gensim==3.8.3
 googletrans==3.1.0a0
 invoke==1.5.0
 jupyter==1.0.0
+matplotlib==3.3.4
 nltk==3.6.2
 python-Levenshtein==0.12.2
 SPARQLWrapper==1.8.5
@@ -13,6 +14,7 @@ owlrl==5.2.1
 pandas==1.2.4
 requests==2.25.1
 rdflib==5.0.0
+seaborn==0.11.1
 scikit-learn==0.24.1
 smart-open==5.0.0
 Unidecode==1.2.0
