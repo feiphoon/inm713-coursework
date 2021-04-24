@@ -3,7 +3,7 @@ Created on 2 Jan 2019
 
 @author: ejimenez-ruiz
 """
-from owlready2 import *
+from owlready2 import get_ontology, onto_path, owlready2, sync_reasoner, default_world
 import rdflib
 from rdflib.plugins.sparql import prepareQuery
 import logging

@@ -9,10 +9,11 @@ https://rawgit.com/ztane/python-Levenshtein/master/docs/Levenshtein.html
 """
 import rdflib
 from rdflib import Graph, Namespace, URIRef
-from rdflib.namespace import OWL
+
+from rdflib import OWL
 from rdflib.util import guess_format
 import owlrl
-from owlready2 import *  # noqa F403
+
 
 from load_ontology import load_classes, load_object_properties
 
@@ -337,13 +338,15 @@ def run_task_oa1(
     CANDIDATE_NAMESPACE: rdflib.Namespace = Namespace(CANDIDATE_NAMESPACE_STR)
     CANDIDATE_PREFIX: str = "pizza"
 
-    OWL_NAMESPACE: rdflib.Namespace = Namespace("http://www.w3.org/2002/07/owl#")
+    # OWL_NAMESPACE: rdflib.Namespace = Namespace("http://www.w3.org/2002/07/owl#")
+    # OWL_NAMESPACE: rdflib.Namespace = OWL
     OWL_PREFIX: str = "owl"
 
     graph: rdflib.Graph = Graph()
     graph.bind(prefix=TARGET_PREFIX, namespace=TARGET_NAMESPACE)
     graph.bind(prefix=CANDIDATE_PREFIX, namespace=CANDIDATE_NAMESPACE)
-    graph.bind(prefix=OWL_PREFIX, namespace=OWL_NAMESPACE)
+    #  This should be rdflib.OWL - the Namespace for this is already defined in rdflib
+    graph.bind(prefix=OWL_PREFIX, namespace=OWL)
 
     # The pizza ontology has no data properties, and a few object
     # properties that won't match what we have currently, so we'll
