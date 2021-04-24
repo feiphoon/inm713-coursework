@@ -284,29 +284,33 @@ def run_task_oa1(
         # "High enough" at the moment is determined by eyeballing the results
         # and taking what we want :)
         best_candidate_pairs: list[BestCandidatePairsJW] = [
-            pair for pair in results if pair.sim_score > 0.99
+            pair for pair in results if pair.sim_score > 0.93
         ]
 
         # Remove Country, as the meaning is different in both ontologies
         # but correct within both their contexts.
         # We also remove FourCheese as sadly its match FourCheeseTopping
         # in the Pizza ontology has a different meaning/terminology in
-        # the anatomy of a pizza.
+        # the anatomy of a pizza. And we remove Cheese -> CheeseyPizza
+        # because the first refers to an Ingredient.
         best_candidate_pairs = [
             pair
             for pair in best_candidate_pairs
-            if (pair.target != "Country") and (pair.target != "FourCheese")
+            if (pair.target != "Country")
+            and (pair.target != "FourCheese")
+            and not (pair.target == "Cheese" and pair.candidate == "CheeseyPizza")
         ]
 
         # # This is for object properties, but we won't apply them.
-        # results_obj_property: list[
-        #     BestCandidatePairsJW
-        # ] = _find_best_candidate_matches_by_jaro_winkler(
-        #     target_list=obj_properties_a, candidate_list=obj_properties_b
-        # )
-        # best_obj_property_candidate_pairs: list[BestCandidatePairsJW] = [
-        #     pair for pair in results_obj_property if pair.sim_score > 0.99
-        # ]
+        results_obj_property: list[
+            BestCandidatePairsJW
+        ] = _find_best_candidate_matches_by_jaro_winkler(
+            target_list=obj_properties_a, candidate_list=obj_properties_b
+        )
+        best_obj_property_candidate_pairs: list[BestCandidatePairsJW] = [
+            pair for pair in results_obj_property if pair.sim_score > 0.99
+        ]
+        # print(best_obj_property_candidate_pairs)
 
     else:
         # Just for exploration, Jaro Winkler matching with translation.
@@ -315,7 +319,7 @@ def run_task_oa1(
         # - googletrans uses the Google Translate API and it
         # does not give the same results as the web service.
         # - I think there is rate limiting, which causes
-        # requests to fail silently as no translation performed.
+        # requests to fail silently as no translation is performed.
         # The alternative is to batch requests, but we won't go
         # there this time.
         # If you'd like to try this, use example lists of:
@@ -349,9 +353,7 @@ def run_task_oa1(
     graph.bind(prefix=OWL_PREFIX, namespace=OWL)
 
     # The pizza ontology has no data properties, and a few object
-    # properties that won't match what we have currently, so we'll
-    # only produce equivalent classes, and only for things we want
-    # to align.
+    # properties that will match.
     _create_equivalence_triples_from_candidate_pairs(
         graph=graph,
         candidate_pairs=best_candidate_pairs,
@@ -360,37 +362,39 @@ def run_task_oa1(
         predicate=OWL.equivalentClass,
     )
 
-    # We won't use these - perhaps further improvements
-    # to the upstream ontology.
-    # _create_equivalence_triples_from_candidate_pairs(
-    #     graph=graph,
-    #     candidate_pairs=best_obj_property_candidate_pairs,
-    #     target_ns_str=TARGET_NAMESPACE_STR,
-    #     candidate_ns_str=CANDIDATE_NAMESPACE_STR,
-    #     predicate=OWL.equivalentProperty,
-    # )
+    _create_equivalence_triples_from_candidate_pairs(
+        graph=graph,
+        candidate_pairs=best_obj_property_candidate_pairs,
+        target_ns_str=TARGET_NAMESPACE_STR,
+        candidate_ns_str=CANDIDATE_NAMESPACE_STR,
+        predicate=OWL.equivalentProperty,
+    )
 
     _save_graph(graph=graph, output_file=f"equivalence_triples_{Task.OA1.value}.ttl")
 
 
 def run_task_oa2() -> None:
+    pass
 
-    pizza = get_ontology("ontologies/pizza_manchester.owl").load()
-    pizza_restaurant = get_ontology("ontologies/pizza_restaurant_ontology8.owl").load()
+    # pizza = get_ontology("ontologies/pizza_manchester.owl").load()
+    # pizza_restaurant = get_ontology("ontologies/pizza_restaurant_ontology8.owl").load()
 
-    pizza.imported_ontologies.append(pizza_restaurant)
-    print(pizza)
+    # pizza.imported_ontologies.append(pizza_restaurant)
+    # print(pizza)
 
     # onto.imported_ontologies.append("pizza_restaurant_ontology8.owl")
     # onto.load()
 
 
 if __name__ == "__main__":
-    INPUT_FILEPATH_A: str = "../2-OWL/pizza_restaurant_ontology8.owl"
+    # Last complete piece of work
+    # INPUT_FILEPATH_A: str = "../2-OWL/pizza_restaurant_ontology8.owl"
+    # Updated ontology
+    INPUT_FILEPATH_A: str = "../2-OWL/pizza_restaurant_ontology9.owl"
     INPUT_FILEPATH_B: str = "../data/pizza_manchester.owl"
 
     TASK: Task = Task.OA1.value
-    TASK: Task = Task.OA2.value
+    # TASK: Task = Task.OA2.value
 
     if TASK == Task.OA1.value:
         run_task_oa1(
