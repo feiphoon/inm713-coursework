@@ -2,9 +2,19 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix pizza: <http://www.co-ode.org/ontologies/pizza/pizza.owl#> .
 
+fp:Cheesey owl:equivalentClass pizza:CheeseyPizza .
+
 fp:Margherita owl:equivalentClass pizza:Margherita .
+
+fp:Mozzarella owl:equivalentClass pizza:MozzarellaTopping .
 
 fp:Pizza owl:equivalentClass pizza:Pizza .
 
 fp:Sicilian owl:equivalentClass pizza:Siciliana .
+
+fp:Vegetable owl:equivalentClass pizza:VegetableTopping .
+
+fp:hasTopping owl:equivalentProperty pizza:hasTopping .
+
+fp:isToppingOf owl:equivalentProperty pizza:isToppingOf .
 

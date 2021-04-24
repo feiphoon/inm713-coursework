@@ -13,10 +13,14 @@ from rdflib import Graph, Namespace, URIRef
 from rdflib import OWL
 from rdflib.util import guess_format
 import owlrl
+from owlready2 import onto_path
 
 
 from load_ontology import load_classes, load_object_properties
+from onto_access import OntologyAccess, Reasoner
 
+from pathlib import PurePosixPath
+import os
 import time
 import re
 from enum import Enum
@@ -48,7 +52,8 @@ class BestCandidatePairsJWTranslated(NamedTuple):
 
 class Task(Enum):
     OA1 = "oa1"
-    OA2 = "oa2"
+    OA2_1 = "oa2_1"  #  This is one reasoning method
+    OA2_2 = "oa2_2"  # This is an alternative reasoning
 
 
 def _find_best_candidate_matches_by_jaro_winkler(
@@ -226,27 +231,25 @@ def _create_equivalence_triples_from_candidate_pairs(
         graph.add((URIRef(target_uri), predicate, URIRef(candidate_uri)))
 
 
-# def perform_reasoning(ontology_file: str) -> None:
-#     """
-#     Subtask OA.2
-#     Expand the graph with the inferred triples, using reasoning.
-#     """
-#     tic = time.perf_counter()
-#     # print(guess_format(ontology_file))
-#     self.graph.load(ontology_file, format=guess_format(ontology_file))
+def _perform_reasoning(graph: rdflib.Graph) -> None:
+    """
+    Subtask OA.2
+    Expand the graph with the inferred triples, using reasoning.
+    """
+    tic = time.perf_counter()
 
-#     print(f"Triples including ontology: {len(self.graph)}.")
+    print(f"Triples including ontology: {len(graph)}.")
 
-#     # Happy with this reasoner
-#     owlrl.DeductiveClosure(
-#         owlrl.OWLRL.OWLRL_Semantics,
-#         axiomatic_triples=False,
-#         datatype_axioms=False,
-#     ).expand(self.graph)
+    # Happy with this reasoner
+    owlrl.DeductiveClosure(
+        owlrl.OWLRL.OWLRL_Semantics,
+        axiomatic_triples=False,
+        datatype_axioms=False,
+    ).expand(graph)
 
-#     toc = time.perf_counter()
-#     print(f"Finished reasoning on graph in {toc - tic} seconds.")
-#     print(f"Triples after OWL 2 RL reasoning: {len(self.graph)}.")
+    toc = time.perf_counter()
+    print(f"Finished reasoning on graph in {toc - tic} seconds.")
+    print(f"Triples after OWL 2 RL reasoning: {len(graph)}.")
 
 
 def _save_graph(graph: rdflib.Graph, output_file: str) -> None:
@@ -284,29 +287,33 @@ def run_task_oa1(
         # "High enough" at the moment is determined by eyeballing the results
         # and taking what we want :)
         best_candidate_pairs: list[BestCandidatePairsJW] = [
-            pair for pair in results if pair.sim_score > 0.99
+            pair for pair in results if pair.sim_score > 0.93
         ]
 
         # Remove Country, as the meaning is different in both ontologies
         # but correct within both their contexts.
         # We also remove FourCheese as sadly its match FourCheeseTopping
         # in the Pizza ontology has a different meaning/terminology in
-        # the anatomy of a pizza.
+        # the anatomy of a pizza. And we remove Cheese -> CheeseyPizza
+        # because the first refers to an Ingredient.
         best_candidate_pairs = [
             pair
             for pair in best_candidate_pairs
-            if (pair.target != "Country") and (pair.target != "FourCheese")
+            if (pair.target != "Country")
+            and (pair.target != "FourCheese")
+            and not (pair.target == "Cheese" and pair.candidate == "CheeseyPizza")
         ]
 
         # # This is for object properties, but we won't apply them.
-        # results_obj_property: list[
-        #     BestCandidatePairsJW
-        # ] = _find_best_candidate_matches_by_jaro_winkler(
-        #     target_list=obj_properties_a, candidate_list=obj_properties_b
-        # )
-        # best_obj_property_candidate_pairs: list[BestCandidatePairsJW] = [
-        #     pair for pair in results_obj_property if pair.sim_score > 0.99
-        # ]
+        results_obj_property: list[
+            BestCandidatePairsJW
+        ] = _find_best_candidate_matches_by_jaro_winkler(
+            target_list=obj_properties_a, candidate_list=obj_properties_b
+        )
+        best_obj_property_candidate_pairs: list[BestCandidatePairsJW] = [
+            pair for pair in results_obj_property if pair.sim_score > 0.99
+        ]
+        # print(best_obj_property_candidate_pairs)
 
     else:
         # Just for exploration, Jaro Winkler matching with translation.
@@ -315,7 +322,7 @@ def run_task_oa1(
         # - googletrans uses the Google Translate API and it
         # does not give the same results as the web service.
         # - I think there is rate limiting, which causes
-        # requests to fail silently as no translation performed.
+        # requests to fail silently as no translation is performed.
         # The alternative is to batch requests, but we won't go
         # there this time.
         # If you'd like to try this, use example lists of:
@@ -349,9 +356,7 @@ def run_task_oa1(
     graph.bind(prefix=OWL_PREFIX, namespace=OWL)
 
     # The pizza ontology has no data properties, and a few object
-    # properties that won't match what we have currently, so we'll
-    # only produce equivalent classes, and only for things we want
-    # to align.
+    # properties that will match.
     _create_equivalence_triples_from_candidate_pairs(
         graph=graph,
         candidate_pairs=best_candidate_pairs,
@@ -360,37 +365,74 @@ def run_task_oa1(
         predicate=OWL.equivalentClass,
     )
 
-    # We won't use these - perhaps further improvements
-    # to the upstream ontology.
-    # _create_equivalence_triples_from_candidate_pairs(
-    #     graph=graph,
-    #     candidate_pairs=best_obj_property_candidate_pairs,
-    #     target_ns_str=TARGET_NAMESPACE_STR,
-    #     candidate_ns_str=CANDIDATE_NAMESPACE_STR,
-    #     predicate=OWL.equivalentProperty,
-    # )
+    _create_equivalence_triples_from_candidate_pairs(
+        graph=graph,
+        candidate_pairs=best_obj_property_candidate_pairs,
+        target_ns_str=TARGET_NAMESPACE_STR,
+        candidate_ns_str=CANDIDATE_NAMESPACE_STR,
+        predicate=OWL.equivalentProperty,
+    )
 
     _save_graph(graph=graph, output_file=f"equivalence_triples_{Task.OA1.value}.ttl")
 
+    # Tidy graph
+    del graph
 
-def run_task_oa2() -> None:
 
-    pizza = get_ontology("ontologies/pizza_manchester.owl").load()
-    pizza_restaurant = get_ontology("ontologies/pizza_restaurant_ontology8.owl").load()
+def run_task_oa2_1(
+    filename_a: str, filename_b: str, filename_c: str, task: str
+) -> None:
+    TARGET_NAMESPACE_STR: str = "http://www.city.ac.uk/ds/inm713/feiphoon#"
+    TARGET_NAMESPACE: rdflib.Namespace = Namespace(TARGET_NAMESPACE_STR)
+    TARGET_PREFIX: str = "fp"
 
-    pizza.imported_ontologies.append(pizza_restaurant)
-    print(pizza)
+    CANDIDATE_NAMESPACE_STR: str = "http://www.co-ode.org/ontologies/pizza/pizza.owl#"
+    CANDIDATE_NAMESPACE: rdflib.Namespace = Namespace(CANDIDATE_NAMESPACE_STR)
+    CANDIDATE_PREFIX: str = "pizza"
 
-    # onto.imported_ontologies.append("pizza_restaurant_ontology8.owl")
-    # onto.load()
+    OWL_PREFIX: str = "owl"
+
+    graph: rdflib.Graph = Graph()
+    graph.bind(prefix=TARGET_PREFIX, namespace=TARGET_NAMESPACE)
+    graph.bind(prefix=CANDIDATE_PREFIX, namespace=CANDIDATE_NAMESPACE)
+    graph.bind(prefix=OWL_PREFIX, namespace=OWL)
+
+    graph.load(source=filename_a, format=guess_format(filename_a))
+    graph.load(source=filename_b, format=guess_format(filename_b))
+    graph.load(source=filename_c, format=guess_format(filename_c))
+
+    _perform_reasoning(graph)
+
+    _save_graph(graph=graph, output_file=f"all_files_with_reasoning_{task}.ttl")
+
+
+def run_task_oa2_2(filename: str, task: str) -> None:
+    """
+    HERMIT is the only one that worked,
+    PELLET doesn't give any information on unsatisfiable classes.
+    """
+    oa = OntologyAccess(filename)
+
+    output_tag = PurePosixPath(filename).stem
+
+    with open(
+        os.path.join(f"hermit_reasoner_results_{output_tag}_{task}.txt"), "w"
+    ) as f:
+        results = oa.loadOntology(reasoner=Reasoner.HERMIT)
+        f.write(results)
 
 
 if __name__ == "__main__":
-    INPUT_FILEPATH_A: str = "../2-OWL/pizza_restaurant_ontology8.owl"
+    # Last complete piece of work
+    # INPUT_FILEPATH_A: str = "../2-OWL/pizza_restaurant_ontology8.owl"
+    # Updated ontology
+    INPUT_FILEPATH_A: str = "../2-OWL/pizza_restaurant_ontology9.owl"
     INPUT_FILEPATH_B: str = "../data/pizza_manchester.owl"
 
+    # Comment these out to run each task
     TASK: Task = Task.OA1.value
-    TASK: Task = Task.OA2.value
+    TASK: Task = Task.OA2_1.value
+    TASK: Task = Task.OA2_2.value
 
     if TASK == Task.OA1.value:
         run_task_oa1(
@@ -399,6 +441,37 @@ if __name__ == "__main__":
             with_translation=False,
         )
 
-    elif TASK == Task.OA2.value:
-        ONTO_PATH: str = "ontologies"
-        run_task_oa2()
+    elif TASK == Task.OA2_1.value:
+        # This was one way to do reasoning -
+        # load all three of the ontologies into one graph and reason.
+        # This produces a saved file and we'll have to search for
+        # unsatisfiable classes by hand.
+        # Equivalence triples file - run Task.OA1 first
+        INPUT_FILEPATH_C: str = "equivalence_triples_oa1.ttl"
+
+        run_task_oa2_1(
+            filename_a=INPUT_FILEPATH_A,
+            filename_b=INPUT_FILEPATH_B,
+            filename_c=INPUT_FILEPATH_C,
+            task=TASK,
+        )
+
+        # See all_files_with_reasoning_oa2_1.ttl for output & unsatisfiable classes
+
+    elif TASK == Task.OA2_2.value:
+        #  This is an alternative method using code supplied in the
+        # INM713 labs.
+        # Equivalence triples file - run Task.OA1 first
+        INPUT_FILEPATH_C: str = "equivalence_triples_oa1.ttl"
+
+        # The following produce outputs to files:
+
+        # src/5-OA/hermit_reasoner_results_pizza_restaurant_ontology9_oa2_2.txt
+        run_task_oa2_2(filename=INPUT_FILEPATH_A, task=TASK)
+
+        # src/5-OA/hermit_reasoner_results_pizza_manchester_oa2_2.txt
+        # Unsatisfiable classes in here
+        run_task_oa2_2(filename=INPUT_FILEPATH_B, task=TASK)
+
+        # src/5-OA/hermit_reasoner_results_equivalence_triples_oa1_oa2_2.txt
+        run_task_oa2_2(filename=INPUT_FILEPATH_C, task=TASK)
