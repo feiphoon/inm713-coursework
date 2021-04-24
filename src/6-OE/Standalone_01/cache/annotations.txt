@@ -17,7 +17,6 @@ http://www.co-ode.org/ontologies/pizza/pizza.owl#Caprina preferred_label Caprina
 http://www.co-ode.org/ontologies/pizza/pizza.owl#CheeseTopping preferred_label CheeseTopping
 http://www.co-ode.org/ontologies/pizza/pizza.owl#CheeseTopping preferred_label Cheese
 http://www.co-ode.org/ontologies/pizza/pizza.owl#CheeseyPizza preferred_label CheesyPizza
-http://www.co-ode.org/ontologies/pizza/pizza.owl#CheeseyPizza preferred_label Cheesy Pizza
 http://www.co-ode.org/ontologies/pizza/pizza.owl#ChickenTopping preferred_label Chicken
 http://www.co-ode.org/ontologies/pizza/pizza.owl#ChickenTopping preferred_label ChickenTopping
 http://www.co-ode.org/ontologies/pizza/pizza.owl#Country preferred_label Country

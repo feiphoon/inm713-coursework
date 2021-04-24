@@ -449,7 +449,7 @@ if __name__ == "__main__":
 
     # Apply OWL 2 RL reasoning
     tab_to_graph.perform_reasoning(
-        "../../1-OWL/pizza_restaurant_ontology5-slim.ttl"
+        "../../2-OWL/pizza_restaurant_ontology5-slim.ttl"
     )  # ttl format
     # # tab_to_graph.perform_reasoning("../data/pizza_restaurant_ontology5-slim.owl") ##owl (rdf/xml) format
 
