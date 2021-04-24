@@ -7,6 +7,7 @@ invoke==1.5.0
 jupyter==1.0.0
 matplotlib==3.3.4
 nltk==3.6.2
+numpy==1.20.2
 python-Levenshtein==0.12.2
 SPARQLWrapper==1.8.5
 Owlready2==0.30
