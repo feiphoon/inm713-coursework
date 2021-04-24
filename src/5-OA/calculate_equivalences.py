@@ -226,27 +226,25 @@ def _create_equivalence_triples_from_candidate_pairs(
         graph.add((URIRef(target_uri), predicate, URIRef(candidate_uri)))
 
 
-# def perform_reasoning(ontology_file: str) -> None:
-#     """
-#     Subtask OA.2
-#     Expand the graph with the inferred triples, using reasoning.
-#     """
-#     tic = time.perf_counter()
-#     # print(guess_format(ontology_file))
-#     self.graph.load(ontology_file, format=guess_format(ontology_file))
+def _perform_reasoning(graph: rdflib.Graph) -> None:
+    """
+    Subtask OA.2
+    Expand the graph with the inferred triples, using reasoning.
+    """
+    tic = time.perf_counter()
 
-#     print(f"Triples including ontology: {len(self.graph)}.")
+    print(f"Triples including ontology: {len(graph)}.")
 
-#     # Happy with this reasoner
-#     owlrl.DeductiveClosure(
-#         owlrl.OWLRL.OWLRL_Semantics,
-#         axiomatic_triples=False,
-#         datatype_axioms=False,
-#     ).expand(self.graph)
+    # Happy with this reasoner
+    owlrl.DeductiveClosure(
+        owlrl.OWLRL.OWLRL_Semantics,
+        axiomatic_triples=False,
+        datatype_axioms=False,
+    ).expand(graph)
 
-#     toc = time.perf_counter()
-#     print(f"Finished reasoning on graph in {toc - tic} seconds.")
-#     print(f"Triples after OWL 2 RL reasoning: {len(self.graph)}.")
+    toc = time.perf_counter()
+    print(f"Finished reasoning on graph in {toc - tic} seconds.")
+    print(f"Triples after OWL 2 RL reasoning: {len(graph)}.")
 
 
 def _save_graph(graph: rdflib.Graph, output_file: str) -> None:
@@ -372,9 +370,31 @@ def run_task_oa1(
 
     _save_graph(graph=graph, output_file=f"equivalence_triples_{Task.OA1.value}.ttl")
 
+    # Tidy graph
+    del graph
 
-def run_task_oa2() -> None:
-    pass
+
+def run_task_oa2(filename_a: str, filename_b: str, filename_c: str) -> None:
+    TARGET_NAMESPACE_STR: str = "http://www.city.ac.uk/ds/inm713/feiphoon#"
+    TARGET_NAMESPACE: rdflib.Namespace = Namespace(TARGET_NAMESPACE_STR)
+    TARGET_PREFIX: str = "fp"
+
+    CANDIDATE_NAMESPACE_STR: str = "http://www.co-ode.org/ontologies/pizza/pizza.owl#"
+    CANDIDATE_NAMESPACE: rdflib.Namespace = Namespace(CANDIDATE_NAMESPACE_STR)
+    CANDIDATE_PREFIX: str = "pizza"
+
+    OWL_PREFIX: str = "owl"
+
+    graph: rdflib.Graph = Graph()
+    graph.bind(prefix=TARGET_PREFIX, namespace=TARGET_NAMESPACE)
+    graph.bind(prefix=CANDIDATE_PREFIX, namespace=CANDIDATE_NAMESPACE)
+    graph.bind(prefix=OWL_PREFIX, namespace=OWL)
+
+    graph.load(source=filename_a, format=guess_format(filename_a))
+    graph.load(source=filename_b, format=guess_format(filename_b))
+    graph.load(source=filename_c, format=guess_format(filename_c))
+
+    _perform_reasoning(graph)
 
     # pizza = get_ontology("ontologies/pizza_manchester.owl").load()
     # pizza_restaurant = get_ontology("ontologies/pizza_restaurant_ontology8.owl").load()
@@ -394,7 +414,7 @@ if __name__ == "__main__":
     INPUT_FILEPATH_B: str = "../data/pizza_manchester.owl"
 
     TASK: Task = Task.OA1.value
-    # TASK: Task = Task.OA2.value
+    TASK: Task = Task.OA2.value
 
     if TASK == Task.OA1.value:
         run_task_oa1(
@@ -404,5 +424,10 @@ if __name__ == "__main__":
         )
 
     elif TASK == Task.OA2.value:
-        ONTO_PATH: str = "ontologies"
-        run_task_oa2()
+        INPUT_FILEPATH_C: str = "equivalence_triples_oa1.ttl"
+        # ONTO_PATH: str = "ontologies"
+        run_task_oa2(
+            filename_a=INPUT_FILEPATH_A,
+            filename_b=INPUT_FILEPATH_B,
+            filename_c=INPUT_FILEPATH_C,
+        )
