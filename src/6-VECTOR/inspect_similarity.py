@@ -80,66 +80,67 @@ def get_most_similar_cosmul(
     )
 
 
-# String pair similarity
-get_pair_similarity(
-    embeddings_filename="Standalone_01/output_embedding/config3.embeddings",
-    str1="pizza",
-    str2="pizza",
-)
+if __name__ == "__main__":
+    # String pair similarity
+    get_pair_similarity(
+        embeddings_filename="Standalone_01/output_embedding/config3.embeddings",
+        str1="pizza",
+        str2="pizza",
+    )
 
-get_pair_similarity(
-    embeddings_filename="Standalone_01/output_embedding/config3.embeddings",
-    str1="http://www.city.ac.uk/ds/inm713/feiphoon#Pizza",
-    str2="pizza",
-)
+    get_pair_similarity(
+        embeddings_filename="Standalone_01/output_embedding/config3.embeddings",
+        str1="http://www.city.ac.uk/ds/inm713/feiphoon#Pizza",
+        str2="pizza",
+    )
 
-get_pair_similarity(
-    embeddings_filename="Standalone_01/output_embedding/config3.embeddings",
-    str1="http://www.city.ac.uk/ds/inm713/feiphoon#isMenuItemAt",
-    str2="http://www.city.ac.uk/ds/inm713/feiphoon#Pizza",
-)
+    get_pair_similarity(
+        embeddings_filename="Standalone_01/output_embedding/config3.embeddings",
+        str1="http://www.city.ac.uk/ds/inm713/feiphoon#isMenuItemAt",
+        str2="http://www.city.ac.uk/ds/inm713/feiphoon#Pizza",
+    )
 
-get_pair_similarity(
-    embeddings_filename="Standalone_01/output_embedding/config3.embeddings",
-    str1="margherita",
-    str2="margarita",
-)
+    get_pair_similarity(
+        embeddings_filename="Standalone_01/output_embedding/config3.embeddings",
+        str1="margherita",
+        str2="margarita",
+    )
 
-get_pair_similarity(
-    embeddings_filename="Standalone_01/output_embedding/config3.embeddings",
-    str1="margherita",
-    str2="margarita",
-)
+    get_pair_similarity(
+        embeddings_filename="Standalone_01/output_embedding/config3.embeddings",
+        str1="margherita",
+        str2="margarita",
+    )
 
-get_pair_similarity(
-    embeddings_filename="Standalone_01/output_embedding/config3.embeddings",
-    str1="http://dbpedia.org/resource/New_York_City",
-    str2="pizza",
-)
+    get_pair_similarity(
+        embeddings_filename="Standalone_01/output_embedding/config3.embeddings",
+        str1="http://dbpedia.org/resource/New_York_City",
+        str2="pizza",
+    )
 
-get_most_similar(
-    embeddings_filename="Standalone_01/output_embedding/config3.embeddings",
-    positive_list=["New", "York", "pizza"],
-)
+    get_most_similar(
+        embeddings_filename="Standalone_01/output_embedding/config3.embeddings",
+        positive_list=["New", "York", "pizza"],
+    )
 
-get_most_similar_cosmul(
-    embeddings_filename="Standalone_01/output_embedding/config3.embeddings",
-    positive_list=["New", "York", "pizza"],
-)
+    get_most_similar_cosmul(
+        embeddings_filename="Standalone_01/output_embedding/config3.embeddings",
+        positive_list=["New", "York", "pizza"],
+    )
 
-# Config1 seems better for longer string searches.
-# We can find the shop with branches that has the signature pizza
-get_most_similar(
-    embeddings_filename="Standalone_01/output_embedding/config1.embeddings",
-    positive_list=["california", "pizza", "original"],
-)
+    # Config1 seems better for longer string searches.
+    # We can find the shop with branches that has the signature pizza
+    get_most_similar(
+        embeddings_filename="Standalone_01/output_embedding/config1.embeddings",
+        positive_list=["california", "pizza", "original"],
+    )
 
-get_most_similar(
-    embeddings_filename="Standalone_01/output_embedding/config1.embeddings",
-    positive_list=["sushi", "pizza"],
-)
+    get_most_similar(
+        embeddings_filename="Standalone_01/output_embedding/config1.embeddings",
+        positive_list=["sushi", "pizza"],
+    )
 
-get_most_similar(
-    embeddings_filename="Standalone_01/output_embedding/config1.embeddings",
-    positive_list=["seafood", "pizza"],
-)
+    get_most_similar(
+        embeddings_filename="Standalone_01/output_embedding/config1.embeddings",
+        positive_list=["seafood", "pizza"],
+    )
