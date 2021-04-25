@@ -1,6 +1,10 @@
-# File structure in this repo:
+# File tree
 
+This is the file tree up to a certain depth.
 
+The most important files for marking are listed here. Any discrepancies will only be due to more experiment results being logged or processed.
+
+All code to be marked is found in the main folder `src`, under their respective labels according to the coursework guidelines, e.g. `src/2-OWL/` relates to Task 2.2 OWL. Each folder contains a README, any results that needed to be produced for submission, and code needed to produce them.
 
 ```
 .
