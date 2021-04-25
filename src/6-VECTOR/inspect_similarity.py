@@ -1,6 +1,7 @@
 """
-Modified from code from INM713 labs.
+Modified from code from INM713 labs/gensim KeyedVector examples:
 
+https://github.com/RaRe-Technologies/gensim/blob/2feef89a24c222e4e0fc6e32ac7c6added752c26/gensim/models/keyedvectors.py
 https://radimrehurek.com/gensim/models/keyedvectors.html
 
 Subtask VECTOR.1
