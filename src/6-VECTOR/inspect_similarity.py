@@ -31,14 +31,13 @@ class EmbeddingSimilarity(NamedTuple):
 def get_pair_similarity(
     embeddings_filename: str, str1: str, str2: str
 ) -> PairSimilarity:
-    wv = KeyedVectors.load(embeddings_filename, mmap="r")
+    model = KeyedVectors.load(embeddings_filename, mmap="r")
     # vector = wv[str1]  # Get numpy vector of a word
     # print(vector)
 
-    # for key in wv.wv.vocab:
+    # for key in model.wv.vocab:
     #     print(key)
-
-    sim_score = wv.wv.similarity(str1, str2)
+    sim_score = model.wv.similarity(str1, str2)
     # 1.0 if perfect match
     print(f"{str1}, {str2}: {sim_score}")
     return PairSimilarity(str1=str1, str2=str2, sim_score=sim_score)
@@ -47,8 +46,8 @@ def get_pair_similarity(
 def get_most_similar(
     embeddings_filename: str, positive_list: list, negative_list: list = None
 ) -> EmbeddingSimilarity:
-    wv = KeyedVectors.load(embeddings_filename, mmap="r")
-    result = wv.wv.most_similar(positive=positive_list, negative=negative_list)
+    model = KeyedVectors.load(embeddings_filename, mmap="r")
+    result = model.wv.most_similar(positive=positive_list, negative=negative_list)
     most_similar_key, best_sim_score = result[0]
 
     print(f"{most_similar_key}: {best_sim_score:.4f}")
@@ -66,9 +65,10 @@ def get_most_similar(
 def get_most_similar_cosmul(
     embeddings_filename: str, positive_list: list, negative_list: list = None
 ) -> EmbeddingSimilarity:
-    wv = KeyedVectors.load(embeddings_filename, mmap="r")
-
-    result = wv.wv.most_similar_cosmul(positive=positive_list, negative=negative_list)
+    model = KeyedVectors.load(embeddings_filename, mmap="r")
+    result = model.wv.most_similar_cosmul(
+        positive=positive_list, negative=negative_list
+    )
     most_similar_key, best_sim_score = result[0]
 
     print(f"{most_similar_key}: {best_sim_score:.4f}")
