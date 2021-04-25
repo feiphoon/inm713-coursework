@@ -385,7 +385,7 @@ class TabToGraph:
             df=self.data_df,
             target_col="item value",
             transformed_col="menu_item_price",
-            fillna_value=0.0,
+            fillna_value=0,
         )
 
         self._replace_missing_values(
@@ -805,9 +805,9 @@ class TabToGraph:
 
         print(f"Printed {len(self.graph)} triples.")
 
-    def save_graph(self, output_file: str) -> None:
+    def save_graph(self, output_file: str, output_format: str = "ttl") -> None:
         # print(self.g.serialize(format="turtle").decode("utf-8"))
-        self.graph.serialize(destination=output_file, format="ttl")
+        self.graph.serialize(destination=output_file, format=output_format)
 
 
 if __name__ == "__main__":
@@ -848,11 +848,15 @@ if __name__ == "__main__":
 
         # Apply OWL 2 RL reasoning
         tab_to_graph.perform_reasoning(
-            "../../1-OWL/pizza_restaurant_ontology8.ttl"
+            "../../2-OWL/pizza_restaurant_ontology8.ttl"
         )  # ttl format
-        # tab_to_graph.perform_reasoning("../../1-OWL/pizza_restaurant_ontology8.owl") ##owl (rdf/xml) format
+        # tab_to_graph.perform_reasoning("../../2-OWL/pizza_restaurant_ontology8.owl") ##owl (rdf/xml) format
 
         # Graph with ontology triples and entailed triples
         tab_to_graph.save_graph(
             output_file=f"pizza_restaurants_with_reasoning_{TASK.value}.ttl"
+        )
+        tab_to_graph.save_graph(
+            output_file=f"pizza_restaurants_with_reasoning_{TASK.value}.rdf",
+            output_format="xml"
         )
