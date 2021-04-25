@@ -120,7 +120,7 @@ if __name__ == "__main__":
 
     get_most_similar(
         embeddings_filename="Standalone_01/output_embedding/config3.embeddings",
-        positive_list=["New", "York", "pizza"],
+        positive_list=["margherita"],
     )
 
     get_most_similar_cosmul(
