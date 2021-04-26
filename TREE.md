@@ -62,15 +62,6 @@ All code to be marked is found in the main folder `src`, under their respective 
 │   │   │   ├── create_rdf_triples.py
 │   │   │   ├── encode.py
 │   │   │   ├── entity.py
-│   │   │   ├── last_best_results
-│   │   │   │   └── pizza_restaurants_with_reasoning_sparql1.ttl
-│   │   │   ├── last_better_results
-│   │   │   │   ├── pizza_restaurants_without_reasoning_rdf2.ttl
-│   │   │   │   └── pizza_restaurants_without_reasoning_rdf3.ttl
-│   │   │   ├── last_good_results
-│   │   │   │   ├── pizza_restaurants_with_reasoning_sparql1.ttl
-│   │   │   │   ├── pizza_restaurants_without_reasoning_rdf2.ttl
-│   │   │   │   └── pizza_restaurants_without_reasoning_rdf3.ttl
 │   │   │   ├── last_run.txt
 │   │   │   ├── lookup.py
 │   │   │   ├── mymath.py
@@ -78,19 +69,18 @@ All code to be marked is found in the main folder `src`, under their respective 
 │   │   │   ├── pizza_restaurants_without_reasoning_rdf2.ttl
 │   │   │   ├── pizza_restaurants_without_reasoning_rdf3.ttl
 │   │   │   └── stringcmp.py
-│   │   ├── ontology8
-│   │   │   ├── create_rdf_triples.py
-│   │   │   ├── encode.py
-│   │   │   ├── entity.py
-│   │   │   ├── last_run.txt
-│   │   │   ├── lookup.py
-│   │   │   ├── mymath.py
-│   │   │   ├── pizza_restaurants_with_reasoning_sparql1.rdf
-│   │   │   ├── pizza_restaurants_with_reasoning_sparql1.ttl
-│   │   │   ├── pizza_restaurants_without_reasoning_rdf2.ttl
-│   │   │   ├── pizza_restaurants_without_reasoning_rdf3.ttl
-│   │   │   └── stringcmp.py
-│   │   └── testing.ipynb
+│   │   └── ontology8
+│   │       ├── create_rdf_triples.py
+│   │       ├── encode.py
+│   │       ├── entity.py
+│   │       ├── last_run.txt
+│   │       ├── lookup.py
+│   │       ├── mymath.py
+│   │       ├── pizza_restaurants_with_reasoning_sparql1.rdf
+│   │       ├── pizza_restaurants_with_reasoning_sparql1.ttl
+│   │       ├── pizza_restaurants_without_reasoning_rdf2.ttl
+│   │       ├── pizza_restaurants_without_reasoning_rdf3.ttl
+│   │       └── stringcmp.py
 │   ├── 4-SPARQL
 │   │   ├── perform_queries.py
 │   │   ├── sparql2_127results.csv
@@ -134,7 +124,7 @@ All code to be marked is found in the main folder `src`, under their respective 
 │   │   │   │   ├── Onto_Access.py
 │   │   │   │   ├── Onto_Annotations.py
 │   │   │   │   ├── Onto_Projection.py
-│   │   │   │   └──  RDF2Vec_Embed.py
+│   │   │   │   └── RDF2Vec_Embed.py
 │   │   │   ├── output_embedding
 │   │   │   │   ├── config1.embeddings
 │   │   │   │   ├── config1.embeddings.bin
@@ -174,6 +164,7 @@ All code to be marked is found in the main folder `src`, under their respective 
 │   │   ├── data_pizza_shared_restaurant_name_test.csv
 │   │   └── pizza_manchester.owl
 │   └──images
+│       ├── INM713-Coursework.png
 │       └── pizza_restaurant_ontology8.png
 └── tasks.py
 ```
