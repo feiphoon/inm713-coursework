@@ -3,7 +3,6 @@ Subtask SPARQL.2
 Subtask SPARQL.3
 Subtask SPARQL.4
 Subtask SPARQL.5
-Subtask SPARQL.6
 """
 # from owlready2 import *
 from rdflib import Graph
