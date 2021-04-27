@@ -14,6 +14,8 @@ Relevant files are in the `src/` folder [here](src/):
 - [Task OA (Ontology Alignment)](src/5-OA)
 - [Task Vector (Ontology Embeddings)](src/6-VECTOR)
 
+Each folder contains detailed README files for running instructions. Please install the included requirements.txt file to make sure everything runs correctly.
+
 
 ## Setup
 
