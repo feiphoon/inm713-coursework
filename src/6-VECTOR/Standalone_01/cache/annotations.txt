@@ -1,0 +1,9 @@
+http://www.city.ac.uk/ds/inm713/feiphoon#Country preferred_label Country
+http://www.city.ac.uk/ds/inm713/feiphoon#MenuItem preferred_label Menu items that are sold by restaurants
+http://www.city.ac.uk/ds/inm713/feiphoon preferred_label Restaurants selling pizza
+http://www.city.ac.uk/ds/inm713/feiphoon preferred_label Pizza restaurants
+http://www.city.ac.uk/ds/inm713/feiphoon#City preferred_label City
+http://www.city.ac.uk/ds/inm713/feiphoon#Currency preferred_label Currency
+http://www.city.ac.uk/ds/inm713/feiphoon#State preferred_label State
+http://www.city.ac.uk/ds/inm713/feiphoon#Pizza preferred_label Items which are pizza
+http://www.city.ac.uk/ds/inm713/feiphoon#Restaurant preferred_label Restaurant
