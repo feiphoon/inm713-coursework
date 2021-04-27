@@ -10,7 +10,6 @@ Subtask VECTOR.2
 Embeddings created from the file:
 /src/6-VECTOR/Standalone_01/pizza_restaurants_with_reasoning_sparql1.rdf
 """
-# Load back with memory-mapping = read-only, shared across processes.
 from gensim.models import KeyedVectors
 from typing import NamedTuple, List
 

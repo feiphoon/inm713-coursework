@@ -4,7 +4,7 @@ This repo is at <https://github.com/feiphoon/inm713-coursework>.
 
 This is an individual submission of the INM713 coursework.
 
-See my [file tree documentation](TREE.md) for a quick repo overview.
+See my [file tree documentation](TREE.md) for a clear repo overview and for how the coursework submission has been laid out.
 
 Relevant files are in the `src/` folder [here](src/):
 - [Exploratory analysis (not marked)](src/1-exploration)
@@ -13,6 +13,8 @@ Relevant files are in the `src/` folder [here](src/):
 - [Task SPARQL (SPARQL & Reasoning)](src/4-SPARQL)
 - [Task OA (Ontology Alignment)](src/5-OA)
 - [Task Vector (Ontology Embeddings)](src/6-VECTOR)
+
+Each folder contains detailed README files for running instructions. Please install the included requirements.txt file to make sure everything runs correctly.
 
 
 ## Setup
